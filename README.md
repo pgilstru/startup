@@ -2,6 +2,8 @@
 
 ## Elevator Pitch
 
+Have you ever had a conflict with your roommates over forgetting an item when grocery shopping, or ever wanted to help your roommates with their own grocery shopping? Sending a bunch of texts a day containing items you or the apartment needs can get hard to keep track of, as those texts get lost in a sea of other messages. The application “grocerease” streamlines the process of having an up to date, and organized grocery list available for you and your roommates. As each roommate adds items to the list, deletes an item, or checks one off, these updates are displayed in realtime for the other roommates! Keep track of your list, and easily add items as they come to mind with grocerease.
+
 
 ## Design
 
