@@ -271,3 +271,97 @@ A default web server will display the HTML file named index.html when a web brow
 - Block element is meant to be a distinct block in the flow of the content structure.
 - Inline element is meant to be inline with the content flow of a block element. 
     - AKA, they do not disrupt the flow of a block element's content
+
+
+
+
+
+## 9/20/24 - HTML input elements
+
+There are different elements for accepting the input of user data.
+
+| Element    | Meaning                          | Example                                        |
+| ---------- | -------------------------------- | ---------------------------------------------- |
+| `form`     | Input container and submission   | `<form action="form.html" method="post">`      |
+| `fieldset` | Labeled input grouping           | `<fieldset> ... </fieldset>`                   |
+| `input`    | Multiple types of user input     | `<input type="" />`                            |
+| `select`   | Selection dropdown               | `<select><option>1</option></select>`          |
+| `optgroup` | Grouped selection dropdown       | `<optgroup><option>1</option></optgroup>`      |
+| `option`   | Selection option                 | `<option selected>option2</option>`            |
+| `textarea` | Multiline text input             | `<textarea></textarea>`                        |
+| `label`    | Individual input label           | `<label for="range">Range: </label>`           |
+| `output`   | Output of input                  | `<output for="range">0</output>`               |
+| `meter`    | Display value with a known range | `<meter min="0" max="100" value="50"></meter>` |
+
+#### Form element
+
+- Main purpose of the `form` element is to submit the values of the inputs it contains.
+- With JavaScript we have much more control over the input data and what is done with it.
+    - For example, in a single page application the JavaScript with dynamically rebuild the HTML elements to reflect the result of the user interaction.
+    - Form example that submits the value of a textarea element:
+```html
+<form action="submission.html" method="post">
+  <label for="ta">TextArea: </label>
+  <textarea id="ta" name="ta-id">
+Some text
+  </textarea>
+  <button type="submit">Submit</button>
+</form>
+```
+
+#### Input element
+
+Input element represents many different input types. Set the type of input with the `type` attribute. 
+
+| Type           | Meaning                           |
+| -------------- | --------------------------------- |
+| text           | Single line textual value         |
+| password       | Obscured password                 |
+| email          | Email address                     |
+| tel            | Telephone number                  |
+| url            | URL address                       |
+| number         | Numerical value                   |
+| checkbox       | Inclusive selection               |
+| radio          | Exclusive selection               |
+| range          | Range limited number              |
+| date           | Year, month, day                  |
+| datetime-local | Date and time                     |
+| month          | Year, month                       |
+| week           | Week of year                      |
+| color          | Color                             |
+| file           | Local file                        |
+| submit         | button to trigger form submission |
+
+#### Validating input
+
+Several input elements have validation built into them. They will not accept a value that is not for example, a number, a URL, outside of a range, or an email address.
+
+You can specify the required attribute on an input element to mark it as requiring a value before it can be submitted.
+
+The `pattern` attribute exists on `text`, `search`, `url`, `tel`, `email`, and `password` inputs.
+
+
+
+
+
+## HTML media elements
+
+HTML elements that represent media are: img, audio, video, svg, and canvas.
+- img, audio, and video elements reference to an external file
+- svg and canvas both contain code to render a visual image that can be animated.
+
+### External media
+
+Media tags that reference external media all take a URL as an attribute. The path represented by the URL can either be a relative path or full path. (full includes the protocol, domain name, and path to file)
+
+### Internal media
+
+Internal media elements, svg and canvas, allow you to actually create images directly within your HTML.
+
+#### Scalable Vector Graphics (SVG)
+
+SVG is an extremely powerful and widely supported way to render graphics inline in your HTML.
+
+#### Canvas
+
+The canvas element was introducted to HTML in order to facilitate 2D drawing and animation.
