@@ -143,3 +143,131 @@ vi Caddyfile
 ```sh
 sudo service caddy restart
 ```
+
+
+
+
+## 9/19/24 - Hypertext Markup Language
+
+- HTML provides the foundational content structure that all web apps build on.
+- The concept of web pages were changed into web applications, where a new page represents either a single page application (SPA) or a large group of hyperlinked pages that form a multi-page application (MPA).
+
+- text is valid HTML
+- To provide structure to our text, we need to introduce the concept of elements and their associated tag representation.
+
+#### Elements and tags
+
+- HTML elements: represented with enclosing tags that may enclose other elements or text
+    - Example: paragraph element and associated tag `p` designate that the text is a structural paragraph of text.
+- Tags: refer to a delimited textual name that we use to designate the start and end of an HTML element as it appears in an HTML document.
+    - Delimited with `<` and `>` symbols. Closing tags have a `/` before its name.
+- `html` element represents the top level page structure.
+- `head` element contains metadata about the page and page title.
+- `body` element represents the content structure.
+- `main` element represents the main content structure, as opposed to things such as headers, footers, asides, and navigation content.
+
+#### Attributes
+
+- HTML elements may have attributes
+- Attributes: describe the specific details of the element.
+    - Example: `id` attribute gives a unique ID to the element so that you can tell it apart from other elements.
+    - Example: `class` attribute designates the element as being classified into a named group of elements.
+- Attributes are written inside the element tag with a name followed by an optional value. (use single or double quotes)
+
+#### Hyperlinks
+
+- Represented with an anchor `a` element that has an attribute containing the address of the hyperlink reference `href`.
+```html
+<a href="https://byu.edu">Go to the Y</a>
+```
+
+#### Complete Example
+
+- HTML defines a header `<!DOCTYPE html>` that tells the browser the type and version of the document.
+
+#### Common Elements
+
+| element | meaning |
+| ------- | ------- |
+| `html`  | The page container |
+| `head`  | Header information |
+| `title` | Title of the page  |
+| `meta`  | Metadata for the page such as character set or viewport settings|
+| `script`  | JavaScript reference. Either a external reference, or inline |
+| `include` | External content reference |
+| `body`    | The entire content body of the page |
+| `header`  | Header of the main content |
+| `footer`  | Footer of the main content |
+| `nav`     | Navigational inputs |
+| `main`    | Main content of the page |
+| `section` | A section of the main content |
+| `aside`   | Aside content from the main content |
+| `div`     | A block division of content |
+| `span`    | An inline span of content |
+| `h<1-9>`  | Text heading. From h1, the highest level, down to h9, the lowest level |
+| `p`       | A paragraph of text |
+| `b`       | Bring attention |
+| `table`   | Table |
+| `tr`      | Table row |
+| `th`      | Table header |
+| `td`      | Table data |
+| `ol,ul`   | Ordered or unordered list |
+| `li`      | List item |
+| `a`       | Anchor the text to a hyperlink |
+| `img`     | Graphical image reference |
+| `dialog`  | Interactive component such as a confirmation |
+| `form`    | A collection of user input |
+| `input`   | User input field |
+| `audio`   | Audio content |
+| `video`   | Video content |
+| `svg`     | Scalable vector graphic content |
+| `iframe`  | Inline frame of another HTML page |
+
+#### Comments
+
+Can include comments by starting it with `<!--` and ending it with `-->`
+
+#### Special Characters
+
+HTML uses several reserved characters for defining its file format. If you want to use those characters in your content, then escape them using the entity syntax.
+- Example: to display a less than symbol `<` you would instead use the less than entity `&lt;`
+- Entity syntax can also be used to represent any unicode character.
+
+| Character | Entity      |
+| --------- | ----------- |
+| &amp;     | `&amp;`     |
+| <         | `&lt;`      |
+| >         | `&gt;`      |
+| "         | `&quot;`    |
+| '         | `&apos;`    |
+| &#128512; | `&#128512;` |
+
+#### HTML Versions
+
+Different featuress and when they were introduced helps you know what has been around for a long time and is supported by more browsers, and what is new and may not work everywhere.
+
+| Year | Version | Features                                  |
+| ---- | ------- | ----------------------------------------- |
+| 1990 | HTML1   | format tags                               |
+| 1995 | HTML2   | tables, internationalization              |
+| 1997 | HTML3   | MathML, CSS, frame tags                   |
+| 1999 | HTML4   | external CSS                              |
+| 2014 | HTML5   | email, password, media, and semantic tags |
+
+#### index.html
+
+A default web server will display the HTML file named index.html when a web browser, such as Google Chrome, makes a request without asking for a specific HTML file.
+
+
+
+## HTML structure elements
+
+- two major purposes of HTML is to provide structure and content to your web app.
+- common html structural elements are: body, header, footer, main, section, aside, p, table, ol/ul, div, and span.
+
+#### Block and Inline
+
+- There is a distinction between structure elements that are block vs inline.
+- Block element is meant to be a distinct block in the flow of the content structure.
+- Inline element is meant to be inline with the content flow of a block element. 
+    - AKA, they do not disrupt the flow of a block element's content
