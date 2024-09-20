@@ -365,3 +365,16 @@ SVG is an extremely powerful and widely supported way to render graphics inline 
 #### Canvas
 
 The canvas element was introducted to HTML in order to facilitate 2D drawing and animation.
+
+
+
+
+
+## Deploy to production
+
+- deploy to your production environment using the deployFiles.sh script found in the example app.
+    - The script does three things: deletes any previous deployment for simon, copies up all of the files found in the project directory, and makes sure Caddy is hosting the files under the simon subdomain of your domain.
+
+```sh
+./deployFiles.sh -k ../<folder>/<yourpemkey> -h <yourdomain.click> -s simon
+```
