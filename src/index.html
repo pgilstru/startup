@@ -8,42 +8,57 @@
 </head>
 
 <body>
-  <img alt="grocerease" src="grocerease_logo.png" width="200"/>
+  <header>
+    <div style="float: right; padding-right: 50px">
+        Signed in as:
+        <span>username</span>
+    </div>
+    <img alt="grocerease" src="grocerease_logo.png" width="250"/>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="report.html">Report an Issue</a>
-    <!-- <a href="logout.html">Logout</a> -->
-  </nav>
+    <nav>
+        <menu>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdxF9-nQRfsREiYeliNuDmM2D5pE-gWiKYrkJL2qSX9mdyv9g/viewform?usp=sf_link">Report an Issue</a></li>
+        <!-- <a href="logout.html">Logout</a> -->
+        </menu>
+    </nav>
+  </header>
 
-  <h1>Grocery List Items</h1>
+  <main>
+    <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 50px;">
+        <h1>Grocery List Items</h1>
+        <span>
+            <input type="checkbox" id="checkfilter" value="checkfilter"/>
+            <label for="checkfilter">Filter Checked Items</label>
+        </span>
+    </div>
 
-  <input type="checkbox" id="checkfilter" value="checkfilter"/>
-  <label for="checkfilter">Filter Checked Items</label>
+    <ul>
+        <li>
+            <input type="checkbox" id="Eggs">
+            <span>Eggs</span>
+            <button type="button">delete</button>
+        </li>
+        <li>
+            <input type="checkbox" id="Milk">
+            <span>Milk</span>
+            <button type="button">delete</button>
+        </li>
+        <li>
+            <input type="checkbox" id="Bread">
+            <span>Bread</span>
+            <button type="button">delete</button>
+        </li>
+    </ul>
 
-  <ul>
-    <li>
-        <input type="checkbox" id="Eggs">
-        <span>Eggs</span>
-        <button type="button">delete</button>
-    </li>
-    <li>
-        <input type="checkbox" id="Milk">
-        <span>Milk</span>
-        <button type="button">delete</button>
-    </li>
-    <li>
-        <input type="checkbox" id="Bread">
-        <span>Bread</span>
-        <button type="button">delete</button>
-    </li>
-  </ul>
-
-  <form method="post" action="index.html"> <!-- replace with javascript method to add data to list -->
-    <label for="item">List Item: </label>
-    <input type="text" id="item" name="item" placeholder="Your list item here" required/>
-    <button type="submit">Add Item</button>
-  </form>
+    <form method="post" action="index.html"> <!-- replace with javascript method to add data to list -->
+        <label for="item">List Item: </label>
+        <input type="text" id="item" name="item" placeholder="Your list item here" required/>
+        <div>
+            <button type="submit">Add Item</button>
+        </div>
+    </form>
+  </main>
 
 </body>
 
