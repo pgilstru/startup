@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>grocerease</title>
+  <!-- <link rel ="stylesheet" href="stylez"> -->
+</head>
+
+<body>
+  <img alt="grocerease" src="grocerease_logo.png" width="200"/>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="report.html">Report an Issue</a>
+    <!-- <a href="logout.html">Logout</a> -->
+  </nav>
+
+  <h1>Grocery List Items</h1>
+
+  <input type="checkbox" id="checkfilter" value="checkfilter"/>
+  <label for="checkfilter">Filter Checked Items</label>
+
+  <ul>
+    <li>
+        <input type="checkbox" id="Eggs">
+        <span>Eggs</span>
+        <button type="button">delete</button>
+    </li>
+    <li>
+        <input type="checkbox" id="Milk">
+        <span>Milk</span>
+        <button type="button">delete</button>
+    </li>
+    <li>
+        <input type="checkbox" id="Bread">
+        <span>Bread</span>
+        <button type="button">delete</button>
+    </li>
+  </ul>
+
+  <form method="post" action="index.html"> <!-- replace with javascript method to add data to list -->
+    <label for="item">List Item: </label>
+    <input type="text" id="item" name="item" placeholder="Your list item here" required/>
+    <button type="submit">Add Item</button>
+  </form>
+
+</body>
+
+</html>
