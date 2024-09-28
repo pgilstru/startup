@@ -33,12 +33,12 @@ The application's Main page:
 
 For this deliverable, I set up the framework of my application using HTML.
 
-- **HTML pages**: Three HTML pages, one for logging in, creating an account, and one for viewing and adding list items.
-- **Links**: After successfully authenticating, the login page will automatically link to the grocery list.
-- **Text**: Describes each grocery list item by title added with it.
-- **Images**: The application’s logo is a png image displayed on each page.
-- **DB/Login**: Includes text input fields for user username and password, as well as a submit button for signing in and creating an account. The displayed grocery list items will be pulled from the database.
-- **WebSocket**: The grocery list items and their checked status are updated and managed in realtime.
+- [x] **HTML pages**: Three HTML pages, one for logging in (login.html), creating an account (register.html), and a home page for viewing and adding list items (index.html).
+- [x] **Links**: After successfully authenticating, the login page will automatically link to the grocery list (index.html).
+- [x] **Text**: Describes each grocery list item by title added with it.
+- [x] **Images**: The application’s logo is a png image displayed on each page.
+- [x] **DB/Login**: Includes text input fields for user username and password, as well as a submit button for signing in and creating an account. The displayed grocery list items will be pulled from the database.
+- [x] **WebSocket**: The grocery list items and their checked status are updated and managed in realtime.
 
 ## CSS Usage Specifics
 
