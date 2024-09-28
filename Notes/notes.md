@@ -378,3 +378,20 @@ The canvas element was introducted to HTML in order to facilitate 2D drawing and
 ```sh
 ./deployFiles.sh -k ../<folder>/<yourpemkey> -h <yourdomain.click> -s simon
 ```
+
+
+## Startup html
+
+- Make sure to add the `deployFiles.sh` file to the src folder with the html files, or you get an error like below:
+![DeploymentErrorSS](../Pics/deploymentErrorSS.png)
+
+- To move out of more than one directory, use additional `../` like below:
+
+```sh
+./deployFiles.sh -k ../../<folder>/<yourpemkey> -h grocerease.click -s startup
+```
+
+- Some things I want to note to implement:
+    - Design it so if a user isn't authenticated, index.html will redirect them to login.html
+    - Database will contain login data to tell if a user is authenticated
+
