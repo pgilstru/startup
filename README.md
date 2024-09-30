@@ -36,9 +36,10 @@ For this deliverable, I set up the framework of my application using HTML.
 - [x] **HTML pages**: Three HTML pages, one for logging in (login.html), creating an account (register.html), and a home page for viewing and adding list items (index.html).
 - [x] **Links**: After successfully authenticating, the login page will automatically link to the grocery list (index.html).
 - [x] **Text**: Describes each grocery list item by title added with it.
+- [x] **Service**: Displays a random fun fact fetched from an external third-party service. Currently have a placeholder at the bottom of the page.
 - [x] **Images**: The application’s logo is a png image displayed on each page.
 - [x] **DB/Login**: Includes text input fields for user username and password, as well as a submit button for signing in and creating an account. The displayed grocery list items will be pulled from the database.
-- [x] **WebSocket**: The grocery list items and their checked status are updated and managed in realtime.
+- [x] **WebSocket**: The grocery list items and their checked status are updated and managed in realtime between users. As one user adds or changes the status of an item, that is reflected for all other users.
 
 ## CSS Usage Specifics
 
