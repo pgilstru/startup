@@ -698,3 +698,16 @@ One of the main CSS features for creating responsive applications is the `@media
 }
 ```
 
+
+
+
+
+## CSS Flexbox
+
+The `flex` display layout is useful when you want to partition your application into areas that responsively move around as the window resizes or orientation changes.
+
+To get the division of space for the flexbox children correct we add the following flex properties to each of the children.
+- header - flex: 0 80px - Zero means it will not grow and 80px means it has a starting basis height of 80 pixels. This creates a fixed size box.
+- footer - flex: 0 30px - Like the header it will not grow and has a height of 30 pixels.
+- main - flex: 1 - One means it will get one fractional unit of growth, and since it is the only child with a non-zero growth value, it will get all the remaining space. We want it to also be a flexbox container for the controls and content area. So we set its display to be flex and specify the flex-direction to be row so that the children are oriented side by side.
+
