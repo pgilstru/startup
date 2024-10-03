@@ -711,3 +711,81 @@ To get the division of space for the flexbox children correct we add the followi
 - footer - flex: 0 30px - Like the header it will not grow and has a height of 30 pixels.
 - main - flex: 1 - One means it will get one fractional unit of growth, and since it is the only child with a non-zero growth value, it will get all the remaining space. We want it to also be a flexbox container for the controls and content area. So we set its display to be flex and specify the flex-direction to be row so that the children are oriented side by side.
 
+
+
+
+
+
+
+
+## CSS Frameworks
+
+CSS frameworks provide functions and components that commonly appear in web apps. When apps begin to use the same patterns over and over, these patterns were combined into a shared package of code and are now open source repos.
+
+They decrease the time to develop an app and create a common user experience for the web overall.
+
+### Tailwind
+
+Tailwind takes a different approach than traditional CSS frameworks, using smaller definitions that are applied specifically to individual HTML elements (rather than using large, rich, CSS rulesets).
+- This moves a lot of the CSS representation out of the CSS file and into the HTML.
+
+Example:
+```html
+<div class="pt-6 md:p-8 text-center md:text-left space-y-4">
+  <img class="w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto" src="profile.png" />
+  <p class="text-lg font-medium">“Tailwind CSS”</p>
+</div>
+```
+
+### Bootstrap
+
+Most popular framework by far. Has a lot of lessons learned from real world apps.
+- Major downside is it's success. Because it is so popular, it defines the de facto look and feel of websites. This is good for user experience, but it makes it harder to grab new user attention.
+
+To integrate bootstrap into a web app, you need to reference the Bootstrap CSS files from their CDN (content delivery network). Then add the html link elements to your head element. Example below.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    ...
+  </body>
+</html>
+```
+
+If you are planning to include Bootstrap's components that require JS, you will need to include the Bootstrap JS module. Put the following at the end of your HTML body element to do so.
+
+```html
+<body>
+  ...
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"
+  ></script>
+</body>
+```
+
+To include bootstrap in your app using NPM, run the following from your console
+
+```sh
+npm install bootstrap@5.2.3
+```
+
+#### Using bootstrap
+
+Once bootstrap is linked in your html files, you can use the components it provides. You change the class to a bootstrap specific class. In the example below, the `btn` class gives the button a nice looking rounded appearance, and the `btn-primary` class shades the button with the current primary color for the app (default is blue).
+
+```html
+<button type="button" class="btn btn-primary">Bootstrap</button>
+```
