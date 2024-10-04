@@ -789,3 +789,35 @@ Once bootstrap is linked in your html files, you can use the components it provi
 ```html
 <button type="button" class="btn btn-primary">Bootstrap</button>
 ```
+
+
+
+
+
+
+
+
+
+
+
+# JavaScript
+
+## Introduction
+
+Officially known as EXMAScript, it is a weakly typed languages based on concepts found in C, Java, and Scheme.
+- Most used programming language in the world, running on every browser and commonly used as a web server language and for creating serverless functions.
+- Typically it is executed using an interpreter at runtime instead of compiling it into a machine specific binary at build time.
+    - This makes JS very portable, but also allows for a lot of errors, such as using an undefined variable (errors normally only get discovered when the program crashes during an execution)
+
+### Getting Started
+
+JavaScript's runtime's built in function `console.log` outputs the string to the debugger console.
+
+### Comments
+
+you can make comments with block or line comments
+
+### Code delimiters
+
+Not required, but suggested, to end JS statements with a semicolon `;`. Code block and their scope are defined with curly braces `{ }`.
+
