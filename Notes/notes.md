@@ -821,3 +821,340 @@ you can make comments with block or line comments
 
 Not required, but suggested, to end JS statements with a semicolon `;`. Code block and their scope are defined with curly braces `{ }`.
 
+
+
+
+## JavaScript Console
+
+JS console object provides interaction with the JS runtime's debugger console. It provides functionality for outputting the value of text and objects, running timers, and counting iterations.
+
+### Log
+
+Basic usage of the console object is to output a log message.
+
+```js
+console.log('hello');
+// output: hello
+```
+
+You can format the messages in the log parameter.
+
+```js
+console.log('hello %s', 'wordl');
+// output: hello world
+```
+
+You can even specify CSS declarations to style the log output.
+
+```js
+console.log('%c JavaScript demo', 'font-size:1.5em; color:green');
+// output (in large green text): JavaScript Demo 
+```
+
+### Timers
+
+If you want to see how long a piece of code is running, you can wrap it with `time` and `timeEnd` calls and it will put the duration between the `time` and `timeEnd` calls.
+
+```js
+console.time('demo time');
+// ... some code that takes a long time
+console.timeEnd('demo time');
+// output: demo time: 9762.74 ms
+```
+
+### Count
+
+To see how many times a block of code is called you can use the `count` function
+
+```js
+console.count('a');
+// output: a: 1
+console.count('a');
+// output: a: 2
+console.count('b');
+// output: a: 1
+```
+
+
+
+## Adding JavaScript to HTML
+
+You can add JS to HTML by either directly including it within a `<script>` element, or by using the `src` attribute to reference a JS file.
+
+Special attributes such as `onclick` automatically create event listeners for different DOM events that call the code contained in the attribute's value.
+
+```js
+<button onclick="let i=1;i++;console.log(i)">press me</button>
+<!-- OUTPUT: 2 -->
+```
+
+
+
+
+## JavaScript type and construct
+
+### Declaring variables
+
+Variables are declares using either the `let` or `const` keyword.
+- `let` allows you to change the value of the variable
+- `const` will cause an error if you try to change it
+
+```js
+let x = 1;
+
+const y = 2;
+```
+
+the keyword `var` has been depricated since it causes hard to detect errors in code related to the scope of the variable.
+
+### Type
+
+| Type        | Meaning   |
+| ----------- | -----------|
+| `Null`      | The type of a variable that has not been assigned a value. |
+| `Undefined` | The type of a variable that has not been defined.  |
+| `Boolean`   | true or false.  |
+| `Number`    | A 64-bit signed number.   |
+| `BigInt`    | A number of arbitrary magnitude.   |
+| `String`    | A textual sequence of characters.  |
+| `Symbol`    | A unique value.   |
+
+Of these types Boolean, Number, and String are the types commonly thought of when creating variables. However, variables may refer to the Null or Undefined primitive. Because JavaScript does not enforce the declaration of a variable before you use it, it is entirely possible for a variable to have the type of Undefined.
+
+In addition to the above primitives, JavaScript defines several object types. Some of the more commonly used objects include the following:
+
+| Type       | Use  | Example   |
+| ---------- | ------ | ------------------------ |
+| `Object`   | A collection of properties represented by name-value pairs. Values can be of any type. | `{a:3, b:'fish'}` |
+| `Function` | An object that has the ability to be called. | `function a() {}` |
+| `Date` | Calendar dates and times.  | `new Date('1995-12-17')` |
+| `Array` | An ordered sequence of any type. | `[3, 'fish']` |
+| `Map` | A collection of key-value pairs that support efficient lookups. | `new Map()` |
+| `JSON` | A lightweight data-interchange format used to share information across programs. | `{"a":3, "b":"fish"}` |
+
+### Common Operators
+
+When dealing with a number variable, JS supports standard mathematical operators like `+`, `-`, `*`, `/`, and `===` (equality). For string variables, it supports concatenation `+` and equality `===`.
+
+### Type conversions
+
+JS is a weakly typed language, meaning a variable always has a type, but the variable can change type when it is assigned a new value, or that types can be automatically converted based on the context they are used in.
+
+```js
+2 + '3';
+// OUTPUT: '23'
+2 * '3';
+// OUTPUT: 6
+[2] + [3];
+// OUTPUT: '23'
+true + null;
+// OUTPUT: 1
+true + undefined;
+// OUTPUT: NaN
+```
+
+Getting unexpected results is especially common when dealing with the `equality` operator.
+
+```js
+1 == '1';
+// OUTPUT: true
+null == undefined;
+// OUTPUT: true
+'' == false;
+// OUTPUT: true
+```
+
+- The unexpected results happen in JavaScript because it uses complex rules for defining equality that depend upon the conversion of a type to a boolean value. You will sometimes hear this referred to as falsy and truthy evaluations.
+    - To remove this confusion, JavaScript introduced the strict equality (===) and inequality (!==) operators. The strict operators skip the type conversion when computing equality. This results in the following.
+
+    ```js
+    1 === '1';
+    // OUTPUT: false
+    null === undefined;
+    // OUTPUT: false
+    '' === false;
+    // OUTPUT: false
+    ```
+
+    - Because strict equality is considered more intuitive, it is almost always preferred and should be used in your code.
+
+```js
+('b' + 'a' + +'a' + 'a').toLowerCase();
+// output: banana
+```
+
+### Conditionals
+
+JS supports common programming language conditional constructs such as `if`, `else`, and `if else`.
+
+```js
+if (a === 1) {
+  //...
+} else if (b === 2) {
+  //...
+} else {
+  //...
+}
+```
+
+You can also use the ternary operator, which provides a compact `if else` representation.
+
+```js
+a === 1 ? console.log(1) : console.log('not 1');
+```
+
+You can include boolean operations to create complex predicates, such as `&&` (and), `||` (or), and `!` (not).
+
+```js
+if (true && (!false || true)) {
+  //...
+}
+```
+
+### Loops
+
+JS supports `for`, `for in`, `for of`, `while`, `do while`, and `switch`.
+
+### for
+
+Note the introduction of the common post increment operation (`i++`) for adding one to a number.
+
+```js
+for (let i = 0; i < 2; i++) {
+  console.log(i);
+}
+// OUTPUT: 0 1
+```
+
+### do while
+
+```js
+let i = 0;
+do {
+  console.log(i);
+  i++;
+} while (i < 2);
+// OUTPUT: 0 1
+```
+
+### while
+
+```js
+let i = 0;
+while (i < 2) {
+  console.log(i);
+  i++;
+}
+// OUTPUT: 0 1
+```
+
+### for in
+
+The `for in` statement iterates over an object's property names.
+
+```js
+const obj = { a: 1, b: 'fish' };
+for (const name in obj) {
+  console.log(name);
+}
+// OUTPUT: a
+// OUTPUT: b
+```
+
+For arrays the object's name is the array index.
+
+```js
+const arr = ['a', 'b'];
+for (const name in arr) {
+  console.log(name);
+}
+// OUTPUT: 0
+// OUTPUT: 1
+```
+
+### for of
+
+The `for of` statement iterates over an iterable's (Array, Map, Set, ...) property values.
+
+```js
+const arr = ['a', 'b'];
+for (const val of arr) {
+  console.log(val);
+}
+// OUTPUT: 'a'
+// OUTPUT: 'b'
+```
+
+### Break and continue
+
+All of the looping constructs demonstrated above allow for either a `break` or `continue` statement to abort or advance the loop.
+
+```js
+let i = 0;
+while (true) {
+  console.log(i);
+  if (i === 0) {
+    i++;
+    continue;
+  } else {
+    break;
+  }
+}
+// OUTPUT: 0 1
+```
+
+
+
+
+
+## JavaScript string
+
+A string variable is specified by surrounding a sequence of characters with single quotes `'`, double quotes `"`, or backticks `` ` ``.
+
+The meaning of single or double quotes are equivalent, but the backtick defines a string literal that may contain JavaScript that is evaluated in place and concatenated into the string.
+- A string literal replacement specifier is declared with a dollar sign followed by a curly brace pair. Anything inside the curly braces is evaluated as JavaScript.
+- You can also use backticks to create multiline strings without having to explicitly escape the newline characters using `\n`.
+
+```js
+'quoted text'; // " also works
+
+const l = 'literal';
+console.log(`string ${l + (1 + 1)} text`);
+// OUTPUT: string literal2 text
+```
+
+### Unicode support
+
+JS supports unicode by defining a string as a sequence of 16 bit unsigned integers that represent UTF-16-encoded characters. Unicode support allows JavaScript to represent most languages spoken on the planet, include those read from right to left.
+
+Internationalization: make your web app fully internationalized, including handling of currency, time, dates, iconography, units of measure, keyboard layouts, and respecting local customs.
+
+### String functions
+
+The string object has several interesting functions associated with it. Here are some of the commonly used ones.
+
+| Function      | Meaning      |
+| ------------- | -----------|
+| length        | The number of characters in the string   |
+| indexOf()     | The starting index of a given substring   |
+| split()       | Split the string into an array on the given delimiter string |
+| startsWith()  | True if the string has a given prefix   |
+| endsWith()    | True if the string has a given suffix |
+| toLowerCase() | Converts all characters to lowercase  |
+
+```js
+const s = 'Example:조선글';
+
+console.log(s.length);
+// OUTPUT: 11
+console.log(s.indexOf('조선글'));
+// OUTPUT: 8
+console.log(s.split(':'));
+// OUTPUT: ['Example', '조선글']
+console.log(s.startsWith('Ex'));
+// OUTPUT: true
+console.log(s.endsWith('조선글'));
+// OUTPUT: true
+console.log(s.toLowerCase());
+// OUTPUT: example:조선글
+```
