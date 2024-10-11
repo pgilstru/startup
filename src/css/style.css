@@ -99,3 +99,26 @@ div {
     box-sizing: border-box;
     color: #e62323;
 }
+
+.groceryList {
+    padding-left: 0;
+    list-style: none; /* removes the bullets from the unordered list */
+    /* padding-bottom: 10px; */
+    width: 100%;
+    height: auto;
+}
+
+.groceryItem {
+    display: block;
+    width: 100%;
+    box-sizing: inherit;
+    padding: .5%;
+    padding-right: 0%;
+}
+
+.item-description {
+    display: inline-block;
+    width: calc(100% - 12em);
+    box-sizing: border-box;
+    
+}
