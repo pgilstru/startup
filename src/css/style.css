@@ -5,7 +5,7 @@
 they cascade to all elements unless overridden (unline *) */
 :root {
     /* track main colors here */
-    --primary: green;
+    --primary: rgba(60, 179, 114, 0.822);
     --accent: white;
 
     /* window background and default font defined here */
@@ -27,7 +27,8 @@ body{
 
 header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 h1 {
@@ -38,13 +39,14 @@ h1 {
 nav {
     border-bottom: 3px solid #333333;
     padding: 0;
-    margin: 0;
+    margin-top: 15px; /* adds space between username and nav */
+    text-align: right;
 }
 
 menu {
     flex: 1;
     display: flex;
-    flex-direction: row !important; /* puts them side by side */
+    flex-direction: row; /* puts them side by side */
     list-style: none; /* removes the bullets from the unordered list */
     margin-bottom: 10px;
 }
@@ -64,11 +66,36 @@ div {
 }
 
 .user-info {
-    padding-right: 50px;
+    /* padding-right: 50px; */
     text-align: right; /* align the username and logout button to the right */
 }
 
 .logout-form {
     padding-left: 10px;
     display: inline-block; /* keeps it next to the username */
+}
+
+.userinfo-and-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* height: 100% */
+}
+
+.add-item-button {
+    background-color: var(--primary); /* makes button background green */
+    border: solid black;
+    margin: 5px 0px;
+}
+
+.material-icon {
+    border: none;
+    background: none;
+    font-family: 'Material Icons';
+}
+
+.item-delete {
+    display: inline-block;
+    box-sizing: border-box;
+    color: #e62323;
 }

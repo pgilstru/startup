@@ -17,17 +17,19 @@
 
 <body>
   <header>
-    <span class="user-info">
-        Signed in as:
-        <span>username</span>
-        <form class="logout-form" method="get" action="login.html">
-            <button class="logout-button" type="submit">Logout</button>
-        </form>
-    </span>
+    <!-- logo img -->
+    <img class="logo-img" alt="grocerease" src="grocerease_logo.png" width="325"/>
     
-    <div class="logo-and-nav">
-        <img class="logo-img" alt="grocerease" src="grocerease_logo.png" width="325"/>
-
+    <div class="userinfo-and-nav">
+        <!-- username and logout button -->
+        <span class="user-info">
+            Signed in as:
+            <span>username</span>
+            <form class="logout-form" method="get" action="login.html">
+                <button class="logout-button btn btn-sm btn-dark" type="submit">Logout</button>
+            </form>
+        </span>
+        <!-- nav bar -->
         <nav>
             <menu>
                 <li class="nav-item"><a href="index.html">Home</a></li>
@@ -35,7 +37,6 @@
             </menu>
         </nav>
     </div>
-
   </header>
 
   <main>
@@ -51,17 +52,17 @@
         <li class="groceryItem">
             <input type="checkbox" class="item-done" id="Eggs">
             <span class="item-description">Eggs</span>
-            <button type="button" class="item-delete material-icon">Delete</button>
+            <button type="button" class="item-delete material-icon">delete</button>
         </li>
         <li class="groceryItem">
             <input type="checkbox" class="item-done" id="Milk">
             <span class="item-description">Milk</span>
-            <button type="button" class="item-delete material-icon">Delete</button>
+            <button type="button" class="item-delete material-icon">delete</button>
         </li>
         <li class="groceryItem">
             <input type="checkbox" class="item-done" id="Bread">
             <span class="item-description">Bread</span>
-            <button type="button" class="item-delete material-icon">Delete</button>
+            <button type="button" class="item-delete material-icon">delete</button>
         </li>
     </ul>
 
@@ -69,7 +70,7 @@
         <label for="item">List Item: </label>
         <input type="text" class="item-input" id="item" name="item" placeholder="Your list item here" required/>
         <div>
-            <button type="submit" class="add-item-button">Add Item</button>
+            <button type="submit" class="add-item-button btn btn-sm">Add Item</button>
         </div>
     </form>
 
