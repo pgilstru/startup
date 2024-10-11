@@ -51,7 +51,7 @@ menu {
     margin-bottom: 10px;
 }
 
-menu .nav-item {
+.nav-item {
     padding: 0 1.3em;
     line-height: 1;
 }
@@ -62,7 +62,7 @@ div {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 50px;
+    padding-right: 30px;
 }
 
 .user-info {
@@ -85,13 +85,38 @@ div {
 .add-item-button {
     background-color: var(--primary); /* makes button background green */
     border: solid black;
-    margin: 5px 0px;
+    margin: 10px 0px 5px 0px; /* adds 10px space between the list item input above and 5 below itself*/
 }
 
-.material-icon {
-    border: none;
-    background: none;
-    font-family: 'Material Icons';
+.groceryList {
+    padding-left: 0; /* removes padding from the <ul> */
+    list-style: none; /* removes the bullets from the unordered list */
+    width: 100%;
+    height: auto;
+    padding-bottom: 20px;
+}
+
+.groceryItem {
+    display: block;
+    width: 100%;
+    outline: 1px solid; /* solid outline for each item in the list (border will overlap) */
+    margin-top: 1px; /* keeps outlines from overalapping */
+    box-sizing: inherit; /* calculates width and height based on parent */
+    padding: .85%; /* adds space between description and outline */
+    padding-right: 0%;
+}
+
+.item-done {
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.item-description {
+    display: inline-block;
+    width: calc(100% - 12em); /* sets the width to fill available space, subtracts 12em for checkbox and buttons on same line */
+    box-sizing: border-box;
+    margin-left: 4px;
+    vertical-align: middle;
 }
 
 .item-delete {
@@ -100,25 +125,67 @@ div {
     color: #e62323;
 }
 
-.groceryList {
-    padding-left: 0;
-    list-style: none; /* removes the bullets from the unordered list */
-    /* padding-bottom: 10px; */
-    width: 100%;
-    height: auto;
+.material-icon {
+    border: none; /* remove border */
+    background: none; /* background will be what's behind it */
+    font-family: 'Material Icons';
+    float: right; /* aligns it to the right of the body */
+    padding-right: 30px;
 }
 
-.groceryItem {
-    display: block;
-    width: 100%;
-    box-sizing: inherit;
-    padding: .5%;
-    padding-right: 0%;
+.form-stuff {
+    display: flex;
+    align-items: center;
+    padding-right: 0;
 }
 
-.item-description {
-    display: inline-block;
-    width: calc(100% - 12em);
+.item-input {
+    flex-grow: 1;
     box-sizing: border-box;
-    
+    margin-left: .5em;
+    margin-right: 0;
+}
+
+#funFact {
+    float: right;
+}
+
+footer {
+    border-top: 1px solid;
+    margin-top: 2em; /* adds space between border and fun fact */
+}
+
+.myInfo {
+    margin-top: 0.5em;
+    margin-left: .25em;
+}
+
+.checkfilter {
+    accent-color: var(--primary);
+}
+
+
+
+/* checkbox icon stuff, using material icons */
+input.checkbox-icon {
+    font-family: 'Material Icons';
+    font-size: inherit;
+    appearance: none; /* gets rid of the existing checkbox so there isnt overlap */
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+input.checkbox-icon:before {
+    content: 'check_box_outline_blank';
+    color: black;
+}
+
+input.checkbox-icon:checked:before {
+    content: 'check_box';
+    color: var(--primary);
+}
+
+input.checkbox-icon:checked + span.item-description {
+    text-decoration: line-through; /* line through item description when checked */
+    color: black; /* color of text decoration */
 }

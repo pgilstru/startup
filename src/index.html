@@ -43,46 +43,45 @@
     <div>
         <h1>Grocery List Items</h1>
         <span>
-            <input type="checkbox" id="checkfilter" value="checkfilter"/>
+            <input type="checkbox" class="checkfilter" value="checkfilter"/>
             <label for="checkfilter">Filter Checked Items</label>
         </span>
     </div>
 
     <ul class="groceryList">
         <li class="groceryItem">
-            <input type="checkbox" class="item-done" id="Eggs">
+            <input type="checkbox" class="item-done checkbox-icon" id="Eggs">
             <span class="item-description">Eggs</span>
             <button type="button" class="item-delete material-icon">delete</button>
         </li>
         <li class="groceryItem">
-            <input type="checkbox" class="item-done" id="Milk">
+            <input type="checkbox" class="item-done checkbox-icon" id="Milk">
             <span class="item-description">Milk</span>
             <button type="button" class="item-delete material-icon">delete</button>
         </li>
         <li class="groceryItem">
-            <input type="checkbox" class="item-done" id="Bread">
+            <input type="checkbox" class="item-done checkbox-icon" id="Bread">
             <span class="item-description">Bread</span>
             <button type="button" class="item-delete material-icon">delete</button>
         </li>
     </ul>
 
     <form class="form-add-item" method="post" action="index.html"> <!-- replace with javascript method to add data to list -->
-        <label for="item">List Item: </label>
-        <input type="text" class="item-input" id="item" name="item" placeholder="Your list item here" required/>
-        <div>
-            <button type="submit" class="add-item-button btn btn-sm">Add Item</button>
+        <div class="form-stuff">
+            <label for="item">List Item: </label>
+            <input type="text" class="item-input" id="item" name="item" placeholder="Your list item here" required/>
         </div>
+        <button type="submit" class="add-item-button btn btn-sm btn-light">Add Item</button>
     </form>
 
     <span id="funFact">Fun fact: the average person's left hand does 56% of the typing.</span>
   </main>
 
   <footer>
-    <!-- TODO: replace hr with css -->
-    <hr />
-    <span class="myInfo">Penelope Gilstrap</span>
-    <br />
-    <a class="myInfo" href="https://github.com/pgilstru/startup.git">GitHub</a>
+    <div>
+        <span class="myInfo">Penelope Gilstrap</span>
+        <a class="myInfo" href="https://github.com/pgilstru/startup.git">GitHub</a>
+    </div>
   </footer>
 
 </body>
