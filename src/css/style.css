@@ -25,14 +25,21 @@ body{
     min-width: 375px;
 }
 
+header {
+    display: flex;
+    flex-direction: column;
+}
+
 h1 {
     font-family: Serif;
+    font-weight: bolder;
 }
 
 nav {
     border-bottom: 3px solid #333333;
     padding-bottom: 1px;
     /* TODO: add css so it goes to the right */
+    float: right;
 }
 
 menu {
@@ -53,4 +60,13 @@ div {
     align-items: center;
     justify-content: space-between;
     padding-right: 50px;
+}
+
+.user-info {
+    float: right;
+    padding-right: 50px;
+}
+
+.logout-form {
+    padding-left: 10px;
 }
