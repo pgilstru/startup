@@ -1,0 +1,42 @@
+/* material icons for trash icon */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+/* this applies to the whole page kinda foundation
+they cascade to all elements unless overridden (unline *) */
+:root {
+    /* track main colors here */
+    --primary: green;
+    --accent: white;
+
+    /* window background and default font defined here */
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-image: linear-gradient(to right, white, mediumseagreen);
+}
+
+body{
+    max-width: 55rem; /* won't overflow on wide monitors */
+    margin: 0.5em auto; /* top and bottom margin. 'auto' centers */
+    border: 1px solid black; /* black border for the body */
+    border-radius: 5px; /* round da corners */
+    padding: 0.75rem; /* border won't hug the contents */
+    background-color: white; /* contrast body from background! */
+}
+
+h1 {
+    font-family: Serif;
+}
+
+nav {
+    border-bottom: 3px solid #333333;
+    padding-bottom: 1px;
+    /* TODO: add css so it goes to the right */
+}
+
+div {
+    /* places the "filter checked items" box to the right and
+    on the same level as the "Grocery List Items" h1 text */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 50px;
+}

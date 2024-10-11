@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>grocerease</title>
-  <!-- <link rel ="stylesheet" href="stylez"> -->
+  <link rel ="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     <img alt="grocerease" src="grocerease_logo.png" width="250"/>
 
     <nav>
-        <menu style="border-bottom: 3px solid #333333; padding-bottom: 5px;">
+        <menu>
             <li><a href="index.html">Home</a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdxF9-nQRfsREiYeliNuDmM2D5pE-gWiKYrkJL2qSX9mdyv9g/viewform?usp=sf_link">Report an Issue</a></li>
         </menu>
@@ -28,7 +28,8 @@
   </header>
 
   <main>
-    <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 50px;">
+    <!-- TODO: fix this add to style css -->
+    <div>
         <h1>Grocery List Items</h1>
         <span>
             <input type="checkbox" id="checkfilter" value="checkfilter"/>
@@ -36,40 +37,41 @@
         </span>
     </div>
 
-    <ul>
-        <li>
-            <input type="checkbox" id="Eggs">
-            <span>Eggs</span>
-            <button type="button">delete</button>
+    <ul class="groceryList">
+        <li class="groceryItem">
+            <input type="checkbox" class="item-done" id="Eggs">
+            <span class="item-description">Eggs</span>
+            <button type="button" class="item-delete material-icon">Delete</button>
         </li>
-        <li>
-            <input type="checkbox" id="Milk">
-            <span>Milk</span>
-            <button type="button">delete</button>
+        <li class="groceryItem">
+            <input type="checkbox" class="item-done" id="Milk">
+            <span class="item-description">Milk</span>
+            <button type="button" class="item-delete material-icon">Delete</button>
         </li>
-        <li>
-            <input type="checkbox" id="Bread">
-            <span>Bread</span>
-            <button type="button">delete</button>
+        <li class="groceryItem">
+            <input type="checkbox" class="item-done" id="Bread">
+            <span class="item-description">Bread</span>
+            <button type="button" class="item-delete material-icon">Delete</button>
         </li>
     </ul>
 
-    <form method="post" action="index.html"> <!-- replace with javascript method to add data to list -->
+    <form class="form-add-item" method="post" action="index.html"> <!-- replace with javascript method to add data to list -->
         <label for="item">List Item: </label>
-        <input type="text" id="item" name="item" placeholder="Your list item here" required/>
+        <input type="text" class="item-input" id="item" name="item" placeholder="Your list item here" required/>
         <div>
-            <button type="submit">Add Item</button>
+            <button type="submit" class="add-item-button">Add Item</button>
         </div>
     </form>
 
-    <span>Fun fact: the average person's left hand does 56% of the typing.</span>
+    <span id="funFact">Fun fact: the average person's left hand does 56% of the typing.</span>
   </main>
 
   <footer>
+    <!-- TODO: replace hr with css -->
     <hr />
-    <span class="text-reset">Penelope Gilstrap</span>
+    <span class="myInfo">Penelope Gilstrap</span>
     <br />
-    <a href="https://github.com/pgilstru/startup.git">GitHub</a>
+    <a class="myInfo" href="https://github.com/pgilstru/startup.git">GitHub</a>
   </footer>
 
 </body>
