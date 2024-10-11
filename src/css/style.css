@@ -37,9 +37,8 @@ h1 {
 
 nav {
     border-bottom: 3px solid #333333;
-    padding-bottom: 1px;
-    /* TODO: add css so it goes to the right */
-    float: right;
+    padding: 0;
+    margin: 0;
 }
 
 menu {
@@ -47,10 +46,12 @@ menu {
     display: flex;
     flex-direction: row !important; /* puts them side by side */
     list-style: none; /* removes the bullets from the unordered list */
+    margin-bottom: 10px;
 }
 
 menu .nav-item {
     padding: 0 1.3em;
+    line-height: 1;
 }
 
 div {
@@ -63,10 +64,11 @@ div {
 }
 
 .user-info {
-    float: right;
     padding-right: 50px;
+    text-align: right; /* align the username and logout button to the right */
 }
 
 .logout-form {
     padding-left: 10px;
+    display: inline-block; /* keeps it next to the username */
 }
