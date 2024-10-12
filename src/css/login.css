@@ -11,13 +11,31 @@
 
 hr {
     margin-top: 0;
-    /* width: 60%; */
 }
 
 main {
     width: 60%;
 }
 
+.form-part {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-part label {
+    width: 100px;
+    text-align: right;
+    margin-right: 30px;
+}
+
 .login-form-input {
-    float: right;
+    flex-grow: 1;
+    padding-left: 5px;
+}
+
+.form-group button {
+    flex-grow: 1;
+    padding-left: 5px;
 }
