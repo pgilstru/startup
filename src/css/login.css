@@ -1,0 +1,23 @@
+.create-button {
+    padding-left: 10px;
+    margin-left: 10px;
+    display: inline-block; /* keeps it next to the 'don't have an account?' */
+}
+
+.noacc {
+    margin-top: 25px;
+    display: inline-block;
+}
+
+hr {
+    margin-top: 0;
+    /* width: 60%; */
+}
+
+main {
+    width: 60%;
+}
+
+.login-form-input {
+    float: right;
+}

@@ -18,7 +18,7 @@ body{
     margin: 0.5em auto; /* top and bottom margin. 'auto' centers */
     border: 1px solid black; /* black border for the body */
     border-radius: 5px; /* round da corners */
-    padding: 0.75rem; /* border won't hug the contents */
+    padding: 0.75rem 30px; /* border won't hug the contents */
     background-color: white; /* contrast body from background! */
     display: flex;
     flex-direction: column;
@@ -31,7 +31,7 @@ header {
     align-items: flex-start;
 }
 
-h1 {
+h1, h2 {
     font-family: Serif;
     font-weight: bolder;
 }
@@ -56,13 +56,13 @@ menu {
     line-height: 1;
 }
 
-div {
+.div-main {
     /* places the "filter checked items" box to the right and
     on the same level as the "Grocery List Items" h1 text */
+    /* also styles footer */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 30px;
 }
 
 .user-info {
@@ -162,6 +162,7 @@ footer {
 
 .checkfilter {
     accent-color: var(--primary);
+    cursor: pointer;
 }
 
 
@@ -182,7 +183,7 @@ input.checkbox-icon:before {
 
 input.checkbox-icon:checked:before {
     content: 'check_box';
-    color: var(--primary);
+    color: rgb(127, 126, 126);
 }
 
 input.checkbox-icon:checked + span.item-description {
