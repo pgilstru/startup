@@ -1315,3 +1315,586 @@ labeler('fish');
 
 
 
+
+
+
+
+## JavaScript arrow function
+
+Functions are first order objects in JS, so they can be declared anywhere and passed as parameters. This results in code with a lot of anonymous functions cluttering things up.
+
+Make code more compact with the `arrow` syntax. This replaces the need for the `function` keyword and the symbols `=>` places after the parameter declaration. (`{ }` are also optional)
+
+### Return values
+
+Arrow functions have special rules for the `return` keyword. It is optional if no curly braces are provided for the function and it contains a single expression. Result of expression is auto returned in that case.
+
+### This pointer
+
+Next, arrow functions inherit the `this` pointer from the scope in which they are created. This makes what is known as a `closure`.
+- closures allow a function to continue referencing its creation scope, even after it has passed out of that scope.
+
+Example: the function `makeClosure` returns an anonymous function using the arrow syntax. The `a` parameter is overridden, a new `b` variable is created, and both `a` and `b` are references in the arrow function. They are both part of the closure for the returned function becauase of that reference.
+
+```js
+function makeClosure(a) {
+  a = `a2`;
+  const b = `b2`;
+  return () => [a, b];
+}
+```
+
+Next, we declare the variables `a` and `b` at the top level scope, and call `makeClosure` with `a`.
+
+```js
+const a = `a`;
+const b = `b`;
+
+const closure = makeClosure(a);
+```
+
+Now, when we call the `closure` function, it will output the values contained in the scope in which it was created, instead of the current values of the variables.
+
+```js
+console.log(closure());
+// OUTPUT: ['a2', 'b2']
+
+console.log(a, b);
+// OUTPUT: 'a' 'b'
+```
+
+Closure provides a valuable property when we do things like execute JS within the scope of an HTML page, because it can remember the values of variables when the function was created instead of what they are when executed.
+
+### Putting it all together
+
+Now that you know how functions work in JavaScript, let's look at an example that demonstrates the use of functions, arrow functions, parameters, a function as a parameter (callback), closures, and browser event listeners. This is done by implementing a `debounce` function.
+
+The point of a debounce function is to only execute a specified function once within a given time window. Any requests to execute the debounce function more frequently than this will case the time window to reset. This is important in cases where a user can trigger expensive events thousands of times per second. Without a debounce the performance of your application can greatly suffer.
+
+The following code calls the browser's `window.addEventListener` function to add a callback function that is invoked whenever the user scrolls the browser's web page. The first parameter to `addEventListener` specifies that it wants to listen for `scroll` events. The second parameter provides the function to call when a scroll event happens. In this case we call a function named `debounce`.
+
+The debounce function takes two parameters, the time window for executing the window function, and the window function to call within that limit. In this case we will execute the arrow function at most every 500 milliseconds.
+
+```js
+window.addEventListener(
+  'scroll',
+  debounce(500, () => {
+    console.log('Executed an expensive calculation');
+  })
+);
+```
+
+The debounce function implements the execution of windowFunc within the restricted time window by creating a closure that contains the current timeout and returning a function that will reset the timeout every time it is called. The returned function is what the scroll event will actually call when the user scrolls the page. However, instead of directly executing the `windowFunc` it sets a timer based on the value of `windowMs`. If the debounce function is called again before the window times out then it resets the timeout.
+
+```js
+function debounce(windowMs, windowFunc) {
+  let timeout;
+  return function () {
+    console.log('scroll event');
+    clearTimeout(timeout);
+    timeout = setTimeout(() => windowFunc(), windowMs);
+  };
+}
+```
+
+
+
+
+
+## JavaScript Array
+
+JS array objects represent a sequence of other objects & primitives.
+- You can reference the members of the array using a zero based index. 
+- You can create an array with the Array constructor or using the array literal notation (below).
+  ```js
+  const a = [1, 2, 3];
+  console.log(a[1]);
+  // OUTPUT: 2
+
+  console.log(a.length);
+  // OUTPUT: 3
+  ```
+
+### Object functions
+
+Array object has several static functions. 
+
+| Function | Meaning                                                   | Example                       |
+| -------- | --------------------------------------------------------- | ----------------------------- |
+| push     | Add an item to the end of the array                       | `a.push(4)`                   |
+| pop      | Remove an item from the end of the array                  | `x = a.pop()`                 |
+| slice    | Return a sub-array                                        | `a.slice(1,-1)`               |
+| sort     | Run a function to sort an array in place                  | `a.sort((a,b) => b-a)`        |
+| values   | Creates an iterator for use with a `for of` loop          | `for (i of a.values()) {...}` |
+| find     | Find the first item satisfied by a test function          | `a.find(i => i < 2)`          |
+| forEach  | Run a function on each array item                         | `a.forEach(console.log)`      |
+| reduce   | Run a function to reduce each array item to a single item | `a.reduce((a, c) => a + c)`   |
+| map      | Run a function to map an array to a new array             | `a.map(i => i+i)`             |
+| filter   | Run a function to remove items                            | `a.filter(i => i%2)`          |
+| every    | Run a function to test if all items match                 | `a.every(i => i < 3)`         |
+| some     | Run a function to test if any items match                 | `a.some(i => i < 1)`          |
+
+```js
+const a = [1, 2, 3];
+
+console.log(a.map((i) => i + i));
+// OUTPUT: [2,4,6]
+console.log(a.reduce((v1, v2) => v1 + v2));
+// OUTPUT: 6
+console.log(a.sort((v1, v2) => v2 - v1));
+// OUTPUT: [3,2,1]
+
+a.push(4);
+console.log(a.length);
+// OUTPUT: 4
+```
+
+
+
+
+
+
+## JSON
+
+JavaScript Object Notation (JSON) provides a simple and effective way to share and store data. By design, it is easily convertible to and from JS objects. This makes it a convenient data format when working with web technologies.
+
+### Format
+
+A JSON document contains one of the following data types:
+
+| Type    | Example                 |
+| ------- | ----------------------- |
+| string  | "crockford"             |
+| number  | 42                      |
+| boolean | true                    |
+| array   | [null,42,"crockford"]   |
+| object  | {"a":1,"b":"crockford"} |
+| null    | null                    |
+
+Most common, a JSON document contains an object. Objects have zero or more key value pairs. Key is always a string, and the value must be one of the valid JSON data types.
+- Key value pairs are delimited with commas.
+- Curly braces delimit an object
+- Square brackets and commas delimit arrays
+- Double quotes delimit strings
+
+Example of JSON document (always encoded with UTF-8, allowing for representation of globabl data):
+```json
+{
+  "class": {
+    "title": "web programming",
+    "description": "Amazing"
+  },
+  "enrollment": ["Marco", "Jana", "فَاطِمَة"],
+  "start": "2025-02-01",
+  "end": null
+}
+```
+
+### Converting to JS
+
+Convert JSON to, and from, JS using the `JSON.parse` and `JSON.stringify` functions.
+```json
+const obj = { a: 2, b: 'crockford', c: undefined };
+const json = JSON.stringify(obj);
+const objFromJson = JSON.parse(json);
+
+console.log(obj, json, objFromJson);
+
+// OUTPUT:
+// {a: 2, b: 'crockford', c: undefined}
+// {"a":2, "b":"crockford"}
+// {a: 2, b: 'crockford'}
+```
+
+In this example, JSON cannot represent the JS `undefined` object so it gets dropped during conversion.
+
+
+
+
+
+
+
+## JavaScript object and classes
+
+A JS object represents a collection of name value pairs referred to as properties. The property name must be of type String or Symbol, but value can be any type.
+
+Objects also have common object oriented functionality such as constructors, a `this` pointer, static properties and functions, and inheritance.
+
+Objects can be created with the new operator. This causes the object's constructor to be called. Once declared you can add properties to the object by referencing the property name in an assignment.
+- Any type of variable can be assigned to a property, including a sub-object, array, or function.
+- properties of an object can be referenced either with dot (`obj.prop`) or bracket notation (`obj['prop']`).
+
+```js
+const obj = new Object({ a: 3 });
+obj['b'] = 'fish';
+obj.c = [1, 2, 3];
+obj.hello = function () {
+  console.log('hello');
+};
+
+console.log(obj);
+// OUTPUT: {a: 3, b: 'fish', c: [1,2,3], hello: func}
+```
+
+The ability to dynamically modify an object is useful when manipulating data with an indeterminate structure.
+
+### Object-literals
+
+You can declare a variable of an object type with the `object-literal` syntax as well. This allows you to provide the initial composition of the object.
+
+```js
+const obj = {
+  a: 3,
+  b: 'fish',
+};
+```
+
+### Object functions
+
+Object has several static functions with it.
+
+| Function | Meaning                             |
+| -------- | ----------------------------------- |
+| entries  | Returns an array of key value pairs |
+| keys     | Returns an array of keys            |
+| values   | Returns an array of values          |
+
+```js
+const obj = {
+  a: 3,
+  b: 'fish',
+};
+
+console.log(Object.entries(obj));
+// OUTPUT: [['a', 3], ['b', 'fish']]
+console.log(Object.keys(obj));
+// OUTPUT: ['a', 'b']
+console.log(Object.values(obj));
+// OUTPUT: [3, 'fish']
+```
+
+### Constructor
+
+Any function that returns an object is considered a `constructor` and can be inboked with the `new` operator.
+```js
+function Person(name) {
+  return {
+    name: name,
+  };
+}
+
+const p = new Person('Eich');
+console.log(p);
+// OUTPUT: {name: 'Eich'}
+```
+
+Objects can have any type of property value, so you can create methods on the object as part of its encapsulation
+
+```js
+function Person(name) {
+  return {
+    name: name,
+    log: function () {
+      console.log('My name is ' + this.name);
+    },
+  };
+}
+
+const p = new Person('Eich');
+p.log();
+// OUTPUT: My name is Eich
+```
+
+### This pointer
+
+The meanining of `this` depends on the scope of where it is used, but in the context of an object it refers to a pointer to the object.
+
+### Classes
+
+Use classes to define objects. Using a class clarifies the intent to create a reusable component rather than a one off object. Class declarations look similar to declaring an object, but classes have an explicit constructor and assumed function declarations. Person object from above would look like the following when converted to a class.
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  log() {
+    console.log('My name is ' + this.name);
+  }
+}
+
+const p = new Person('Eich');
+p.log();
+// OUTPUT: My name is Eich
+```
+
+You can make properties and functions of classes private by prefixing them with a #.
+
+```js
+class Person {
+  #name;
+
+  constructor(name) {
+    this.#name = name;
+  }
+}
+
+const p = new Person('Eich');
+p.#name = 'Lie';
+// OUTPUT: Uncaught SyntaxError: Private field '#name' must be declared in an enclosing class
+```
+
+### Inheritance
+
+Classes can be extended by using the `extends` keyword to define inheritance. Parameters that need to be passed to the parent class are delivered using the `super` function. Any functions defined on the child that have the same name as the parent override the parent's implementation. A parent's function can be explicitly accessed using the `super` keyword.
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  print() {
+    return 'My name is ' + this.name;
+  }
+}
+
+class Employee extends Person {
+  constructor(name, position) {
+    super(name);
+    this.position = position;
+  }
+
+  print() {
+    return super.print() + '. I am a ' + this.position;
+  }
+}
+
+const e = new Employee('Eich', 'programmer');
+console.log(e.print());
+// OUTPUT: My name is Eich. I am a programmer
+```
+
+
+
+
+
+
+
+## JavaScript regular expressions
+
+Regular expression support is built into JS. You use a regular expression to find text in a string so that you can replace it, or simply to know that it exists.
+
+You can create a regular expression using the class constructor or a regular expression literal.
+
+```js
+const objRegex = new RegExp('ab*', 'i');
+const literalRegex = /ab*/i;
+```
+
+The `string` class has several functions that accept regular expressions. This includes `match`, `replace`, `search`, and `split`. For a quick test to see if there is a match you can use the regular expression object's `test` function.
+
+```js
+const petRegex = /(dog)|(cat)|(bird)/gim;
+const text = 'Both cats and dogs are pets, but not rocks.';
+
+text.match(petRegex);
+// RETURNS: ['cat', 'dog']
+
+text.replace(petRegex, 'animal');
+// RETURNS: Both animals and animals are pets, but not rocks.
+
+petRegex.test(text);
+// RETURNS: true
+```
+
+
+
+
+
+
+## JavaScript rest and spread
+
+### Rest
+
+Sometimes you want a function to take an unknown number of parameters. For example, if you want to write a funciton that checks to see if some number in a list is equal to a given number, you could write this using an array.
+```js
+function hasNumber(test, numbers) {
+  return numbers.some((i) => i === test);
+}
+
+const a = [1, 2, 3];
+hasNumber(2, a);
+// RETURNS: true
+```
+
+But sometimes you don't have an array to work with, so you need to create one.
+```js
+function hasTwo(a, b, c) {
+  return hasNumber(2, [a, b, c]);
+}
+```
+
+But JS provides the `rest` syntax to make this easier. It is like a parameter that contains the `rest` of the parameters. To turn the last parameter of any function into a `rest` parameter, you prefix it with three periods. You can call it with any number of parameters and they are automatically combined into an array.
+```js
+function hasNumber(test, ...numbers) {
+  return numbers.some((i) => i === test);
+}
+
+hasNumber(2, 1, 2, 3);
+// RETURNS: true
+```
+
+NOTE: you can only make the last parameter into a `rest` parameter. Otherwise, JS would not know which parameters to combine into the array.
+- `rest` allows JS to provide variadic functions
+
+### Spread
+
+Spread does the opposite of rest. It take an object that is iterable (e.g. array or string) and expands it into a function's parameters. Consider the following.
+```js
+function person(firstName, lastName) {
+  return { first: firstName, last: lastName };
+}
+
+const p = person(...['Ryan', 'Dahl']);
+console.log(p);
+// OUTPUT: {first: 'Ryan', last: 'Dahl'}
+```
+
+
+
+
+
+
+## JavaScript exceptions
+
+JS supports exception handling using the `try catch` and `throw` syntax. An exception can be triggered whenever your code generates an exception using the `throw` keyword, or whenver and exception is generated by the JS runtime, for example, when an undefined variable is used.
+
+To catch a thrown exception, you wrap a code block with the `try` keyword, and follow the try block with a `catch` block. If within the try block, including any functions that block calls, and exception is thrown then all the code after is ignored, call stack is unwound, and catch block is called.
+
+On top of a catch block, you can speicfy a `finally` block that is always called whenever the `try` block is exited regardless if an exception was ever thrown.
+
+The basic syntax looks like the following.
+```js
+try {
+  // normal execution code
+} catch (err) {
+  // exception handling code
+} finally {
+  // always called code
+}
+```
+
+For example:
+```js
+function connectDatabase() {
+  throw new Error('connection error');
+}
+
+try {
+  connectDatabase();
+  console.log('never executed');
+} catch (err) {
+  console.log(err);
+} finally {
+  console.log('always executed');
+}
+
+// OUTPUT: Error: connection error
+//         always executed
+```
+
+### Fallbacks
+
+The fallback pattern is commonly implemented using exception handling. To implement the fallback pattern you put the normal feature path in a try block and then provide a fallback implementation in the catch block.
+
+For example, normally you would get the high scores for a game by making a network request, but if the netwrok is not available then a locally cached version of the last available scores is used. By providing a fallback, you can always return something, even if the desired feature is temporarily unavailable.
+
+```js
+function getScores() {
+  try {
+    const scores = scoringService.getScores();
+    // store the scores so that we can use them later if the network is not available
+    window.localStorage.setItem('scores', scores);
+    return scores;
+  } catch {
+    return window.localStorage.getItem('scores');
+  }
+}
+```
+
+
+
+
+
+## JavaScript destructuring
+
+Destructuring, not to be confused with destructing, is the process of pulling individual items out of an existing one, or removing structure. You can do this with either arrays or objects. This is helpful when you only care about a few items in the original structure.
+
+An example of destructuring arrays looks like the following.
+
+```js
+const a = [1, 2, 4, 5];
+
+// destructure the first two items from a, into the new variables b and c
+const [b, c] = a;
+
+console.log(b, c);
+// OUTPUT: 1, 2
+```
+
+NOTE: even though it looks like you are declaring an array with the syntax on the left side of the expression, it is only specifying that you want to destructure those values out of the array.
+
+You can also combine multiple items from the original object using rest syntax.
+
+```js
+const [b, c, ...others] = a;
+
+console.log(b, c, others);
+// OUTPUT: 1, 2, [4,5]
+```
+
+This works in a similar manner for objects, except with arrays, the assignment of the associated value was assumed by the positions in the two arrays. When destructuring objects, you explicitly specify the properties you want to pull from the source object.
+
+```js
+const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
+
+const { a, c } = o;
+
+console.log(a, c);
+// OUTPUT 1, ['fish', 'cats']
+```
+
+You can also map the names to new variables instead of just using the original property names.
+
+```js
+const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
+
+const { a: count, b: type } = o;
+
+console.log(count, type);
+// OUTPUT 1, animals
+```
+
+Default values may also be provided for missing ones.
+
+```js
+const { a, b = 22 } = {};
+const [c = 44] = [];
+
+console.log(a, b, c);
+// OUTPUT: undefined, 22, 44
+```
+
+Note that all of the above examples created new constant variables, but you can also use destructuring to reassign existing variables.
+
+```js
+let a = 22;
+
+[a] = [1, 2, 3];
+
+console.log(a);
+// OUTPUT: 1
+```
+
