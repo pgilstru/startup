@@ -1898,3 +1898,192 @@ console.log(a);
 // OUTPUT: 1
 ```
 
+
+
+
+
+
+## Scope
+
+Scope is the variables that are visible in the current context of execution. JS has four different types of scope:
+1. Global - visible to all code
+2. Module - visible to all code running in a module
+3. Function - visible within a function
+4. Block - visible within a block of code delimited by curly braces
+
+### Var
+
+Initially JS used the keywords `var` to declar a variable, but the problem with it was that unline `const` or `let`, is that it ignores block scope. Variables declared with the `var` are always logically hoisted to the top of the function.
+
+For example, the code below shows the same variable name being used within different enclosing scopes. But, because var ignores block scope the for loop is simply assigning a new value to `x` rather than declaring a new variable that has the same name.
+
+```js
+var x = 10;
+console.log('start', x);
+
+for (var x = 0; x < 1; x++) {
+  console.log('middle', x);
+}
+
+console.log('end', x);
+
+// OUTPUT: start 10
+//         middle 0
+//         end 1
+```
+
+### This
+
+They keyword `this` represents a variable that points to an object that contains the context within the scope of the currently executing line of code. The `this` variable is automatically declared and you can reference `this` anywhere in a JS program. Because the value of `this` depends on the context in which it is referenced, there are three different contexts to which this can refer:
+1. Global - When `this` is referenced outside a function or object it refers to the `globalThis` object (this represents the context for runtime environment). For example, when running in a browser, globalThis refers to the browser's window object.
+2. Function - When `this` is refernced in a function it refers to the object that owns the function. That is either an object you defined or globalThis if the function is defined outside of an object. When running in JS strict mode, a global function's this variable is undefined instead of globalThis.
+3. Object - When `this` is referenced in an object it refers to the object.
+
+```js
+'use strict';
+
+// global scope
+console.log('global:', this);
+console.log('globalThis:', globalThis);
+
+// function scope for a global function
+function globalFunc() {
+  console.log('globalFunctionThis:', this);
+}
+globalFunc();
+
+// object scope
+class ScopeTest {
+  constructor() {
+    console.log('objectThis:', this);
+  }
+
+  // function scope for an object function
+  objectFunc() {
+    console.log('objectFunctionThis:', this);
+  }
+}
+
+new ScopeTest().objectFunc();
+```
+
+Running the above code in a browser results in the following.
+```js
+global: Window
+globalThis: Window
+globalFunctionThis: undefined
+objectThis: ScopeTest
+objectFunctionThis: ScopeTest
+```
+Note that if we were not using JavaScript strict mode then globalFunctionThis would refer to Window.
+
+### Closure
+
+A closure is defined as a function and its surrounding state. This means whatever variables are accessible when a function is created are available inside that function. This is true even if you pass the function outside of the scope of its original creation.
+
+Here is an example of a function that is created as part of an object. That means that function has access to the object's `this` pointer.
+
+```js
+globalThis.x = 'global';
+
+const obj = {
+  x: 'object',
+  f: function () {
+    console.log(this.x);
+  },
+};
+
+obj.f();
+// OUTPUT: object
+```
+
+Arrow functions are a bit different because they inherit the `this` pointer of their creation context. So if we change our previous example to return an arrow function, then the `this` pointer at the time of creation will be globalThis.
+
+```js
+globalThis.x = 'global';
+
+const obj = {
+  x: 'object',
+  f: () => console.log(this.x),
+};
+
+obj.f();
+// OUTPUT: global
+```
+
+However, if we make function in our object that returns an arrow function, then the `this` pointer will be the object's `this` pointer since that was the active context at the time the arrow function was created.
+
+```js
+globalThis.x = 'global';
+
+const obj = {
+  x: 'object',
+  make: function () {
+    return () => console.log(this.x);
+  },
+};
+
+const f = obj.make();
+f();
+// OUTPUT: object
+```
+
+
+
+
+## Javascript modules
+
+JS modules allow for the partitioning and sharing of code. Node.js, server side JS execution app, introduced the concept of modules in order to support the impoorting of packages of JS from third party providers.
+
+Node.js modules are called CommonJS modules, and JavaScript modules are called ES modules.
+
+Modules create a file based scope for the code they represent, so you must explicitly `export` the objects fro one file and then `import` them into another file. Below is an example of a simple module that exports a function that displays an alert.
+
+```js
+export function alertDisplay(msg) {
+  alert(msg);
+}
+```
+
+You can import the module's exported function into another module using the import keyword.
+```js
+import { alertDisplay } from './alert.js';
+
+alertDisplay('called from main.js');
+```
+
+### ES Modules in the browser
+
+When you use ES modules in the browser via HTML script references, things get complicated. The key thing to understand is that modules can only be called from other modules. You cannot access JS contained in a module from the global scope that your non-module JS is executing in.
+
+From your HTML, you can specify that you are using an ES module by including a `type` attribute with the value of `module` in the `script` element. You can then import an use other modules.
+
+```js
+<script type="module">
+  import { alertDisplay } from './alert.js';
+  alertDisplay('module loaded');
+</script>
+```
+
+If you want to use a module in the global scope that our HTML and other non module JS is executing in, then we must leak it into the glboal scope. We do this by either attaching an event handler or explicitly adding a function to the global window object. In the example below, we expose the `alertDisplay` imported module function by attaching it to the global JavaScript `window` object so that it can then be called from the button `onclick` handler. We also expose the module function by attaching a `keypress` event.
+```js
+<html>
+  <body>
+    <script type="module">
+      import { alertDisplay } from './alert.js';
+      window.btnClick = alertDisplay;
+
+      document.body.addEventListener('keypress', function (event) {
+        alertDisplay('Key pressed');
+      });
+    </script>
+    <button onclick="btnClick('button clicked')">Press me</button>
+  </body>
+</html>
+```
+
+Now, if the button is pushed or a key is pressed our ES module function will be called.
+
+### Modules with web frameworks
+
+Fortunately, when you use a web framework bundler, discussed in later instruction, to generate your web application distribution code, you usually don't have to worry about differentiating between global scope and ES module scope. The bundler will inject all the necessary syntax to connect your HTML to your modules. Historically, this was done by removing the modules and placing all of the JavaScript in a namespaced global partition. Now that ES Modules are supported on most browsers, the bundler will expose the ES module directly.
