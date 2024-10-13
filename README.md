@@ -46,11 +46,11 @@ For this deliverable, I set up the framework of my application using HTML.
 For this deliverable, I applied the final styles to the application, giving it its finished look.
 
 - [x] **Header, footer, and main content body**: Maintain a consistent appearance across all pages including login and registration pages. Includes proper alignment and spacing, and as more items are added the main content body will vertically grow until scrolling is required.
-- [x] **Navigation elements**: Simple yet satisfying design for best user experiences. These will only appear when a user is logged in, not necessary otherwise.
-- [x] **Responsive design**: Utilize media queries to ensure a clean and consistent display on all windows and devices.
-- [x] **Application elements**: Utilize contrasting colors to verify easy to read material, and use appropriate whitespace that is visually satisfying.
-- [x] **Application text content**: Use consistent text size and fonts for visual appeal and consistency.
-- [x] **Application images**: The logo image fits well and looks like it belongs with proper margins.
+- [x] **Navigation elements**: Simple yet satisfying design for best user experiences. I removed the underlines and changed the color of the anchor elements. On hover, the link is underlined, text and underline change color and have a shadow. The links will only appear when a user is logged in, on index.html.
+- [x] **Responsive design**: Utilize media queries and flex and flexbox to ensure a clean and consistent display on all windows and devices regardless of size.
+- [x] **Application elements**: Utilize contrasting colors to verify easy to read material, and use appropriate whitespace that is visually satisfying. The entire body is centered and contrasts the main background, giving it an aesthetic appearance.
+- [x] **Application text content**: Use consistent text size and fonts for visual appeal and consistency. The headers, such as h1 and h2, are the only ones that differ to make them stand out.
+- [x] **Application images**: The logo image fits well and remains consistent along all pages. It looks like it belongs with proper margins, and the website's color themes match the image's to maintain flow and a reliable design.
 
 ## JavaScript Usage Specifics
 
