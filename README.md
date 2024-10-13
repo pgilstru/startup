@@ -45,12 +45,12 @@ For this deliverable, I set up the framework of my application using HTML.
 
 For this deliverable, I applied the final styles to the application, giving it its finished look.
 
-- **Header, footer, and main content body**: Maintain a consistent appearance across all pages including login and registration pages. Includes proper alignment and spacing, and as more items are added the main content body will grow until scrolling is required.
-- **Navigation elements**: Simple yet satisfying design for best user experiences.
-- **Responsive design**: Utilize media queries to ensure a clean and consistent display on all windows and devices.
-- **Application elements**: Utilize contrasting colors to verify easy to read material, and use appropriate whitespace that is visually satisfying.
-- **Application text content**: Use consistent text size and fonts for visual appeal and consistency.
-- **Application images**: The logo image fits well and looks like it belongs with proper margins.
+- [x] **Header, footer, and main content body**: Maintain a consistent appearance across all pages including login and registration pages. Includes proper alignment and spacing, and as more items are added the main content body will vertically grow until scrolling is required.
+- [x] **Navigation elements**: Simple yet satisfying design for best user experiences. These will only appear when a user is logged in, not necessary otherwise.
+- [x] **Responsive design**: Utilize media queries to ensure a clean and consistent display on all windows and devices.
+- [x] **Application elements**: Utilize contrasting colors to verify easy to read material, and use appropriate whitespace that is visually satisfying.
+- [x] **Application text content**: Use consistent text size and fonts for visual appeal and consistency.
+- [x] **Application images**: The logo image fits well and looks like it belongs with proper margins.
 
 ## JavaScript Usage Specifics
 
