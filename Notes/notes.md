@@ -418,15 +418,17 @@ The canvas element was introducted to HTML in order to facilitate 2D drawing and
     3. use the HTML link element to create a hypelink reference to an external file containing CSS rules. Link must appear in the head element of the document.
 - element's inherit rules applied to parents, but also the rules cascade down from the highest nodes in the DOM tree to the lowest level. Lower level declarations override higher declarations.
 
-### The box model
+### The box model <a name="cssBoxModel"></a>
 
 - CSS defines everything as boxes, so when you apply styles you are actually applying them to a region of the display that is a rectangular box.
 - There are several internal boxes within an element's box.
-- Innermost box holds element's content (text, image, etc)
-- Next box is padding, which will inherity things like the background color.
-- Then there is the border (color, thickness, line style)
-- Finally, the last box is the margin, which represents white space as it is considered external to the actual styling of the box.
+  - Innermost box holds element's content (text, image, etc)
+  - Next box is padding, which will inherity things like the background color.
+  - Then there is the border (color, thickness, line style)
+  - Finally, the last box is the margin, which represents white space as it is considered external to the actual styling of the box.
+
 ![boxmode](../Pics/boxmodel.gif)
+
 - by default, the width and height of an element is defined by the width and height of the content box. 
     - change the `box-sizing` CSS property from the default value of the `content-box` to `border-box` in order to redefine the width and height to also include padding and border.
 
@@ -702,7 +704,7 @@ One of the main CSS features for creating responsive applications is the `@media
 
 
 
-## CSS Flexbox
+## CSS Flexbox <a name="cssFlexbox"></a>
 
 The `flex` display layout is useful when you want to partition your application into areas that responsively move around as the window resizes or orientation changes.
 
@@ -2656,3 +2658,54 @@ Code will execute and the debug console window will automatically open to show y
 You can pause executions of the code by setting a breakpoint. You can see values of variables when it pauses by looking at the variable window on the elft or hovering over the variable you want to inspect.
 
 Continue execution of the code after a pause by pressing `F10` to step to the next line, `F11` to step into a function call, or `F5` to continue running from the current line. When the last line of code executes the debugger will automatically exit. Use `SHIFT-F5` to debug at any time.
+
+
+
+
+
+
+
+
+
+# Midterm Questions
+
+1. In the following code, what does the link element do?
+    - Usually defines the relationship between the current document and an external resource. Usually links external style sheets or add a favicon to websites. It is an empty element, it contains attributes only. (e.g. <link rel=”stylesheet” href=”styles.css”>
+2. In the following code,  what does a div tag do?
+    - Block division of content: it defines a division or a section in an html document. It is used as a container for html elements, and is easily styled by using the class or id attribute. Any type of content can be inside it.
+3. In the following code, what is the difference between the #title and .grid selector?
+    - #title is an id selector and .grid is a class selector
+4. In the following code, what is the difference between padding and margin?
+    - Padding is the second innermost box, which will inherit things like the background color. Margin is the last and outermost box that represents white space as it is considered external to the actual styling of the box.
+5. Given this HTML and this CSS how will the images be displayed using flex?
+    - [CSS Flexbox](#cssFlexbox)
+6. What does the following padding CSS do?
+    - [CSS Box Model](#cssBoxModel)
+7. What does the following code using arrow syntax function declaration do?
+8. What does the following code using map with an array output?
+9. What does the following code output using getElementByID and addEventListener?
+10. What does the following line of Javascript do using a # selector?
+11. Which of the following are true? (mark all that are true about the DOM)
+12. By default, the HTML span element has a default CSS display property value of: 
+13. How would you use CSS to change all the div elements to have a background color of red?
+14. How would you display an image with a hyperlink in HTML?
+15. In the CSS box model, what is the ordering of the box layers starting at the inside and working out?
+16. Given the following HTML, what CSS would you use to set the text "trouble" to green and leave the "double" text unaffected?
+17. What will the following code output when executed using a for loop and console.log?
+18. How would you use JavaScript to select an element with the id of “byu” and change the text color of that element to green?
+19. What is the opening HTML tag for a paragraph, ordered list, unordered list, second level heading, first level heading, third level heading?
+20. How do you declare the document type to be html?
+21. What is valid javascript syntax for if, else, for, while, switch statements?
+22. What is the correct syntax for creating a javascript object?
+23. Is it possible to add new properties to javascript objects?
+24. If you want to include JavaScript on an HTML page, which tag do you use?
+25. Given the following HTML, what JavaScript could you use to set the text "animal" to "crow" and leave the "fish" text unaffected?
+26. Which of the following correctly describes JSON?
+27. What does the console command chmod, pwd, cd, ls, vim, nano, mkdir, mv, rm, man, ssh, ps, wget, sudo  do?
+28. Which of the following console command creates a remote shell session?
+29. Which of the following is true when the -la parameter is specified for the ls console command?
+30. Which of the following is true for the domain name banana.fruit.bozo.click, which is the top level domain, which is a subdomain, which is a root domain?
+31. Is a web certificate is necessary to use HTTPS.
+32. Can a DNS A record can point to an IP address or another A record.
+33. Port 443, 80, 22 is reserved for which protocol?
+34. What will the following code using Promises output when executed?
