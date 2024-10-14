@@ -2478,3 +2478,181 @@ console.log('done');
 // OUTPUT: {email: 'bud@mail.com', authenticated: true}
 // OUTPUT: done
 ```
+
+
+
+
+
+
+
+
+
+## Debugging JavaScript
+
+### Console debugging
+
+One of the simplest ways to debug you JS code is to insert `console.log` functions that output the state of the code as it executes. You can also use the debugger console window in a browser to inspect variables without using the `console.log` function from your code.
+
+### Browser debugging
+
+`console.log` debugging is great for times when you just need to quickly see what is going on in your code. Select the source tab in the inspect tool on a browser. This displays the source files that compromise the currently rendered content.
+
+You can select index.js from the source view (or press `CTRL-P` or `COMMAND-P` on a mac then select index.js from the list). Then set a breakpoint on a line by clicking the line number on the left. This makes the execution code pause when that line is executed.
+
+When the browser is paused, you can move your mouse over a variable to see its value, see what variables are in scope, set watches on variables, or use the console to interact with code.
+
+
+
+
+
+
+
+## Node.js
+
+First successful application for deploying JS outside of a browser, on a server. JS can power your entire technology stack.
+
+### Installing NVM and Node.js
+
+Production environmetn server comes with it already installed. To install in development environment is install Node Version Manager (NVM) first and use it to install and manage Node.js.
+
+### Running programs
+
+You can execute a line of JS with Node.js from your console with the `-e` parameter.
+
+```sh
+node -e "console.log(1+1)"
+```
+
+However, to do real work you need to execute an entire project composed of dozens or even hundreds of JS files. Do this by creating a single starting JS file, such as index.js, that references the code found in the rest of the project. Then execute the code by running `node` with `index.js` as a parameter. Example:
+
+```sh
+node index.js
+Counting ... 1
+Counting ... 2
+Counting ... 3
+Counting ... 4
+Counting ... 5
+```
+
+You can also run `node` in interpretive mode by executing it without any parameters and then typing your JavaScript code directly into the interpreter.
+
+```sh
+➜ node
+Welcome to Node.js v16.15.1.
+> 1+1
+2
+> console.log('hello')
+hello
+```
+
+### Node package manager
+
+While you could write all of the JavaScript for everything you need, it is always helpful to use preexisting packages of JavaScript for implementing common tasks. To load a package using Node.js you must take two steps. First install the package locally on your machine using the Node Package Manager (NPM), and then include a `require` statement in your code that references the package name. NPM is automatically installed when you install Node.js.
+
+NPM knows how to access a massive repository of preexisting packages. You can search for packages on the NPM website. However, before you start using NPM to install packages you need to initialize your code to use NPM. This is done by creating a directory that will contain your JavaScript and then running `npm init`. NPM will step you through a series of questions about the project you are creating. You can press the return key for each of questions if you want to accept the defaults. If you are always going to accept all of the defaults you can use `npm init -y` and skip the Q&A.
+
+```sh
+mkdir npmtest
+cd npmtest
+npm init -y
+```
+
+### Package.json
+
+If you list the files in the directory you will notice that it has created a file named `package.json`. This file contains three main things:
+1. Metadata about your project such as its name and the default entry JavaScript file
+2. Commands (scripts) that you can execute to do things like run, test, or distribute your code
+3. packages that this project depends upon.
+
+The following shows what your `package.json` looks like currently. It has some default metadata and a simple placeholder script that just runs the echo command when you execute `npm run test` from the console.
+
+```json
+{
+  "name": "npmtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
+```
+
+With NPM initialized to work with your project, you can now use it to install a node package. As a simple example, we will install a package that knows how to tell jokes. This package is called `give-me-a-joke`. You can search for it on the NPM website, see how often it is installed, examine the source code, and learn about who created it. You install the package using `npm install` followed by the name of the package.
+
+```sh
+npm install give-me-a-joke
+```
+
+If you again examine the contents of the `package.json` file you will see a reference to the newly installed package dependency. If you decide you no longer want a package dependency you can always remove it with the `npm uninstall <package name here>` console command.
+
+With the dependency added, the unnecessary metadata removed, the addition of a useful script to run the program, and also adding a description, the `package.json` file should look like this:
+
+```json
+{
+  "name": "npmtest",
+  "version": "1.0.0",
+  "description": "Simple Node.js demo",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "give-me-a-joke": "^0.5.1"
+  }
+}
+```
+
+Note: when you begin installing package dependencies, NPM will create an additional file name `package-lock.json` and a directory named `node_modules` in your project directory.
+- `node_modules` directory has the actual JS files for the package and all of its dependent packages. Do not want this in your source control system. Include `node_modules` in your `.gitignore` file.
+
+If you clone your source code from github to a new location, you should run `npm install` in the project directory. This will cause NPM to download all the previously installed packages and recreate the `node_modules` directory.
+
+The `package-lock.json` file tracks the version of the package that you installed. that way if you rebuilt your modules directory you will have the version of the package you initially installed.
+
+With NPM and the joke packaed installed, you can now use that package in a JS file by referencing the package name as a parameter to the `require` function. This is then followed by a call to the joke object's `getRandomDadJoke` function to actually generate a joke.
+
+Example:
+
+**index.js**
+
+```js
+const giveMeAJoke = require('give-me-a-joke');
+giveMeAJoke.getRandomDadJoke((joke) => {
+  console.log(joke);
+});
+```
+
+If you run this code using `node.js` you should get a result similar to the following.
+
+```sh
+➜  node index.js
+What do you call a fish with no eyes? A fsh.
+```
+
+Main steps:
+1. Create your project directory
+1. Initialize it for use with NPM by running `npm init -y`
+1. Make sure `.gitignore` file contains `node_modules`
+1. Install any desired packages with `npm install <package name here>`
+1. Add `require('<package name here>')` to your application's JavaScript
+1. Use the code the package provides in your JavaScript
+1. Run your code with `node index.js`
+
+
+
+
+
+## Debugging Node.js
+
+Now that we are writing JS that runs using Node.js, we need a way to launch and debug our code that runs outside of the browser. One way is to use the debugging tools built into VS code. To debug JS in VS code, you first need some JS to debug. Execute the `Start Debugging` command by pressing `F5`. First time you run it, VS code will ask what debugger you want to use, choose `Node.js`.
+
+Code will execute and the debug console window will automatically open to show you the debugger output where you can see the results of the `console.log` statements.
+
+You can pause executions of the code by setting a breakpoint. You can see values of variables when it pauses by looking at the variable window on the elft or hovering over the variable you want to inspect.
+
+Continue execution of the code after a pause by pressing `F10` to step to the next line, `F11` to step into a function call, or `F5` to continue running from the current line. When the last line of code executes the debugger will automatically exit. Use `SHIFT-F5` to debug at any time.
