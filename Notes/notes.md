@@ -1,5 +1,81 @@
 # CS 260 Notes
 
+# The Console
+
+## Viewing the file system
+
+One of the primary purposes of a console application is to view the files on the computer. The files on a computer are organized into a tree structure of nodes called directories. At any given point in time your console is located at one of the directories in the file system. You can see which directory you are in with the `pwd` (present working directory) command.
+
+```sh
+➜  pwd
+
+/Users/student/byu//webprogramming260
+```
+
+You can list all of the files in the directory with `ls` (list files). Most command line applications take parameters that are specified after you type the application name. For example, `ls` can list all files (even hidden ones) in a long format if you provide the parameter `-la`.
+
+```sh
+➜ ls -la
+
+total 16
+-rw-r--r--  1 lee  staff   1.0K Nov 19 08:47 LICENSE
+-rw-r--r--  1 lee  staff    82B Nov 19 08:47 README.md
+drwxr-xr-x  4 lee  staff   128B Nov 19 08:48 profile
+drwxr-xr-x  4 lee  staff   128B Nov 19 08:47 react
+```
+
+## Executing commands
+
+The other primary purpose of the console is to execute commands. You already did this in the previous section when you executed commands for working with the file system. However, console commands can perform many different operations. Here are some basic commands that you show experiment with.
+
+- **echo** - Output the parameters of the command
+- **cd** - Change directory
+- **mkdir** - Make directory
+- **rmdir** - Remove directory
+- **rm** - Remove file(s)
+- **mv** - Move file(s)
+- **cp** - Copy files
+- **ls** - List files
+- **curl** - Command line client URL browser
+- **grep** - Regular expression search
+- **find** - Find files
+- **top** - View running processes with CPU and memory usage
+- **df** - View disk statistics
+- **cat** - Output the contents of a file
+- **less** - Interactively output the contents of a file
+- **wc** - Count the words in a file
+- **ps** - View the currently running processes
+- **kill** - Kill a currently running process
+- **sudo** - Execute a command as a super user (admin)
+- **ssh** - Create a secure shell on a remote computer
+- **scp** - Securely copy files to a remote computer
+- **history** - Show the history of commands
+- **ping** - Check if a website is up
+- **tracert** - Trace the connections to a website
+- **dig** - Show the DNS information for a domain
+- **man** - Look up a command in the manual
+
+You can also chain the input and output of commands using special characters
+
+- `|` - Take the output from the command on the left and _pipe_, or pass, it to the command on the right
+- `>` - Redirect output to a file. Overwrites the file if it exists
+- `>>` - Redirect output to a file. Appends if the file exists
+
+For example, you can list the files in a directory, pipe it into `grep` to search for files created in Nov, and then pipe that into `wc` to count the number of files found with a date of Nov.
+
+```
+ls -l | grep ' Nov ' | wc -l
+```
+
+There are also keystrokes that have special meaning in the console.
+
+- `CTRL-R` - Use type ahead to find previous commands
+- `CTRL-C` - Kill the currently running command
+
+
+
+
+
 ## 9/5/24 - Github
 
 
@@ -1495,6 +1571,7 @@ Example of JSON document (always encoded with UTF-8, allowing for representation
 ### Converting to JS
 
 Convert JSON to, and from, JS using the `JSON.parse` and `JSON.stringify` functions.
+
 ```json
 const obj = { a: 2, b: 'crockford', c: undefined };
 const json = JSON.stringify(obj);
@@ -2687,25 +2764,110 @@ Continue execution of the code after a pause by pressing `F10` to step to the ne
 10. What does the following line of Javascript do using a # selector?
 11. Which of the following are true? (mark all that are true about the DOM)
 12. By default, the HTML span element has a default CSS display property value of: 
+    - inline
 13. How would you use CSS to change all the div elements to have a background color of red?
+    ```css
+    div {
+		    background-color: red;
+		}
+    ```
 14. How would you display an image with a hyperlink in HTML?
+    ```html
+    <a href="default.asp">
+      <img src="smiley.gif" alt="HTML tutorial" style="width:42px;height:42px;">
+    </a>
+    ```
 15. In the CSS box model, what is the ordering of the box layers starting at the inside and working out?
+    - content, padding, border, margin
 16. Given the following HTML, what CSS would you use to set the text "trouble" to green and leave the "double" text unaffected?
+    ```html
+    <p>This is double <span class="green-text">trouble</span>!</p>
+    ```
+    ```css
+    .green-text {
+      color: green;
+    }
+    ```
 17. What will the following code output when executed using a for loop and console.log?
 18. How would you use JavaScript to select an element with the id of “byu” and change the text color of that element to green?
 19. What is the opening HTML tag for a paragraph, ordered list, unordered list, second level heading, first level heading, third level heading?
+    - `<p>`, `<ol>`, `<ul>`, `<h2>`, `<h1>`, `<h3>`
 20. How do you declare the document type to be html?
+    ```html
+    <!DOCTYPE html>
+    ```
 21. What is valid javascript syntax for if, else, for, while, switch statements?
+    ```js
+    if (condition) {
+      // Code to execute if condition is true
+    } else if (anotherCondition) {
+      // Code to execute if the second condition is true
+    } else {
+      // Code to execute if both conditions are false
+    }
+    ```
+    ```js
+    for (initialization; condition; increment/decrement) {
+      // Code to execute in each iteration
+    while (condition) {
+      // Code to execute while the condition is true
+    }
+    switch (expression) {
+      case value1:
+        // Code to execute if expression === value1
+        break;
+      case value2:
+        // Code to execute if expression === value2
+        break;
+      default:
+        // Code to execute if no cases match
+    }
+    do {
+      // Code to execute at least once
+    } while (condition);
+    ```
 22. What is the correct syntax for creating a javascript object?
+    - const or let (avoid var)
 23. Is it possible to add new properties to javascript objects?
+    - yes (use dot or brackets or add them dynamically)
 24. If you want to include JavaScript on an HTML page, which tag do you use?
+    - script
+    ```html
+    <script src="script.js"></script>
+    ```
 25. Given the following HTML, what JavaScript could you use to set the text "animal" to "crow" and leave the "fish" text unaffected?
 26. Which of the following correctly describes JSON?
 27. What does the console command chmod, pwd, cd, ls, vim, nano, mkdir, mv, rm, man, ssh, ps, wget, sudo  do?
+    - chmod: change mode, changes file permissions (r, w, e) for file's owner, group, or others. `chmod 755 filename`
+    - pwd: print working directory, displays the current working directory. Outputs full path of your directory.
+    - cd: change directory
+    - ls: list files
+    - vim: opens the vim text editor to create or edit text files 
+    - nano: text editor to create or edit files; simpler than vim and easier to use
+    - mkdir: creates new directory
+    - mv: move files or rename 
+    - rm: remove files
+    - man: look up command in the manual
+    - ssh: create a secure shell on a remote computer
+    - ps: view the currently running processes
+    - wget: web get, downloads files from the web through http, https, or ftp.
+    - sudo: super user do, executes a command as a super user (admin)
 28. Which of the following console command creates a remote shell session?
+    ```sh
+    ssh user@remote_host
+    ```
 29. Which of the following is true when the -la parameter is specified for the ls console command?
+    - displays a detailed list (file permissions, owner, size, etc.) and lists all files including hidden ones (starting with `.`).
 30. Which of the following is true for the domain name banana.fruit.bozo.click, which is the top level domain, which is a subdomain, which is a root domain?
+    - top: .click
+    - sub: fruit is sub of bozo.click, and banana is sub of fruit.bozo.click
+    - root: bozo.click
 31. Is a web certificate is necessary to use HTTPS.
+    - Yes, not for http though.
 32. Can a DNS A record can point to an IP address or another A record.
+    - just to an IP address, ot another A record.
 33. Port 443, 80, 22 is reserved for which protocol?
+    - 443: HTTPS
+    - 80: HTTP
+    - 22: SSH
 34. What will the following code using Promises output when executed?
