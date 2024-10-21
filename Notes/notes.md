@@ -2871,3 +2871,169 @@ Continue execution of the code after a pause by pressing `F10` to step to the ne
     - 80: HTTP
     - 22: SSH
 34. What will the following code using Promises output when executed?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Web Frameworks
+
+Web frameworks make the job of writing web apps easier by providing tools for completing common app tasks, such as modularizing code, creating single page apps, simplifying reactivity, and supporting diverse hardware devices.
+
+Some frameworks takes things beyond the standard technologies and create new hybrid file formats that combine things such as HTML and JS into a single file (e.g. React JSX, Vue SFC, and Svelte files). Abstracting away the core web file formats puts the focus on functional components rather than files.
+
+Things to consider are how easy the framework is to learn, how it impacts productivity, how performant it is, how long it takes to build, and how actively the framework is evolving.
+
+## Hello World Examples
+
+How major frameworks would render a simple hello world app.
+
+### Vue
+
+Combines HTML, CSS, and JS into a single file. HTML is represented by a `template` element that can be aggregated into other templates. 
+
+**SFC**
+
+```html
+<script>
+  export default {
+    data() {
+      return {
+        name: 'world',
+      };
+    },
+  };
+</script>
+
+<style>
+  p {
+    color: green;
+  }
+</style>
+
+<template>
+  <p>Hello {{ name }}!</p>
+</template>
+```
+
+### Svelte
+
+Like Vue, it combines HTML, CSS, and JS into a single file. The difference here is that Svelte requires a transpiler to generate browser ready code, instead of a runtime virtual DOM.
+
+**Svelte file**
+
+```html
+<script>
+  let name = 'world';
+</script>
+
+<style>
+  p {
+    color: green;
+  }
+</style>
+
+<p>Hello {name}!</p>
+```
+
+### React
+
+Combines JS and HTML into its component format, CSS must be declared outside of the JSX file. Component itself leverages the functionality of JS and can be represented as a function or class.
+
+**JSX**
+
+```jsx
+import 'hello.css';
+
+const Hello = () => {
+  let name = 'world';
+
+  return <p>Hello {name}</p>;
+};
+```
+
+**CSS**
+
+```css
+p {
+  color: green;
+}
+```
+
+### Angular Component
+
+An angular component defines what JS, HTML, and CSS are combined together. This keeps a fairly strong separation of files that are usually grouped together in a directory rather than using the single file representation.
+
+**JS**
+
+```js
+@Component({
+  selector: 'app-hello-world',
+  templateUrl: './hello-world.component.html',
+  styleUrls: ['./hello-world.component.css'],
+})
+export class HelloWorldComponent {
+  name: string;
+  constructor() {
+    this.name = 'world';
+  }
+}
+```
+
+**HTML**
+
+```html
+<p>hello {{name}}</p>
+```
+
+**CSS**
+
+```css
+p {
+  color: green;
+}
+```
+
+
+
+## React
+
+React, and its associated projects, provide a powerful web programming framework. The name React comes from its focus on making reactive web page components that automatically update based on user interactions or changes in the underlying data.
+
+React abstracts HTML into a JavaScript variant called JSX. JSX is converted into valid HTML and JavaScript using a preprocessor called Babel. For example, the following is a JSX file. Notice that it mixes both HTML and JavaScript into a single representation.
+
+```jsx
+const i = 3;
+const list = (
+  <ol class='big'>
+    <li>Item {i}</li>
+    <li>Item {3 + i}</li>
+  </ol>
+);
+```
+
+Babel will convert that into valid JavaScript:
+
+```js
+const i = 3;
+const list = React.createElement(
+  'ol',
+  { class: 'big' },
+  React.createElement('li', null, 'Item ', i),
+  React.createElement('li', null, 'Item ', 3 + i)
+);
+```
+
+The `React.createElement` function will then generate DOM elements and monitor the data they represent for changes. When a change is discovered, React will trigger dependent changes.
+
