@@ -3160,3 +3160,180 @@ root.render(<Clicker />);
 
 Component's properties and state are used by the React framework to determine the reactivity of the interface. Reactivity controls how a component reacts to actions taken by the user or events that happen within the applicaiton. Whenever a component's state or properties change, the `render` function for the component and all of its dependent component `render` functions are called.
 
+
+
+
+
+
+
+
+## React Hooks
+
+React hooks allow React function style components to be able to do everything that a class style component can do and more. Additionally, as new features are added they are including them as hooks. This makes function style components the preferred way of doing things in React. Below is the use of hooks to declare and update state in a function component with the `useState` hook.
+
+```jsx
+function Clicker({initialCount}) {
+  const [count, updateCount] = React.useState(initialCount);
+  return <div onClick={() => updateCount(count + 1)}>Click count: {count}</div>;
+}
+
+ReactDOM.render(<Clicker initialCount={3} />, document.getElementById('root'));
+```
+
+### useEffect hook
+
+The `useEffect` hook allows you to represent lifecycle events. For example, if you want to run a function every time the component completes rendering, you could do the following:
+
+```jsx
+function UseEffectHookDemo() {
+  React.useEffect(() => {
+    console.log('rendered');
+  });
+
+  return <div>useEffectExample</div>;
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+
+You can also take action when the component cleans up by returning a cleanup function from the function registered with the `useEffect`. In the following example, every time the component is clicked, the state changes and so the component is rerendered. This causes both the cleanup function to be called in addition to the hook function. If the function was not rerendered then only the cleanup function would be called.
+
+```jsx
+function UseEffectHookDemo() {
+  const [count, updateCount] = React.useState(0);
+  React.useEffect(() => {
+    console.log('rendered');
+
+    return function cleanup() {
+      console.log('cleanup');
+    };
+  });
+
+  return <div onClick={() => updateCount(count + 1)}>useEffectExample {count}</div>;
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+
+This is useful when you want to create side effects for things such as tracking when a component is displayed or hidden, or creating and disposing of resources.
+
+### Hook dependencies
+
+You can control what triggers a `useEffect` hook by specifying its dependencies. In the following exammple we have two state variables, but we only want the `useEffect` hook to be called when the compoennt is initially called and when the first variable is clicked. To accomplish this you pass on array of dependencies as a second parameter to the `useEffect` call.
+
+```jsx
+function UseEffectHookDemo() {
+  const [count1, updateCount1] = React.useState(0);
+  const [count2, updateCount2] = React.useState(0);
+
+  React.useEffect(() => {
+    console.log(`count1 effect triggered ${count1}`);
+  }, [count1]);
+
+  return (
+    <ol>
+      <li onClick={() => updateCount1(count1 + 1)}>Item 1 - {count1}</li>
+      <li onClick={() => updateCount2(count2 + 1)}>Item 2 - {count2}</li>
+    </ol>
+  );
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+
+If you specify an empty array `[]` as the hook dependency then it is only called when the component is first rendered.
+
+Hooks can only be used in function style components and must be called at the top scope of the function. That means a hook cannot be called inside of a loop or conditional. This restriction ensures that hooks are always called int he same order when a component is rendered.
+
+
+
+## Router
+
+A web framework router provides essential functionality for single page apps. With a multiple webpage app the headers, footers, nav, and common components must be either duplicated in each html page or injected before the server sends the page to the browser. With a single page app, the browser only loads one HTML page then JS is used to manipulate the DOM and give it the appearance of multiple pages. Router defines the routes a user can take through the app and automatically manipulates the DOM to display the appropriate framework components.
+
+React does not have a standard router package, and there are many you can choose from. Simplified routing functionality of React-router-dom derives from the project react-router for its core functionality. Do not confuse the two, or versions of react-router-dom before v6 when reading documentation.
+
+A basic implementation of the router consists of a `BrowserRouter` component that encapsulates the entire app and controls the routing action. The `Link`, or `NavLink`, component captures user nav events and modifies what is rendered by the `Routes` component by matching up the `to` and `path` attributes.
+
+```jsx
+// Inject the router into the application root DOM element
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  // BrowserRouter component that controls what is rendered
+  // NavLink component captures user navigation requests
+  // Routes component defines what component is routed to
+  <BrowserRouter>
+    <div className='app'>
+      <nav>
+        <NavLink to='/'>Home</Link>
+        <NavLink to='/about'>About</Link>
+        <NavLink to='/users'>Users</Link>
+      </nav>
+
+      <main>
+        <Routes>
+          <Route path='/' element={<Home />} exact />
+          <Route path='/about' element={<About />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='*' element={<Navigate to='/' replace />} />
+        </Routes>
+      </main>
+    </div>
+  </BrowserRouter>
+);
+```
+
+
+
+
+
+## Reactivity
+
+Making the UI react to changes in user input or data, is one of the architectural foundations of React. React enables reactivity with three major pieces of a React component: `props`, `state`, and `render`.
+
+When a component's JSX is rendered, React parses it and creates a list of any references to the component's `state` or `prop` objects. React then monitors those objects and if it detects that they have changed it will call the component's `render` function so the impact of the change is visualized.
+
+The following example contains two components: a parent `<Survey/>` component and a child `<Question/>` component. The Survey has a state named `color`. The Question has a property named `answer`. The Survey passes its `color` state to the Question as a property. This means any change to the Survey's color will also be reflected in the Question's color (Parent controls a child's functionality).
+
+Be careful about assumptions when a state is updated. Just because you call `updateState` doesn't mean that you can access the updated state on the next line of code. Update happens asynchronously, and therefore you never really know when it is going to happen.
+
+```jsx
+const Survey = () => {
+  const [color, updateColor] = React.useState('#737AB0');
+
+  // When the color changes update the state
+  const onChange = (e) => {
+    updateColor(e.target.value);
+  };
+
+  return (
+    <div>
+      <h1>Survey</h1>
+
+      {/* Pass the Survey color  as a parameter to the Question.
+          When the color changes the Question parameter will also be updated and rendered. */}
+      <Question answer={color} />
+
+      <p>
+        <span>Pick a color: </span>
+        {/* Set the Survey color state as a the value of the color picker.
+            When the color changes, the value will also be updated and rendered. */}
+        <input type='color' onChange={(e) => onChange(e)} value={color} />
+      </p>
+    </div>
+  );
+};
+
+// The Question component
+const Question = ({ answer }) => {
+  return (
+    <div>
+      {/* Answer rerendered whenever the parameter changes */}
+      <p>Your answer: {answer}</p>
+    </div>
+  );
+};
+
+ReactDOM.render(<Survey />, document.getElementById('root'));
+```
+
