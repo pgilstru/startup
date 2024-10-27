@@ -3710,7 +3710,7 @@ export function Login() {
 }
 ```
 
-### Create the router
+## Create the router
 
 With `app.jsx` containing the header and footer, and all the application view component stubs created, we can now create the router that will display each component as the navigation UI requests it. The router controls the whole application by determining what component to display based upon what navigation the user chooses.
 
@@ -3779,3 +3779,146 @@ The `NavLink` component prevents the browser's default navigation functionality 
   </menu>
 </nav>
 ```
+
+### Injecting the routed component
+
+The router definitions are then inserted so that the router knows what component to display for a given path. The router changes the rendered component; it appears in the place of the `Routes` element. The `Routes` element replaces the `main` element in the component HTML.
+
+```jsx
+ <main>App components go here</main>
+
+ // to
+
+<Routes>
+  <Route path='/' element={<Login />} exact />
+  <Route path='/play' element={<Play />} />
+  <Route path='/scores' element={<Scores />} />
+  <Route path='/about' element={<About />} />
+  <Route path='*' element={<NotFound />} />
+</Routes>
+```
+
+Notice that the `*` (default matcher) was added to handle the case where an unknown path is requested. We handle this by creating a component for a path that is not found. We place this component at the bottom of our `src/app.jsx` file.
+
+```js
+function NotFound() {
+  return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
+}
+```
+
+At this point the application should support navigating to the different components.
+
+## Converting to React components
+
+The code for each of the HTML pages needs to now be converted to the different React components. Each of the components is a bit different, and so you want to review them to determine what they look like as a React component.
+
+The basic steps for converting the component include the following.
+
+- Copy the `main` element HTML over and put it in the return value of the component. Don't copy the header and footer HTML since they are now represented in `app.jsx`.
+- Rename the `class` to `className` so that it doesn't conflict with the JavaScript keyword `class`.
+- Move the CSS over to the component directory and use an `import` statement to bring it into the component's `jsx` file.
+
+In order for you to have a feel for how this is done we will demonstrate how this is done with the `Scores` component.
+
+### Convert `Scores` component
+
+Open the `scores.html` file and copy out the **main** element from the HTML. Paste it over the **main** element in the `scores.jsx` file. Rename the `class` attribute to `className`. Move the `scores.css` file to the `src/scores` component directory and import the css into the `scores.jsx` component file.
+
+```jsx
+import './scores.css';
+```
+
+Then delete the `scores.html` file. When this is all done the scores component should now render the same thing the old CSS deliverable rendered.
+
+![Scores CSS version](scoresCssVersion.png)
+
+### Convert the other components
+
+Using the scores component as an example we convert the login, about, and play components. You can review the resulting code in the simon-react repository to see how that was done.
+
+## Deployment script
+
+Now that we are using Vite to bundle our code we need a different deployment script. Delete the `deployFiles.sh` script and create a new file named `deployReact.sh` with the following contents.
+
+```sh
+while getopts k:h:s: flag
+do
+    case "${flag}" in
+        k) key=${OPTARG};;
+        h) hostname=${OPTARG};;
+        s) service=${OPTARG};;
+    esac
+done
+
+if [[ -z "$key" || -z "$hostname" || -z "$service" ]]; then
+    printf "\nMissing required parameter.\n"
+    printf "  syntax: deployReact.sh -k <pem key file> -h <hostname> -s <service>\n\n"
+    exit 1
+fi
+
+printf "\n----> Deploying React bundle $service to $hostname with $key\n"
+
+# Step 1
+printf "\n----> Build the distribution package\n"
+rm -rf build
+mkdir build
+npm install # make sure vite is installed so that we can bundle
+npm run build # build the React front end
+cp -rf dist/* build # move the React front end to the target distribution
+
+# Step 2
+printf "\n----> Clearing out previous distribution on the target\n"
+ssh -i "$key" ubuntu@$hostname << ENDSSH
+rm -rf services/${service}/public
+mkdir -p services/${service}/public
+ENDSSH
+
+# Step 3
+printf "\n----> Copy the distribution package to the target\n"
+scp -r -i "$key" build/* ubuntu@$hostname:services/$service/public
+
+# Step 5
+printf "\n----> Removing local copy of the distribution package\n"
+rm -rf build
+rm -rf dist
+```
+
+## Port complete
+
+At this point we are done porting the CSS deliverable to React.  The final Simon project structure looks like the following.
+
+```sh
+├─ LICENSE
+├─ README.md
+├─ deployReact.sh              # React specific deployment
+├─ index.html                  # Single HTML file for the App
+├─ index.jsx                   # Loads the top level component
+├─ package.json                # Defines dependent modules
+├─ public                      # Static assets used in the app
+│   ├─ button-bottom-left.mp3
+│   ├─ button-bottom-right.mp3
+│   ├─ button-top-left.mp3
+│   ├─ button-top-right.mp3
+│   ├─ error.mp3
+│   ├─ favicon.ico
+│   └─ placeholder.jpg
+└─ src                         # Frontend React code
+    ├─ app.jsx                 # Top level component
+    ├─ app.css
+    ├─ about                   # About component
+    │   ├─ about.css
+    │   └─ about.jsx
+    ├─ login                   # Login component
+    │   └─ login.jsx
+    ├─ play                    # Game play component
+    │   ├─ play.jsx
+    │   └─ play.css
+    └─ scores                  # Scores component
+        ├─ scores.css
+        └─ scores.jsx
+```
+
+Notice how much better structured the code is and how we have leveraged Vite and React not only to build a reactive SPA but also to modularize the code.
+
+
+
