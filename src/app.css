@@ -14,7 +14,7 @@ they cascade to all elements unless overridden (unline *) */
     background-image: linear-gradient(to right, white, mediumseagreen);
 }
 
-body{
+.body{
     max-width: 55rem; /* won't overflow on wide monitors */
     margin: 0.5em auto; /* top and bottom margin. 'auto' centers */
     border: 1px solid black; /* black border for the body */
