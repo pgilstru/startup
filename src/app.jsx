@@ -35,12 +35,12 @@ export default function App() {
         {/* <main>App components here</main> */}
         {/* to */}
 
-        {/* <Routes>
+        <Routes>
             <Route path="/" element={<Home />} exact />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
-        </Routes> */}
+        </Routes>
 
         <footer>
             <div className="div-main">
@@ -52,6 +52,10 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+function NotFound() {
+    return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
+  }
 
 export function LogoutButton({ }) {
     const navigate = useNavigate();
