@@ -8,7 +8,7 @@ import './app.css';
 export default function App() {
   return (
     <div className='body'>
-        <header className='container-fluid'>
+        <header>
             <img className='logo-img' alt='grocerease' src='/grocerease_logo.png' width='325'/>
             <div className='userinfo-and-nav'>
             {/* <!-- username and logout button --> */}
