@@ -17,7 +17,7 @@ export default function App() {
             {/* <!-- username and logout button --> */}
             <span className="user-info">
                 Signed in as:
-                <span>username</span>
+                <span><strong> username</strong></span>
                 <span className="logout-form"><LogoutButton /></span>
             </span>
             {/* <!-- nav bar --> */}
