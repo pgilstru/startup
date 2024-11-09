@@ -21,9 +21,17 @@ export function Login({ userName, authState, onAuthChange }) {
           {authState === AuthState.Authenticated && (
             <Authenticated userName={userName} onLogout={() => onAuthChange(userName, AuthState.Unauthenticated)} />
           )}
+          {authState === AuthState.Unauthenticated && (
+            <Unauthenticated
+              userName={userName}
+              onLogin={(loginUserName) => {
+                onAuthChange(loginUserName, AuthState.Authenticated);
+              }}
+            />
+          )}
         </div>
     
-        <form className="login-form" method="get" action="index.html">
+        {/* <form className="login-form" method="get" action="index.html">
             <div className="form-email form-part">
                 <label for="email">Email: </label>
                 <input type="text" className="login-form-input" id="email" name="email" placeholder="email" required />
@@ -41,20 +49,20 @@ export function Login({ userName, authState, onAuthChange }) {
         <div className="noacc">
           Don't have an account? 
           <span><CreateButton /></span>
-        </div>
+        </div> */}
     
     </main>
     );
 }
 
-export function CreateButton({ }) {
-  const navigate = useNavigate();
-  const handleReRoute = () => {
-    navigate('/register/register'); //redirect to register page
-  }
-  return (
-    <Button type="button" className="create-button btn btn-sm btn-outline-secondary btn btn-light" onClick={handleReRoute}>
-      Create Account
-    </Button>
-  );
-}
+// export function CreateButton({ }) {
+//   const navigate = useNavigate();
+//   const handleReRoute = () => {
+//     navigate('/register/register'); //redirect to register page
+//   }
+//   return (
+//     <Button type="button" className="create-button btn btn-sm btn-outline-secondary btn btn-light" onClick={handleReRoute}>
+//       Create Account
+//     </Button>
+//   );
+// }
