@@ -1,10 +1,14 @@
 import React from 'react';
+import { Unauthenticated } from './unauthenticated';
+import { Authenticated } from './authenticated';
+import { AuthState } from './authState';
+
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import './login.css';
 
-export function Login() {
+export function Login({ userName, authState, onAuthChange }) {
     return (
     <main className="loginMain">
         <div>
@@ -12,6 +16,12 @@ export function Login() {
         </div>
     
         <hr/>
+
+        <div>
+          {authState === AuthState.Authenticated && (
+            <Authenticated userName={userName} onLogout={() => onAuthChange(userName, AuthState.Unauthenticated)} />
+          )}
+        </div>
     
         <form className="login-form" method="get" action="index.html">
             <div className="form-email form-part">

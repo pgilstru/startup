@@ -4,11 +4,12 @@ import { Home } from './home/home';
 import { Login } from './login/login';
 import { Register } from './register/register';
 import { About } from './about/about';
+import { AuthState } from './login/authState';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import './app.css';
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
     <div className='body'>
@@ -24,11 +25,12 @@ export default function App() {
             {/* <!-- nav bar --> */}
             <nav>
                 <menu>
-                    <li className="nav-item"><NavLink to="">Home</NavLink></li>
+                    <li className="nav-item"><NavLink to="">Login</NavLink></li>
+                    {authState === AuthState.Authentication && (
+                        <li className="nav-item"><NavLink to="/home">Home</NavLink></li>
+                    )}
                     <li className="nav-item"><NavLink to="/about">About</NavLink></li>
-                    <li className="nav-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdxF9-nQRfsREiYeliNuDmM2D5pE-gWiKYrkJL2qSX9mdyv9g/viewform?usp=sf_link">Report an Issue</a></li>
-                    {/* <li className="nav-item"><a href="index.html">Home</a></li>
-                    <li className="nav-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdxF9-nQRfsREiYeliNuDmM2D5pE-gWiKYrkJL2qSX9mdyv9g/viewform?usp=sf_link">Report an Issue</a></li> */}
+                    {/* <li className="nav-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdxF9-nQRfsREiYeliNuDmM2D5pE-gWiKYrkJL2qSX9mdyv9g/viewform?usp=sf_link">Report an Issue</a></li> */}
                 </menu>
             </nav>
             </div>
@@ -38,8 +40,19 @@ export default function App() {
         {/* to */}
 
         <Routes>
-            <Route path="/" element={<Home />} exact />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={
+                <Login 
+                    userName={username}
+                    authState={authState}
+                    onAuthChange={(userName, authState) => {
+                        setAuthState(authState);
+                        setUserName(userName);
+                    }}
+                 />
+            } 
+             exact
+            />
+            <Route path="/home" element={<Home userName={userName} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
@@ -72,3 +85,5 @@ export function LogoutButton({ }) {
       </Button>
     );
   }
+
+export default App;
