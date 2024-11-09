@@ -38,7 +38,7 @@ export function Home() {
             <button type="submit" className="add-item-button btn btn-sm btn-light">Add Item</button>
         </form>
     
-        <span id="funFact">Fun fact: the average person's left hand does 56% of the typing.</span>
+        {/* <span id="funFact">Fun fact: the average person's left hand does 56% of the typing.</span> */}
       </main>
     );
 }

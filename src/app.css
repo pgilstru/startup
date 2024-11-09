@@ -43,6 +43,7 @@ h1, h2 {
 
 nav {
     border-bottom: 3px solid #333333;
+    /* border-length: 50px; */
     padding: 0;
     margin-top: 15px; /* adds space between username and nav */
     text-align: right;
@@ -160,10 +161,6 @@ nav a:hover {
     box-sizing: border-box;
     margin-left: .5em;
     margin-right: 0;
-}
-
-#funFact {
-    float: right;
 }
 
 footer {

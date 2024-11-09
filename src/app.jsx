@@ -3,6 +3,7 @@ import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router
 import { Home } from './home/home';
 import { Login } from './login/login';
 import { Register } from './register/register';
+import { About } from './about/about';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import './app.css';
@@ -24,6 +25,7 @@ export default function App() {
             <nav>
                 <menu>
                     <li className="nav-item"><NavLink to="">Home</NavLink></li>
+                    <li className="nav-item"><NavLink to="/about">About</NavLink></li>
                     <li className="nav-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdxF9-nQRfsREiYeliNuDmM2D5pE-gWiKYrkJL2qSX9mdyv9g/viewform?usp=sf_link">Report an Issue</a></li>
                     {/* <li className="nav-item"><a href="index.html">Home</a></li>
                     <li className="nav-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdxF9-nQRfsREiYeliNuDmM2D5pE-gWiKYrkJL2qSX9mdyv9g/viewform?usp=sf_link">Report an Issue</a></li> */}
@@ -39,6 +41,7 @@ export default function App() {
             <Route path="/" element={<Home />} exact />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
 
