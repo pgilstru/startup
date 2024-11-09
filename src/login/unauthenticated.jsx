@@ -32,22 +32,14 @@ export function Unauthenticated(props) {
                 <input type="password" className="login-form-input" onChange={(e) => setPassword(e.target.value)} placeholder="password" />
                 {/* <input type="password" className="login-form-input" id="password" name="password" placeholder="password" required /> */}
             </div>
-            <Button className="login-button form-part btn btn-sm btn-outline-secondary" onClick={() => loginUser()} disabled={!userName || !password}>
+            <span className="buttons">
+            <Button variant="primary" className="login-button btn btn-sm btn-outline-secondary" onClick={() => loginUser()} disabled={!userName || !password}>
                 Login
             </Button>
-            {/* <div className="form-part">
-              <label></label>
-              <button type="submit" className="login-button btn btn-sm btn-outline-secondary">Login</button>
-            </div> */}
-    
-            <div className="noacc">
-                Don't have an account? 
-                <span>
-                    <Button type="button" className="create-button btn btn-sm btn-outline-secondary btn btn-light" onClick={() => createUser()} disabled={!userName || !password}>
-                    Create Account
-                    </Button>
-                </span>
-            </div>
+            <Button variant="secondary" className="btn btn-sm btn-outline-secondary btn btn-light" onClick={() => createUser()} disabled={!userName || !password}>
+                Create Account
+            </Button>
+            </span>
         </div>
         </>
     );

@@ -1,12 +1,7 @@
-.create-button {
-    padding-left: 10px;
-    margin-left: 10px;
-    display: inline-block; /* keeps it next to the 'don't have an account?' */
-}
-
-.noacc {
-    margin-top: 25px;
-    display: inline-block;
+.buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
 }
 
 hr {
@@ -17,13 +12,6 @@ hr {
     width: 60%;
 }
 
-.form-part {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
 .form-part label {
     width: 100px;
     text-align: right;
@@ -31,11 +19,6 @@ hr {
 }
 
 .login-form-input {
-    flex-grow: 1;
-    padding-left: 5px;
-}
-
-.form-group button {
     flex-grow: 1;
     padding-left: 5px;
 }
