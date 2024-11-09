@@ -8,7 +8,7 @@ export function Home() {
             <h1>Grocery List Items</h1>
             <span>
                 <input type="checkbox" className="checkfilter" value="checkfilter"/>
-                <label for="checkfilter">Filter Checked Items</label>
+                <label for="checkfilter" className="checkFilterLabel">Filter Checked Items</label>
             </span>
         </div>
     

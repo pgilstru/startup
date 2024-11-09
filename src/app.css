@@ -131,7 +131,7 @@ nav a:hover {
     display: inline-block;
     width: calc(100% - 12em); /* sets the width to fill available space, subtracts 12em for checkbox and buttons on same line */
     box-sizing: border-box;
-    margin-left: 4px;
+    margin-left: 8px;
     vertical-align: middle;
 }
 
@@ -179,6 +179,10 @@ footer {
 .checkfilter {
     accent-color: var(--primary);
     cursor: pointer;
+}
+
+.checkFilterLabel {
+    margin-left: 4px;
 }
 
 
