@@ -1,4 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
 import './register.css';
 
 export function Register() {
@@ -33,9 +36,21 @@ export function Register() {
     
         <div className="haveacc">
           Already have an account?
-          <button className="login-button btn btn-sm btn-outline-secondary" type="submit">Login</button>
+          <span><LoginButton /></span>
         </div>
     
     </main>
     );
+}
+
+export function LoginButton({ }) {
+  const navigate = useNavigate();
+  const handleReRoute = () => {
+    navigate('/login/login'); //redirect to login page
+  }
+  return (
+    <Button type="button" className="login-button btn btn-sm btn-outline-secondary btn btn-light" onClick={handleReRoute}>
+      Login
+    </Button>
+  );
 }

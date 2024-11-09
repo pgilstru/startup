@@ -1,4 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
 import './login.css';
 
 export function Login() {
@@ -26,13 +29,22 @@ export function Login() {
         </form>
     
         <div className="noacc">
-          Don't have an account?
-          <button className="create-button btn btn-sm btn-outline-secondary" type="submit">Create Account</button>
+          Don't have an account? 
+          <span><CreateButton /></span>
         </div>
     
     </main>
-        // <main className='text-center'>
-        //     <div>login displayed here</div>
-        // </main>
     );
+}
+
+export function CreateButton({ }) {
+  const navigate = useNavigate();
+  const handleReRoute = () => {
+    navigate('/register/register'); //redirect to register page
+  }
+  return (
+    <Button type="button" className="create-button btn btn-sm btn-outline-secondary btn btn-light" onClick={handleReRoute}>
+      Create Account
+    </Button>
+  );
 }
