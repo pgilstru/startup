@@ -14,6 +14,10 @@ they cascade to all elements unless overridden (unline *) */
     background-image: linear-gradient(to right, white, mediumseagreen);
 }
 
+html, body {
+    background-image: linear-gradient(to right, white, mediumseagreen);
+}
+
 .body{
     max-width: 55rem; /* won't overflow on wide monitors */
     margin: 0.5em auto; /* top and bottom margin. 'auto' centers */
@@ -83,7 +87,7 @@ nav a:hover {
 }
 
 .logout-form {
-    padding-left: 10px;
+    padding-left: 12px;
     display: inline-block; /* keeps it next to the username */
 }
 

@@ -3,7 +3,7 @@ import './login.css';
 
 export function Login() {
     return (
-    <main>
+    <main className="loginMain">
         <div>
           <h2>Login</h2>
         </div>
