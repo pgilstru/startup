@@ -3,9 +3,7 @@ import { Unauthenticated } from './unauthenticated';
 import { Authenticated } from './authenticated';
 import { AuthState } from './authState';
 
-import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
 import './login.css';
 
 export function Login({ userName, authState, onAuthChange }) {
@@ -54,15 +52,3 @@ export function Login({ userName, authState, onAuthChange }) {
     </main>
     );
 }
-
-// export function CreateButton({ }) {
-//   const navigate = useNavigate();
-//   const handleReRoute = () => {
-//     navigate('/register/register'); //redirect to register page
-//   }
-//   return (
-//     <Button type="button" className="create-button btn btn-sm btn-outline-secondary btn btn-light" onClick={handleReRoute}>
-//       Create Account
-//     </Button>
-//   );
-// }
