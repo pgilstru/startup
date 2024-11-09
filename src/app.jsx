@@ -10,6 +10,10 @@ import Button from 'react-bootstrap/Button';
 import './app.css';
 
 function App() {
+  const [userName, setUsername] = React.useState(localStorage.getItem('userName') || '');
+  const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+  const [authState, setAuthState] = React.useState(currentAuthState);
+
   return (
     <BrowserRouter>
     <div className='body'>
@@ -19,13 +23,13 @@ function App() {
             {/* <!-- username and logout button --> */}
             <span className="user-info">
                 Signed in as:
-                <span><strong> username</strong></span>
+                <span><strong> {userName}</strong></span>
                 <span className="logout-form"><LogoutButton /></span>
             </span>
             {/* <!-- nav bar --> */}
             <nav>
                 <menu>
-                    <li className="nav-item"><NavLink to="">Login</NavLink></li>
+                    <li className="nav-item"><NavLink to=''>Login</NavLink></li>
                     {authState === AuthState.Authentication && (
                         <li className="nav-item"><NavLink to="/home">Home</NavLink></li>
                     )}
@@ -42,7 +46,7 @@ function App() {
         <Routes>
             <Route path="/" element={
                 <Login 
-                    userName={username}
+                    userName={userName}
                     authState={authState}
                     onAuthChange={(userName, authState) => {
                         setAuthState(authState);
@@ -77,6 +81,7 @@ export function LogoutButton({ }) {
     const navigate = useNavigate();
     const handleLogout = () => {
         // perform logout logic here, update when you start having users login
+        localStorage.removeItem('userName');
         navigate('/login'); //redirect to login page
     }
     return (

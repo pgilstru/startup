@@ -39,10 +39,6 @@ export function Unauthenticated(props) {
               <label></label>
               <button type="submit" className="login-button btn btn-sm btn-outline-secondary">Login</button>
             </div> */}
-            <Button type="button" className="noacc" onClick={() => createUser()} disabled={!userName || !password}>
-                Create Account
-            </Button>
-
     
             <div className="noacc">
                 Don't have an account? 
