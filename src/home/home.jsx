@@ -1,9 +1,14 @@
 import React from 'react';
 // import '/src/app.css';
 
-export function Home() {
+import { Users } from './users';
+import { GrocereaseApp } from './grocereaseApp'
+
+export function Home(props) {
     return (
-        <main>
+        <main onload="readTasks()">
+            <Users userName={props.userName} />
+            <GrocereaseApp userName={props.userName} />
         <div className="div-main">
             <h1>Grocery List Items</h1>
             <span>
@@ -38,7 +43,6 @@ export function Home() {
             <button type="submit" className="add-item-button btn btn-sm btn-light">Add Item</button>
         </form>
     
-        {/* <span id="funFact">Fun fact: the average person's left hand does 56% of the typing.</span> */}
       </main>
     );
 }

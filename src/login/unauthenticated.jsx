@@ -36,7 +36,7 @@ export function Unauthenticated(props) {
             <Button variant="primary" className="login-button btn btn-sm btn-outline-secondary" onClick={() => loginUser()} disabled={!userName || !password}>
                 Login
             </Button>
-            <Button variant="secondary" className="btn btn-sm btn-outline-secondary btn btn-light" onClick={() => createUser()} disabled={!userName || !password}>
+            <Button variant="secondary" className="create-button btn btn-sm btn-outline-secondary btn btn-light" onClick={() => createUser()} disabled={!userName || !password}>
                 Create Account
             </Button>
             </span>
