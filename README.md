@@ -19,8 +19,7 @@ The application's Main page:
 
 - **HTML** - Utilizes the proper HTML structure throughout the entire app. There will be three HTML pages, one for logging in, one for creating an account, and one for viewing and adding grocery list items.
 - **CSS** - Styles the application so it is visually appealing with appropriate spacing and color themes, while also offering a responsive design.
-- **JavaScript** - Allows the user to interact with the application and add grocery list items to the list by pressing a button.
-- **React** - Manages and provides login, shows grocery list items added from anyone in the group, lets users add more list items, uses React management features.
+- **React** - Manages and provides login, shows grocery list items, lets users add more list items, uses React management features. Utilizes local storage to store authentication details as well as grocery list items.
 - **Service** - Backend service with endpoints for:
     - Login
     - Retrieving grocery list items
@@ -52,22 +51,18 @@ For this deliverable, I applied the final styles to the application, giving it i
 - [x] **Application text content**: Use consistent text size and fonts for visual appeal and consistency. The headers, such as h1 and h2, are the only ones that differ to make them stand out.
 - [x] **Application images**: The logo image fits well and remains consistent along all pages. It looks like it belongs with proper margins, and the website's color themes match the image's to maintain flow and a reliable design.
 
-## JavaScript Usage Specifics
-
-For this deliverable, I used JavaScript in order to add dynamic features and implement the necessary logic used in the application.
-
-- **Event and Error Handling**: Utilize and implement JavaScript functions to handle error messages and user interactions such as adding list items and clicking the login button.
-- **Dynamic Content**: Utilize JavaScript to update content dynamically, such as displaying items just added to the list.
-- **Backend Calls**: Use fetch calls to interact with backend endpoint calls for login and retrieving list items.
-
 ## React Usage Specifics
 
-For this deliverable, I utilized React to create an interactive user interface and handle the application state.
+For this deliverable, I utilized React to create an interactive user interface and handle the application state. I also used JavaScript in order to add dynamic features and implement the necessary logic used in the application.
 
-- **Components**: Login, registration, grocery list
-    - **Login Component**: Handles user authentication, taking users to the grocery list page after they login.
-    - **Registration Component**: Handles user account creation, redirecting them to the login page after successfully creating an account.
-    - **Database Component**: Displays the grocery list items.
+- [x] **Bundled and transpiled**: Combined the different assets I previously had into JSX and JavaScript, effectively implementing React. Bundled using Vite.
+- [x] **Components**: Login, about, grocery list (home)
+    - [x] **Login Component**: Handles user authentication, taking users to the grocery list page after they click the "login" or "create an account" button.
+    - [x] **Database Component**: Displays the grocery list items and stores the user's logged in boolean. Currently utilizing local storage to store and retrieve items, but will be replaced with the database data later. (Note: this is represented by grocereaseApp.jsx)
+    - [x] **About Component**: Utilizes a third party service, `Random Useless Facts`, and displays a new fact on every refresh. Will clean up when we get to the Service Usage portion of the course.
+    - [x] **Home Component**: This is the grocery list page that utilizes the database to display list items. Uses JSX and JavaScript to handle error messages, implement functions, dynamically update content, and make the interface interactive.
+- [x] **Router**: Routing between login other components including `home` and `about`. Includes error handling for other, non existant, endpoints, and implements requirements for user's to be signed in to access the home page.
+- [x] **Hooks**: Utilize the `useState` hook to track changes and `useEffect` hook to set the fact values for the random useless facts third party service in the `about` component. Also utilized in the `home` component's `grocereaseApp.jsx` to listen for changes and add items to the grocery list.
 
 ## Service Usage Specifics
 
