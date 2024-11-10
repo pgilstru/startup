@@ -12,7 +12,14 @@ hr {
     width: 60%;
 }
 
-.form-part label {
+.form-part {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-part label{
     width: 100px;
     text-align: right;
     margin-right: 30px;

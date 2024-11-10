@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import { Home } from './home/home';
 import { Login } from './login/login';
-import { Register } from './register/register';
 import { About } from './about/about';
 import { AuthState } from './login/authState';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import './app.css';
 
 function App() {
-  const [userName, setUsername] = React.useState(localStorage.getItem('userName') || '');
+  const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
   const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
   const [authState, setAuthState] = React.useState(currentAuthState);
 
@@ -57,7 +56,6 @@ function App() {
              exact
             />
             <Route path="/home" element={<Home userName={userName} />} />
-            <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
         </Routes>

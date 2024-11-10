@@ -5,7 +5,6 @@ import './login.css';
 export function Unauthenticated(props) {
     const [userName, setUserName] = React.useState(props.userName);
     const [password, setPassword] = React.useState('');
-    const [displayError, setDisplayError] = React.useState(null);
 
     async function loginUser() {
         localStorage.setItem('userName', userName);
@@ -21,14 +20,14 @@ export function Unauthenticated(props) {
         <>
         <div>
             <div className="form-email form-part">
-                <span className="emailInput">Email: </span>
-                {/* <label for="email">Email: </label> */}
+                {/* <span className="emailInput">Email: </span> */}
+                <label for="email">Email: </label>
                 <input type="text" className="login-form-input" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="email" />
                 {/* <input type="text" className="login-form-input" id="email" name="email" placeholder="email" required /> */}
             </div>
             <div className="form-password form-part">
-                <span className="passwordInput">Password: </span>
-                {/* <label for="password">Password: </label> */}
+                {/* <span className="passwordInput">Password: </span> */}
+                <label for="password">Password: </label>
                 <input type="password" className="login-form-input" onChange={(e) => setPassword(e.target.value)} placeholder="password" />
                 {/* <input type="password" className="login-form-input" id="password" name="password" placeholder="password" required /> */}
             </div>
