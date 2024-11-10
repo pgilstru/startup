@@ -9,7 +9,7 @@ export function Home(props) {
         <main onload="readTasks()">
             <Users userName={props.userName} />
             <GrocereaseApp userName={props.userName} />
-        <div className="div-main">
+        {/* <div className="div-main">
             <h1>Grocery List Items</h1>
             <span>
                 <input type="checkbox" className="checkfilter" value="checkfilter"/>
@@ -41,7 +41,7 @@ export function Home(props) {
                 <input type="text" className="item-input" id="item" name="item" placeholder="Your list item here" required/>
             </div>
             <button type="submit" className="add-item-button btn btn-sm btn-light">Add Item</button>
-        </form>
+        </form> */}
     
       </main>
     );

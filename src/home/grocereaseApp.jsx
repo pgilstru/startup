@@ -3,18 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import './home.css';
 
-// export function grocereaseApp(props) {
-//     const buttons = new Map();
-//     const navigate = useNavigate();
-
-//     const [items, setItems] = useState([]);
-//     const [newItem, setNewItem] = useState('');
-//     const [filterChecked, setFilterchecked] = useState(false);
-
-//     //read items
-
-// }
-
 class Item {
     constructor({ text, done = false, id }) {
         this.text = text;
@@ -27,7 +15,7 @@ class Item {
     }
 }
 
-export function ItemList() {
+export function GrocereaseApp() {
     const [items, setItems] = React.useState([]);
     const [newItemText, setNewItemText] = React.useState('');
     const [filterChecked, setFilterChecked] = React.useState(false);
@@ -74,7 +62,8 @@ export function ItemList() {
         : items;
 
     return (
-        <main>
+        // <main>
+        <div>
             <div className="div-main">
                 <h1>Grocery List Items</h1>
                 <span>
@@ -85,15 +74,23 @@ export function ItemList() {
             </div>
             <ul className="groceryList">
                 {filteredItems.map(item => {
-                    <li key={item.id} className="groceryItem">
-                        <input type="checkbox" className="item-done checkbox-icon" id="Eggs" />
-                        <span className="item-description">Eggs</span>
-                        <button type="button" className="item-delete material-icon">delete</button>
+                  return (
+                    <li key={item.id} className={`groceryItem ${item.done ? 'completed-item' : ''}`}>
+                        <input type="checkbox" className="item-done checkbox-icon" checked={item.done} onChange={() => toggleItem(item.id)} />
+                        <span className="item-description">{item.text}</span>
+                        <button onClick={() => deleteItem(item.id)} type="button" className="item-delete material-icon">delete</button>
                     </li>
+                  );
                 })}
             </ul>
 
-            
-        </main>
+            <form className="form-add-item" onSubmit={addItem}>
+                <div className="form-stuff">
+                    <label htmlFor="item">List Item: </label>
+                    <input type="text" className="item-input" value={newItemText} onChange={e => setNewItemText(e.target.value)} id="item" name="item" placeholder="Your list item here" required/>
+                </div>
+                <button type="submit" className="add-item-button btn btn-sm btn-light">Add Item</button>
+            </form>
+        </div>
     );
 }
