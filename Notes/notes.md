@@ -5146,8 +5146,6 @@ curl $host/api/scores
 
 In addition to serving up endpoints, we also use the Simon service to serve the static files generated when we bundled the React frontend. Our endpoints will be services on the `/api` path and everything else will look in the `public` directory of the service. If it finds a match, for `index.html` for example, then that file is returned.
 
-![Simon service](simonProduction.jpg)
-
 To make this happen, we only need to add the Express middleware to serve static files from the the `public` directory.
 
 ```js
@@ -5157,6 +5155,140 @@ app.use(express.static('public'));
 However, we don't have a `public` directory with the frontend files in it. This will happen when we deploy to our web server in AWS. For now, you can test that it is working by creating a simple index.html file in the `service/public` directory and then requesting it with curl. Once you have done this delete the test `service/public` directory so that we don't leave any cruft around.
 
 ### Configuring Vite for debugging
+
+When running in production, the Simon web service running under Node.js on port 3000 serves up the bundled Simon React application code when the browser requests `index.html`. The service pulls those files from the application's static HTML, CSS, and JavaScript files located in the `public` directory as described above.
+
+However, when the application is running in debug mode in your development environment, we actually need two HTTP servers running: one for the Node.js backend HTTP server, and one for the Vite frontend HTTP server. This allows us to develop and debug both our backend and our frontend while viewing the results in the browser.
+
+By default, Vite uses port 5173 when running in development mode. Vite starts up the debugging HTTP server when we run `npm run dev`. That means the browser is going to send network requests to port 5173. We can configure the Vite HTTP server to proxy service HTTP to the Node.js HTTP server by creating a configuration file named `vite.config.js` in the root of the project with the following contents (later, we will modify this file to allow proxying of WebSocket requests as well).
+
+```js
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000',
+    },
+  },
+});
+```
+
+When running in this configuration, the network requests now flow as shown below. Without this you will not be able to debug your React application in your development environment.
+
+With the backend service running, and our files in the place where Vite expects them, we can test that everything still works. You can start Vite in dev mode with the command `npm run dev`, followed by pressing the `o` key to open the application in the browser. When you reach this point with your startup, make sure that you commit your changes.
+
+## Frontend changes
+
+Now that we have the service endpoints all set up we need to call them from the frontend code. This happens when we want to save and retrieve scores, as well as when we want to register or login a user.
+
+### Saving scores
+
+The `play/simonGame.jsx` file is modified to store scores by making a fetch request to the Simon service.
+
+```jsx
+async function saveScore(score) {
+  const date = new Date().toLocaleDateString();
+  const newScore = { name: userName, score: score, date: date };
+
+  await fetch('/api/score', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(newScore),
+  });
+
+  // Let other players know the game has concluded
+  GameNotifier.broadcastEvent(userName, GameEvent.End, newScore);
+}
+```
+
+The scores are loaded in `scores/scores.jxs` where we use a React useEffect hook to reactively display the scores once they are loaded from the service.
+
+```jsx
+React.useEffect(() => {
+  fetch('/api/scores')
+    .then((response) => response.json())
+    .then((scores) => {
+      setScores(scores);
+    });
+}, []);
+```
+
+Now you can shutdown the frontend and restart it without losing your scoring data.
+
+### Registering and logging in users
+
+We follow a similar process for handling users. This is done by altering `login/unauthenticated.jsx` to contain code that handles register and login requests.
+
+```jsx
+async function loginOrCreate(endpoint) {
+  const response = await fetch(endpoint, {
+    method: 'post',
+    body: JSON.stringify({ email: userName, password: password }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+  if (response?.status === 200) {
+    localStorage.setItem('userName', userName);
+    props.onLogin(userName);
+  } else {
+    const body = await response.json();
+    setDisplayError(`⚠ Error: ${body.msg}`);
+  }
+}
+```
+
+Likewise, `login/authenticated.jsx` is altered to handle the logout event.
+
+```jsx
+function logout() {
+  fetch(`/api/auth/logout`, {
+    method: 'delete',
+  })
+    .catch(() => {
+      // Logout failed. Assuming offline
+    })
+    .finally(() => {
+      localStorage.removeItem('userName');
+      props.onLogout();
+    });
+}
+```
+
+### Remove localstorage usage
+
+Since we now persist scores in the service we no longer need to persistent them in local storage. We can remove that code from both `simonGame.jsx` and `scores.jsx`.
+
+## Third party endpoints
+
+The `about.jsx` file contains code for making calls to third party endpoints using `fetch`. The requests are triggered by the React useEffect hook. We make one call to `picsum.photos` to get a random picture and another to `quote.cs260.click` to get a random quote. Once the endpoint asynchronously returns, the React state variables are updated. Here is an example of the quote endpoint call.
+
+```js
+React.useEffect(() => {
+  const random = Math.floor(Math.random() * 1000);
+  fetch(`https://picsum.photos/v2/list?page=${random}&limit=1`)
+    .then((response) => response.json())
+    .then((data) => {
+      const containerEl = document.querySelector('#picture');
+
+      const width = containerEl.offsetWidth;
+      const height = containerEl.offsetHeight;
+      const apiUrl = `https://picsum.photos/id/${data[0].id}/${width}/${height}?grayscale`;
+      setImageUrl(apiUrl);
+    })
+    .catch();
+
+  fetch('https://quote.cs260.click')
+    .then((response) => response.json())
+    .then((data) => {
+      setQuote(data.quote);
+      setQuoteAuthor(data.author);
+    })
+    .catch();
+}, []);
+```
+
 
 
 
