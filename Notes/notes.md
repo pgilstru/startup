@@ -5301,6 +5301,8 @@ React.useEffect(() => {
 
 ## Service endpoint definitions
 
+Here is the design documented using `curl` commands, for the endpoints that the grocerease web service provides. Note that the auth endpoints are using auth tokens in the HTTP body. During the Login deliverable we will change this over to use HTTP cookies.
+
 **CreateAuth** - Create a new user.
 
 ```sh
@@ -5331,22 +5333,28 @@ H 'Content-Type: application/json' -d '{"token":"6b2ab581-05ca-4df0-8897-5671e7f
 **GetItems** - Get the items currently on the grocery list
 
 ```sh
-curl $host/api/home
+curl $host/api/items
 
 #response
 { "items":[
-  {"id":"243255624", "description":"eggs", "done":"false"}
+  {"_id":"65fcdbf4383d7e28d4492238",
+  "UserId": "118357264224651885571",
+  "Text":"eggs",
+  "Done":"false"}
 ]}
 ```
 
-**AddItem** - Add a new grocery list item to the grocery list. (POST)
+**AddItem** - Add a new grocery list item to the grocery list.
 
 ```sh
-curl -X POST $host/api/home -H 'Content-Type: applicatoin/json' -d '{"id":"243255624", "description":"eggs", "done":false}'
+curl -X POST $host/api/home -H 'Content-Type: applicatoin/json' -d '{"Text":"eggs", "Done":false}'
 
 #response
 [
-  {"id":"243255624", "description":"eggs", "done":"false"}
+  {"UserId": "118357264224651885571",
+  "Text":"eggs",
+  "Done":"false",
+  "_id":"65fcdbf4383d7e28d4492238"}
 ]
 ```
 
