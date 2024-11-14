@@ -5347,7 +5347,7 @@ curl $host/api/items
 **AddItem** - Add a new grocery list item to the grocery list.
 
 ```sh
-curl -X POST $host/api/home -H 'Content-Type: applicatoin/json' -d '{"Text":"eggs", "Done":false}'
+curl -X POST $host/api/item -H 'Content-Type: applicatoin/json' -d '{"Text":"eggs", "Done":false}'
 
 #response
 [
