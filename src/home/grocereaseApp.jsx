@@ -18,28 +18,42 @@ export function GrocereaseApp() {
     const [newItemText, setNewItemText] = React.useState('');
     const [filterChecked, setFilterChecked] = React.useState(false);
 
-    // Load items from localStorage
     React.useEffect(() => {
-        const storedItems = JSON.parse(localStorage.getItem('items')) || [];
-        const itemsObjects = storedItems.map(itemData => new Item(itemData));
-        setItems(itemsObjects);
+        const fetchItems = async () => {
+            try {
+                const response = await fetch('/api/items');
+                if (!response.ok) {
+                    throw new Error(`failed to fetch items: ${response.statusText}`);
+                }
+                const items = await response.json();
+                setItems(items);
+            } catch (error) {
+                console.error('error loading items: ', error);
+            }
+        };
+        fetchItems();
     }, []);
 
-    // Save items to localStorage whenever they update
-    React.useEffect(() => {
-        localStorage.setItem('items', JSON.stringify(items));
-    }, [items]);
-
-    const addItem = (event) => {
+    const addItem = async (event) => {
         event.preventDefault();
         if (newItemText.trim()) {
-            const newItem = new Item({
-                text: newItemText,
-                done: false,
-                id: Date.now(),
-            });
-            setItems([...items, newItem]);
-            setNewItemText('');
+            try {
+                const response = await fetch('/api/item', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: newItemText, done: false }),
+                });
+                if (!response.ok){
+                    throw new Error('could not add item');
+                }
+                const updateItems = await response.json();
+                setItems(updateItems);
+                setNewItemText(''); //clear input
+            } catch (error) {
+                console.error('error adding item: ', error);
+            }
         }
     };
 

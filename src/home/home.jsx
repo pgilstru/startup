@@ -5,7 +5,8 @@ import { GrocereaseApp } from './grocereaseApp'
 
 export function Home(props) {
     return (
-        <main onload="readTasks()">
+    //   <main onload="readTasks()">
+      <main>
             <GrocereaseApp userName={props.userName} />    
       </main>
     );

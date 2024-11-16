@@ -69,7 +69,7 @@ apiRouter.post('/item', (req, res) => {
     //     return res.status(401).send({ msg: 'not logged in' });
     // }
 
-    if (!req.body.Text) {
+    if (!req.body.text) {
         return res.status(400).send({ msg: 'text is required' })
     }
 
@@ -95,8 +95,8 @@ function updateItems(newItem, items) {
     const item = {
         id: itemId,
         // userId: user.email,
-        text: newItem.Text,
-        done: newItem.Done || false
+        text: newItem.text,
+        done: newItem.done || false
     };
 
     // add new item to item array
