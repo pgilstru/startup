@@ -5358,7 +5358,9 @@ curl -X POST $host/api/item -H 'Content-Type: applicatoin/json' -d '{"Text":"egg
 ]
 ```
 
+### Note: how to test!
 
+run `npm run dev` in the project directory, then `node index.js` in the backend (service directory). Then from terminal, curl.
 
 
 # Service daemons - PM2

@@ -15,7 +15,7 @@ app.use(express.json());
 
 // router for service endpoints
 var apiRouter = express.Router();
-app.use('/', apiRouter);
+app.use('/api', apiRouter);
 
 
 
@@ -61,7 +61,16 @@ apiRouter.get('/items', (_req, res) => {
 
 // AddItem
 apiRouter.post('/item', (req, res) => {
-    items = updateItems(req.body, items);
+    const user = Object.values(users).find((u) => u.token === req.body.token);
+    if (!user) {
+        return res.status(401).send({ msg: 'not logged in' });
+    }
+
+    if (!req.body.Text) {
+        return res.status(400).send({ msg: 'text is required' })
+    }
+
+    items = updateItems(req.body, items, user);
     res.send(items);
 });
 
@@ -75,9 +84,19 @@ app.listen(port, () => {
 });
 
 // updateItems adds an item to the grocery list
-function updateItems(newItem, items) {
-    let found = false; // if item already in list, don't add
-    for (const [i, prev] of items.entries()) {
-        if (newItem.item >)
-    }
+function updateItems(newItem, items, user) {
+    // generate a unique ID for the new item
+    const itemId = uuid.v4();
+
+    // create item object
+    const item = {
+        _id: itemId,
+        UserId: user.email,
+        Text: newItem.Text,
+        Done: newItem.Done || false
+    };
+
+    // add new item to item array
+    items.push(item);
+    return items;
 }
