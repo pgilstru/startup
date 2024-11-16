@@ -13,6 +13,9 @@ const port = process.argv.length > 2 ? process.argv[2] : 3000;
 // json body parsing using build in middleware
 app.use(express.json());
 
+// serve up front end static content hosting
+app.use(express.static('public'));
+
 // router for service endpoints
 var apiRouter = express.Router();
 app.use('/api', apiRouter);
@@ -61,16 +64,16 @@ apiRouter.get('/items', (_req, res) => {
 
 // AddItem
 apiRouter.post('/item', (req, res) => {
-    const user = Object.values(users).find((u) => u.token === req.body.token);
-    if (!user) {
-        return res.status(401).send({ msg: 'not logged in' });
-    }
+    // const user = Object.values(users).find((u) => u.token === req.body.token);
+    // if (!user) {
+    //     return res.status(401).send({ msg: 'not logged in' });
+    // }
 
     if (!req.body.Text) {
         return res.status(400).send({ msg: 'text is required' })
     }
 
-    items = updateItems(req.body, items, user);
+    items = updateItems(req.body, items);
     res.send(items);
 });
 
@@ -84,16 +87,16 @@ app.listen(port, () => {
 });
 
 // updateItems adds an item to the grocery list
-function updateItems(newItem, items, user) {
+function updateItems(newItem, items) {
     // generate a unique ID for the new item
     const itemId = uuid.v4();
 
     // create item object
     const item = {
-        _id: itemId,
-        UserId: user.email,
-        Text: newItem.Text,
-        Done: newItem.Done || false
+        id: itemId,
+        // userId: user.email,
+        text: newItem.Text,
+        done: newItem.Done || false
     };
 
     // add new item to item array
