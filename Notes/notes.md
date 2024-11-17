@@ -5324,8 +5324,7 @@ curl -X POST $host/api/auth/login -H 'Content-Type: application/json' -d '{"emai
 **DeleteAuth** - Logout a user
 
 ```sh
-curl -v -X DELETE $host/api/auth/logout -
-H 'Content-Type: application/json' -d '{"token":"6b2ab581-05ca-4df0-8897-5671e7febdd8"}'
+curl -v -X DELETE $host/api/auth/logout -H 'Content-Type: application/json' -d '{"token":"6b2ab581-05ca-4df0-8897-5671e7febdd8"}'
 
 # Response 204
 ```

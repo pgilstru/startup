@@ -28,12 +28,17 @@ function App() {
             {/* <!-- nav bar --> */}
             <nav>
                 <menu>
-                    <li className="nav-item"><NavLink to=''>Login</NavLink></li>
-                    {authState === AuthState.Authentication && (
-                        <li className="nav-item"><NavLink to="/home">Home</NavLink></li>
+                    <li className="nav-item">
+                        <NavLink to=''>Login</NavLink>
+                    </li>
+                    {authState === AuthState.Authenticated && (
+                        <li className="nav-item">
+                            <NavLink to="home">Home</NavLink>
+                        </li>
                     )}
-                    <li className="nav-item"><NavLink to="/about">About</NavLink></li>
-                    {/* <li className="nav-item"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdxF9-nQRfsREiYeliNuDmM2D5pE-gWiKYrkJL2qSX9mdyv9g/viewform?usp=sf_link">Report an Issue</a></li> */}
+                    <li className="nav-item">
+                        <NavLink to="/about">About</NavLink>
+                    </li>
                 </menu>
             </nav>
             </div>

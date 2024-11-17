@@ -50,7 +50,7 @@ export function Unauthenticated(props) {
                 {/* <input type="password" className="login-form-input" id="password" name="password" placeholder="password" required /> */}
             </div>
             <span className="buttons">
-            <Button variant="primary" className="login-button btn btn-sm btn-outline-secondary" onClick={() => loginUser()} disabled={!userName || !password}>
+            <Button variant="primary" className="login-button btn btn-sm btn-outline-secondary btn btn-light" onClick={() => loginUser()} disabled={!userName || !password}>
                 Login
             </Button>
             <Button variant="secondary" className="create-button btn btn-sm btn-outline-secondary btn btn-light" onClick={() => createUser()} disabled={!userName || !password}>

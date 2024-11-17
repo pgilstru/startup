@@ -23,12 +23,14 @@ export function Authenticated(props) {
     return (
         <div>
             <div>{props.userName}</div>
-            <Button onClick={() => navigate('/home')}>
+            <span className="authenticated-buttons">
+            <Button className="authed-button btn btn-sm btn-outline-secondary btn btn-light" onClick={() => navigate('/home')}>
                 Home
             </Button>
-            <Button onClick={() => logout()}>
+            <Button className="authed-button btn btn-sm btn-outline-secondary btn btn-light" onClick={() => logout()}>
                 Logout
             </Button>
+            </span>
         </div>
     )
 }
