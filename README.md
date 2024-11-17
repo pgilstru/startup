@@ -68,8 +68,11 @@ For this deliverable, I utilized React to create an interactive user interface a
 
 For this deliverable, the backend endpoints handle incoming list items and return the updated lists, overall supporting the functionality of the application as a whole.
 
-- **Backend service endpoints**: Authenticates and manages user sessions, stored on the server. New users who register are securely stored on the server. Retrieves and manages list items and updates to the list.
-- **API Frontend**: Utilize HTTP methods such as GET, POST, PUT, and DELETE to interact with the frontend.
+- [x] **Node.js/Express HTTP service** - Done!
+- [x] **Static Middleware for frontend** - Done!
+- [x] **Frontend Third Party Service endpoint** - The about page makes calls to a third party endpoint using fetch; requests are triggered by the React useEffect hook. It makes a call to `uselessfacts.jsph.pl` to get a random useless fact, and onoce the endpoint asynchronously returns, the React state variable is updated and the fact is displayed.
+- [x] **Backend service endpoints**: Contains placeholders for authenticating and managing user sessions, stored on the server. Additionally contains placeholders for creating accounts and storing existing accounts on the server. Endpoints for retrieving and managing (deleting, adding, and updating) list items.
+- [x] **Frontend service endpoint calls**: Utilize fetch requests to the service and useEffect hooks to reactively display the scores once loaded from the service. Additionally, utilized HTTP methods such as GET, POST, PUT, and DELETE.
 
 ## Database/Login Usage Specifics
 
