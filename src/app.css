@@ -173,14 +173,6 @@ footer {
     margin-left: .25em;
 }
 
-.checkfilter {
-    accent-color: var(--primary);
-    cursor: pointer;
-}
-
-.checkFilterLabel {
-    margin-left: 4px;
-}
 
 
 

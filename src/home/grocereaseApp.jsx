@@ -80,7 +80,7 @@ export function GrocereaseApp() {
                 <h1>Grocery List Items</h1>
                 <span>
                     <input type="checkbox" className="checkfilter" value="checkfilter" checked={filterChecked} onChange={() => setFilterChecked(!filterChecked)} />
-                    Filter Checked Items
+                    <label className='checkFilterLabel'>Filter Checked Items</label>
                 </span>
 
             </div>
