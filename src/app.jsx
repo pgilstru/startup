@@ -13,6 +13,12 @@ function App() {
   const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
   const [authState, setAuthState] = React.useState(currentAuthState);
 
+  const handleLogout = () => {
+    localStorage.removeItem('userName');
+    setAuthState(AuthState.Unauthenticated);
+    setUserName('');
+  };
+
   return (
     <BrowserRouter>
     <div className='body'>
@@ -22,8 +28,19 @@ function App() {
             {/* <!-- username and logout button --> */}
             <span className="user-info">
                 Signed in as:
-                <span><strong> {userName}</strong></span>
-                <span className="logout-form"><LogoutButton /></span>
+                {authState === AuthState.Unauthenticated ? (
+                    <span><strong> Not signed in</strong></span>
+                ) : (
+                    <span><strong> {userName}</strong></span>
+                )}
+                {/* Signed in as:
+                <span><strong> {userName}</strong></span> */}
+                <span className="logout-form">
+                    {authState === AuthState.Authenticated && (
+                        <LogoutButton onLogout={handleLogout} />
+                    )}
+                    {/* <LogoutButton /> */}
+                </span>
             </span>
             {/* <!-- nav bar --> */}
             <nav>
@@ -80,12 +97,12 @@ function NotFound() {
     return <main className='text-center'>404: Return to sender. Address unknown.</main>;
   }
 
-export function LogoutButton({ }) {
+export function LogoutButton({ onLogout }) {
     const navigate = useNavigate();
     const handleLogout = () => {
         // perform logout logic here, update when you start having users login
-        localStorage.removeItem('userName');
-        navigate('/login'); //redirect to login page
+        onLogout();
+        navigate('/'); //redirect to login page
     }
     return (
       <Button className="logout-button btn btn-sm btn-dark" onClick={handleLogout}>
