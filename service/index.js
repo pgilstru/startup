@@ -77,6 +77,37 @@ apiRouter.post('/item', (req, res) => {
     res.send(items);
 });
 
+// UpdateItem (change done to true or false)
+apiRouter.put('/item/:id', (req, res) => {
+    const { id } = req.params;
+    const { text, done } = req.body;
+
+    // find item
+    const itemIndex = items.findIndex(item => item.id === id);
+    if (itemIndex === -1) {
+        return res.status(404).send({ msg: 'item not found' });
+    }
+
+    // update the item's details
+    items[itemIndex] = { ...items[itemIndex], text, done };
+
+    res.send(items);
+});
+
+// DeleteItem
+apiRouter.delete('/item/:id', (req, res) => {
+    const { id } = req.params;
+    console.log('got to apiRouter.delete');
+    // find item
+    const itemIndex = items.findIndex(item => item.id === id);
+    if (itemIndex === -1) {
+        return res.status(404).send({ msg: 'item not found' });
+    }
+    // remove item from array
+    items.splice(itemIndex, 1);
+    res.send(items);
+});
+
 // return app's default page if path is unknown
 app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' });

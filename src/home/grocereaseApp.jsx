@@ -57,16 +57,54 @@ export function GrocereaseApp() {
         }
     };
 
-    const toggleItem = (id) => {
-        const updatedItems = items.map(item =>
-            item.id === id ? Item.toggle(item) : item
-        );
-        setItems(updatedItems);
+    const toggleItem = async (id) => {
+        const item = items.find(item => item.id === id);
+        if (item) {
+            try {
+                // Send a PUT request with the full item data
+                const response = await fetch(`/api/item/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        text: item.text,  // Send the existing text
+                        done: !item.done  // Toggle the done status
+                    }),
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Failed to update item');
+                }
+    
+                // Update the state with the updated items list from the backend
+                const updatedItems = await response.json();
+                setItems(updatedItems);
+            } catch (error) {
+                console.error('Error updating item:', error);
+            }
+        }
     };
 
-    const deleteItem = (id) => {
-        const updatedItems = items.filter(item => item.id !== id);
-        setItems(updatedItems);
+    const deleteItem = async (id) => {
+        const item = items.find(item => item.id === id);
+        if (item) {
+            try {
+                console.log('got to try');
+                const response = await fetch(`/api/item/${id}`, {
+                    method: 'DELETE',
+                });
+
+                console.log('got past method');
+                if (!response.ok) {
+                    throw new Error('failed to delete item');
+                }
+                const updateItems = await response.json();
+                setItems(updateItems);
+            } catch (error) {
+                console.error('error deleting item: ', error);
+            }
+        }
     };
 
     const filteredItems = filterChecked
