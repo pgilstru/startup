@@ -8,7 +8,7 @@ let users = {};
 let items = [];
 
 // service port. in production the front end code is statically hosted by service on same port
-const port = process.argv.length > 2 ? process.argv[2] : 3000;
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 // json body parsing using build in middleware
 app.use(express.json());
