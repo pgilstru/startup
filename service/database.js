@@ -38,7 +38,54 @@ async function createUser(email, password){
     return user;
 }
 
-async function addItem(item) {
-    return itemCollection.insertOne(item);
+async function addItem(item, userId) {
+    const newItem = {
+        id: uuid.v4(),
+        userId,
+        text: item.text,
+        done: item.done || false,
+    };
+    // insert item into collection
+    await itemCollection.insertOne(newItem);
+    return newItem;
 }
 
+async function getItems(userId){
+    // retrieve all items from collection
+    const items = await itemCollection.find({ userId }).toArray(); // convert cursor to array
+    return items;
+}
+
+async function updateItem(userId, itemId) {
+    // find item
+    const item = await itemCollection.findOne({ id: itemId, userId });
+    if (!item) {
+        return null; //item not found
+    }
+    //toggle done field
+    const updatedItem = await itemCollection.findOneAndUpdate(
+        { id: itemId, userId }, // match item by id and ownership
+        { $set: { done: !item.done } }, // toggle done
+        { returnDocument: 'after' } //return updated item
+    );
+    return updatedItem.value;
+}
+
+async function deleteItem(userId, itemId) {
+    const result = await itemCollection.deleteOne({
+        id: itemId,
+        userId,
+    });
+    // return true if item was deleted
+    return result.deletedCount > 0;
+}
+
+module.exports = {
+    getUser,
+    getUserByToken,
+    createUser,
+    addItem,
+    getItems,
+    updateItem,
+    deleteItem,
+};

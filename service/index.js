@@ -127,9 +127,14 @@ secureApiRouter.use(async (req, res, next) => {
     }
 });
 
-// GetItems
-secureApiRouter.get('/items', async (_req, res) => {
-    const items = await DB.getItems();
+// GetItems for the authenticated user
+secureApiRouter.get('/items', async (req, res) => {
+    const authToken = req.cookies[authCookieName];
+    const user = await DB.getUserByToken(authToken);
+    if (!user) {
+        return res.status(401).send({ msg: 'unauth' });
+    }
+    const items = await DB.getItems(user.email);
     res.send(items);
 });
 
@@ -142,9 +147,11 @@ secureApiRouter.get('/items', async (_req, res) => {
 
 // AddItem
 secureApiRouter.post('/item', async (req, res) => {
-    const item = { ...req.body, ip: req.ip };
+    const authToken = req.cookies[authCookieName];
+    const user = await DB.getUserByToken(authToken);
+    const item = { ...req.body };
     await DB.addItem(item);
-    const items = await DB.getItems();
+    const items = await DB.getItems(user.email);
     res.send(items);
 });
 
@@ -160,6 +167,81 @@ secureApiRouter.post('/item', async (req, res) => {
 //     }
 
 //     items = updateItems(req.body, items);
+//     res.send(items);
+// });
+
+
+
+// UpdateItem (change done to true or false)
+secureApiRouter.put('/item/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const authToken = req.cookies[authCookieName];
+        const user = await DB.getUserByToken(authToken);
+        if (!user) {
+            return res.status(401).send({ msg: 'unauthorized' });
+        }
+        const updatedItem = await DB.updateItem(user.email, id);
+        if (!updatedItem) {
+            return res.status(404).send({ msg: 'item not found' });
+        }
+        const items = await DB.getItems(user.email);
+        res.send(items);
+    } catch (err) {
+        res.status(500).send({ type: err.name, message: err.message });
+    }
+});
+
+// UpdateItem (change done to true or false)
+apiRouter.put('/item/:id', (req, res) => {
+    const { id } = req.params;
+    const { text, done } = req.body;
+
+    // find item
+    const itemIndex = items.findIndex(item => item.id === id);
+    if (itemIndex === -1) {
+        return res.status(404).send({ msg: 'item not found' });
+    }
+
+    // update the item's details
+    items[itemIndex] = { ...items[itemIndex], text, done };
+
+    res.send(items);
+});
+
+
+// DeleteItem
+secureApiRouter.delete('/item/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const authToken = req.cookies[authCookieName];
+        const user = await DB.getUserByToken(authToken);
+        if (!user) {
+            return res.status(401).send({ msg: 'unauthorized' });
+        }
+        const success = await DB.updateItem(user.email, id);
+        if (!success) {
+            return res.status(404).send({ msg: 'item not found' });
+        }
+        const items = await DB.getItems(user.email);
+        res.send(items);
+    } catch (err) {
+        res.status(500).send({ type: err.name, message: err.message });
+    }
+});
+
+// DeleteItem
+// apiRouter.delete('/item/:id', (req, res) => {
+//     const { id } = req.params;
+//     console.log('got to apiRouter.delete');
+//     // find item
+//     const itemIndex = items.findIndex(item => item.id === id);
+//     if (itemIndex === -1) {
+//         return res.status(404).send({ msg: 'item not found' });
+//     }
+//     // remove item from array
+//     items.splice(itemIndex, 1);
 //     res.send(items);
 // });
 
@@ -191,39 +273,6 @@ const httpService = app.listen(port, () => {
 
 
 
-
-
-// UpdateItem (change done to true or false)
-apiRouter.put('/item/:id', (req, res) => {
-    const { id } = req.params;
-    const { text, done } = req.body;
-
-    // find item
-    const itemIndex = items.findIndex(item => item.id === id);
-    if (itemIndex === -1) {
-        return res.status(404).send({ msg: 'item not found' });
-    }
-
-    // update the item's details
-    items[itemIndex] = { ...items[itemIndex], text, done };
-
-    res.send(items);
-});
-
-// DeleteItem
-apiRouter.delete('/item/:id', (req, res) => {
-    const { id } = req.params;
-    console.log('got to apiRouter.delete');
-    // find item
-    const itemIndex = items.findIndex(item => item.id === id);
-    if (itemIndex === -1) {
-        return res.status(404).send({ msg: 'item not found' });
-    }
-    // remove item from array
-    items.splice(itemIndex, 1);
-    res.send(items);
-});
-
 // return app's default page if path is unknown
 // app.use((_req, res) => {
 //     res.sendFile('index.html', { root: 'public' });
@@ -231,6 +280,25 @@ apiRouter.delete('/item/:id', (req, res) => {
 
 // app.listen(port, () => {
 //   console.log(`Listening on port ${port}`);
+// });
+
+
+
+
+
+// AddItem
+// apiRouter.post('/item', (req, res) => {
+//     // const user = Object.values(users).find((u) => u.token === req.body.token);
+//     // if (!user) {
+//     //     return res.status(401).send({ msg: 'not logged in' });
+//     // }
+
+//     if (!req.body.text) {
+//         return res.status(400).send({ msg: 'text is required' })
+//     }
+
+//     items = updateItems(req.body, items);
+//     res.send(items);
 // });
 
 // updateItems adds an item to the grocery list
