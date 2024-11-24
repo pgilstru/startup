@@ -76,12 +76,16 @@ For this deliverable, the backend endpoints handle incoming list items and retur
 
 ## Database/Login Usage Specifics
 
-For this deliverable, I utilize the database for user authentication and link grocery list items to the user, which are also stored in the database.
+For this deliverable, I utilize the database `mongodb` for user authentication and to link grocery list items to the user, which are also stored in the database.
 
-- **Database**: Will utilize MongoDB Atlas to store user data and grocery list items.
-- **User Registration**: New account is created in the database if a user successfully registers.
-- **Current Users**: User sessions are managed, passwords are securely stored, and user grocery list items are stored.
-- **Access Control**: Cannot view the website or any associated pages or data until successfully authenticated.
+- [x] **Database**: Will utilize MongoDB Atlas to store user data and grocery list items.
+    - [x] **MongoDB Atlas database created** - Done
+    - [x] **Stores data in MongoDB** - Done
+- [x] **User Registration**: New accounts are created in the database.
+- [x] **Current Users**: User sessions are managed, passwords are securely stored, and user grocery list items are stored.
+    - [x] **Application data**: User list items are stored in the database and can be updated and deleted.
+    - [x] **Credentials**: User passwords are hashed using `bcrypt`, and user emails and passwords are stored in the database.
+- [x] **Access Control**: Cannot view the home page, add items, or view  items until successfully authenticated. If you try to access the `/home` endpoint you are redirected to login.
 
 ## WebSocket Usage Specifics
 
