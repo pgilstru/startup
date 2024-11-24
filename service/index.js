@@ -8,7 +8,7 @@ const DB = require('./database.js');
 const authCookieName = 'token';
 
 // service port
-const port = process.argv.length > 2 ? process.argv[2] : 3000;
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 // json body parsing using build in middleware
 app.use(express.json());
@@ -23,7 +23,7 @@ app.use(express.static('public'));
 app.set('trust proxy', true);
 
 // router for service endpoints
-var apiRouter = express.Router();
+const apiRouter = express.Router();
 app.use('/api', apiRouter);
 
 
@@ -31,13 +31,32 @@ app.use('/api', apiRouter);
 // SERVICE ENDPOINTS
 // CreateAuth token for a new user
 apiRouter.post('/auth/create', async (req, res) => {
-    if (await DB.getUser(req.body.email)) {
-        res.status(409).send({ msg: 'Existing user' });
-    } else {
+    // if (await DB.getUser(req.body.email)) {
+    //     res.status(409).send({ msg: 'Existing user' });
+    // } else {
+    //     const user = await DB.createUser(req.body.email, req.body.password);
+    //     // set cookie
+    //     setAuthCookie(res, user.token);
+    //     res.send({ id: user._id });
+    // }
+    try {
+        // Check if the user already exists
+        if (await DB.getUser(req.body.email)) {
+            return res.status(409).send({ msg: 'Existing user' });  // Send a JSON response with an error message
+        }
+
+        // Create the user
         const user = await DB.createUser(req.body.email, req.body.password);
-        // set cookie
+        
+        // Set authentication cookie
         setAuthCookie(res, user.token);
-        res.send({ id: user._id });
+
+        // Send back the user ID as a response
+        return res.json({ id: user._id });
+
+    } catch (error) {
+        console.error(error);  // Log the error for debugging
+        return res.status(500).send({ msg: 'Internal Server Error' });  // Send a JSON response with an error
     }
 });
 
