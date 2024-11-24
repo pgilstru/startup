@@ -68,7 +68,7 @@ async function updateItem(userId, itemId) {
         { $set: { done: !item.done } }, // toggle done
         { returnDocument: 'after' } //return updated item
     );
-    return updatedItem.value;
+    return updatedItem;
 }
 
 async function deleteItem(userId, itemId) {

@@ -13,10 +13,12 @@ export function Authenticated(props) {
         })
           .catch(() => {
             // logout failed
+            console.error('logout failed');
           })
           .finally(() => {
             localStorage.removeItem('userName');
             props.onLogout();
+            navigate('/');
           });
     }
 

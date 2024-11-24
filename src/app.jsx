@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import { Home } from './home/home';
 import { Login } from './login/login';
 import { About } from './about/about';
@@ -14,9 +14,18 @@ function App() {
   const [authState, setAuthState] = React.useState(currentAuthState);
 
   const handleLogout = () => {
-    localStorage.removeItem('userName');
-    setAuthState(AuthState.Unauthenticated);
-    setUserName('');
+    fetch('/api/auth/logout', {
+        method: 'delete',
+    })
+    .catch(() => {
+        // logout failed
+        console.error('logout failed');
+      })
+      .finally(() => {
+        localStorage.removeItem('userName');
+        setAuthState(AuthState.Unauthenticated);
+        setUserName('');
+      });
   };
 
   return (
@@ -77,7 +86,11 @@ function App() {
             } 
              exact
             />
-            <Route path="/home" element={<Home userName={userName} />} />
+            <Route path="/home" element={
+                <ProtectedRoute authState={authState}>
+                    <Home userName={userName} />
+                </ProtectedRoute>
+            }/>
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
@@ -100,15 +113,27 @@ function NotFound() {
 export function LogoutButton({ onLogout }) {
     const navigate = useNavigate();
     const handleLogout = () => {
-        // perform logout logic here, update when you start having users login
         onLogout();
-        navigate('/'); //redirect to login page
-    }
+        navigate('/');
+    };
     return (
       <Button className="logout-button btn btn-sm btn-dark" onClick={handleLogout}>
         Logout
       </Button>
     );
   }
+
+function ProtectedRoute({ authState, children }) {
+    if (authState !== AuthState.Authenticated) {
+        console.error('must authenticate to access home page');
+        return (
+            <div className='text-center'>
+                <h2>You need to log in first</h2>
+                <p>In order to access this page, please login</p>
+            </div>
+        )
+    }
+    return children;
+}
 
 export default App;
