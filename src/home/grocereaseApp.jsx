@@ -17,6 +17,29 @@ export function GrocereaseApp() {
     const [items, setItems] = React.useState([]);
     const [newItemText, setNewItemText] = React.useState('');
     const [filterChecked, setFilterChecked] = React.useState(false);
+    const ws = React.useRef(null);
+
+    React.useEffect(() => {
+        ws.current = new WebSocket(`ws://${window.location.host}`);
+        ws.current.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            switch (data.type) {
+                case 'item-added':
+                    setItems((prevItems) => [...prevItems, data.item]);
+                    break;
+                case 'item-deleted':
+                    setItems((prevItems) => prevItems.filter(item => item.id !== data.id));
+                    break;
+                case 'item-updated':
+                    setItems((prevItems) => prevItems.map((item) =>
+                        item.id === data.item.id ? { ...item, done: data.item.done } : item ));
+                    break;
+                default:
+                    console.warn('unknown message type: ', data.type);
+            }
+        };
+        return () => ws.current.close();
+    }, []);
 
     React.useEffect(() => {
         const fetchItems = async () => {

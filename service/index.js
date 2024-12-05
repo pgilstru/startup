@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const app = express();
 const DB = require('./database.js');
+const { peerProxy } = require('./peerProxy.js');
 
 const authCookieName = 'token';
 
@@ -108,51 +109,75 @@ secureApiRouter.get('/items', async (req, res) => {
 secureApiRouter.post('/item', async (req, res) => {
     const authToken = req.cookies[authCookieName];
     const user = await DB.getUserByToken(authToken);
-    const item = { ...req.body };
-    await DB.addItem(item, user.email);
+    if (!user) return res.status(401).send({ msg: 'unauthorized' });
+
+    const newItem = await DB.addItem(req.body, user.email);
+    // const item = { ...req.body };
+    // await DB.addItem(item, user.email);
     const items = await DB.getItems(user.email);
+
+    // broadcast to all websocket clients
+    broadcast(connections, { type: 'item-added', item: newItem });
     res.send(items);
 });
 
 // UpdateItem (change done to true or false)
 secureApiRouter.put('/item/:id', async (req, res) => {
     const { id } = req.params;
-
-    try {
-        const authToken = req.cookies[authCookieName];
-        const user = await DB.getUserByToken(authToken);
-        if (!user) {
-            return res.status(401).send({ msg: 'unauthorized' });
-        }
-        const updatedItem = await DB.updateItem(user.email, id);
-        if (!updatedItem) {
-            return res.status(404).send({ msg: 'item not found' });
-        }
-        const items = await DB.getItems(user.email);
-        res.send(items);
-    } catch (err) {
-        res.status(500).send({ type: err.name, message: err.message });
+    const authToken = req.cookies[authCookieName];
+    const user = await DB.getUserByToken(authToken);
+    if (!user) return res.status(401).send({ msg: 'unauth' });
+    const updatedItem = await DB.updateItem(user.email, id);
+    if (updatedItem) {
+        broadcast(connections, { type: 'item-updated', item: updatedItem.value });
     }
+    const items = await DB.getItems(user.email);
+    res.send(items);
+
+    // try {
+    //     const authToken = req.cookies[authCookieName];
+    //     const user = await DB.getUserByToken(authToken);
+    //     if (!user) {
+    //         return res.status(401).send({ msg: 'unauthorized' });
+    //     }
+    //     const updatedItem = await DB.updateItem(user.email, id);
+    //     if (!updatedItem) {
+    //         return res.status(404).send({ msg: 'item not found' });
+    //     }
+    //     const items = await DB.getItems(user.email);
+    //     res.send(items);
+    // } catch (err) {
+    //     res.status(500).send({ type: err.name, message: err.message });
+    // }
 });
 
 // DeleteItem
 secureApiRouter.delete('/item/:id', async (req, res) => {
     const { id } = req.params;
-    try {
-        const authToken = req.cookies[authCookieName];
-        const user = await DB.getUserByToken(authToken);
-        if (!user) {
-            return res.status(401).send({ msg: 'unauthorized' });
-        }
-        const success = await DB.deleteItem(user.email, id);
-        if (!success) {
-            return res.status(404).send({ msg: 'item not found' });
-        }
-        const items = await DB.getItems(user.email);
-        res.send(items);
-    } catch (err) {
-        res.status(500).send({ type: err.name, message: err.message });
+    const authToken = req.cookies[authCookieName];
+    const user = await DB.getUserByToken(authToken);
+    if (!user) return res.status(401).send({ msg: 'unauth' });
+    const success = await DB.deleteItem(user.email, id);
+    if (success) {
+        broadcast(connections, { type: 'item-deleted', id });
     }
+    const items = await DB.getItems(user.email);
+    res.send(items);
+    // try {
+    //     const authToken = req.cookies[authCookieName];
+    //     const user = await DB.getUserByToken(authToken);
+    //     if (!user) {
+    //         return res.status(401).send({ msg: 'unauthorized' });
+    //     }
+    //     const success = await DB.deleteItem(user.email, id);
+    //     if (!success) {
+    //         return res.status(404).send({ msg: 'item not found' });
+    //     }
+    //     const items = await DB.getItems(user.email);
+    //     res.send(items);
+    // } catch (err) {
+    //     res.status(500).send({ type: err.name, message: err.message });
+    // }
 });
 
 // default error handler
@@ -177,3 +202,5 @@ function setAuthCookie(res, authToken) {
 const httpService = app.listen(port, () => {
     console.log(`listening on port ${port}`);
 });
+
+peerProxy(httpService);
