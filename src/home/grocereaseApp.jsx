@@ -17,28 +17,59 @@ export function GrocereaseApp() {
     const [items, setItems] = React.useState([]);
     const [newItemText, setNewItemText] = React.useState('');
     const [filterChecked, setFilterChecked] = React.useState(false);
-    const ws = React.useRef(null);
+    // const ws = React.useRef(null);
 
     React.useEffect(() => {
-        ws.current = new WebSocket(`ws://${window.location.host}`);
-        ws.current.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            switch (data.type) {
+        const ws = new WebSocket(`ws://${window.location.host}`);
+        // ws.current = new WebSocket(`ws://${window.location.host}`);
+        ws.onopen = () => {
+            console.log('ws connection est');
+        };
+        ws.onclose = () => {
+            console.log('ws connection closed');
+        };
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            console.log('ws message received: ', message);
+            // if (message.type === 'item-added') {
+            //     const newItem = message.item;
+            //     setItems((prevItems) => [...prevItems, newItem]);
+            // }
+            switch (message.type) {
                 case 'item-added':
-                    setItems((prevItems) => [...prevItems, data.item]);
-                    break;
-                case 'item-deleted':
-                    setItems((prevItems) => prevItems.filter(item => item.id !== data.id));
+                    setItems((prevItems) => [...prevItems, message.item]);
                     break;
                 case 'item-updated':
                     setItems((prevItems) => prevItems.map((item) =>
-                        item.id === data.item.id ? { ...item, done: data.item.done } : item ));
+                        //item.id === data.item.id ? { ...item, done: data.item.done } : item ));
+                        item.id === message.item.id ? message.item : item ));
+                    break;
+                case 'item-deleted':
+                    setItems((prevItems) => prevItems.filter((item) => item.id !== message.id));
                     break;
                 default:
-                    console.warn('unknown message type: ', data.type);
+                    console.warn('unknown message type: ', message.type);
             }
         };
-        return () => ws.current.close();
+        return () => { ws.close() };
+        // ws.current.onmessage = (event) => {
+        //     const data = JSON.parse(event.data);
+        //     switch (data.type) {
+        //         case 'item-added':
+        //             setItems((prevItems) => [...prevItems, data.item]);
+        //             break;
+        //         case 'item-deleted':
+        //             setItems((prevItems) => prevItems.filter(item => item.id !== data.id));
+        //             break;
+        //         case 'item-updated':
+        //             setItems((prevItems) => prevItems.map((item) =>
+        //                 item.id === data.item.id ? { ...item, done: data.item.done } : item ));
+        //             break;
+        //         default:
+        //             console.warn('unknown message type: ', data.type);
+        //     }
+        // };
+        // return () => ws.current.close();
     }, []);
 
     React.useEffect(() => {
@@ -71,14 +102,44 @@ export function GrocereaseApp() {
                 if (!response.ok){
                     throw new Error('could not add item');
                 }
-                const updateItems = await response.json();
-                setItems(updateItems);
+                const updatedItems = await response.json();
+                setItems((prevItems) => [...prevItems, updatedItems]);
                 setNewItemText(''); //clear input
             } catch (error) {
                 console.error('error adding item: ', error);
             }
         }
     };
+// CODE FOR DEBUGGING WS
+    // const addItem = async (newItemText) => {
+    //     // const response = await fetch('/api/item', {
+    //     //     method: 'POST',
+    //     //     headers: {
+    //     //         'Content-Type': 'application/json',
+    //     //     },
+    //     //     body: JSON.stringify({ text: newItemText, done: false }),
+    //     // });
+    //     // const data = await response.json();
+    //     // setItems(data);
+    //     try {
+    //         const response = await fetch('/api/item', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ text: newItemText, done: false }),
+    //         });
+    
+    //         if (!response.ok) {
+    //             throw new Error('Failed to add item');
+    //         }
+    
+    //         const data = await response.json();
+    //         setItems((prevItems) => [...prevItems, data]); // Add the new item to the list
+    //     } catch (error) {
+    //         console.error('Error adding item:', error);
+    //     }
+    // };
 
     const toggleItem = async (id) => {
         const item = items.find(item => item.id === id);
@@ -109,6 +170,15 @@ export function GrocereaseApp() {
         }
     };
 
+// CODE FOR DEBUGGING WS
+    // const updateItem = async (itemId) => {
+    //     const response = await fetch(`/api/item/${itemId}`, {
+    //         method: 'PUT',
+    //     });
+    //     const data = await response.json();
+    //     setItems(data);
+    // };
+
     const deleteItem = async (id) => {
         const item = items.find(item => item.id === id);
         if (item) {
@@ -130,9 +200,22 @@ export function GrocereaseApp() {
         }
     };
 
-    const filteredItems = filterChecked
-        ? items.filter(item => !item.done)
-        : items;
+// FOR TROUBLESHOOTING WS
+    // const deleteItem = async (itemId) => {
+    //     const response = await fetch(`/api/item/${itemId}`, {
+    //         method: 'DELETE',
+    //     });
+    //     const data = await response.json();
+    //     setItems(data);
+    // };
+
+//OG
+    // const filteredItems = filterChecked
+    //     ? items.filter(item => !item.done)
+    //     : items;
+    const filteredItems = Array.isArray(items)
+        ? (filterChecked ? items.filter(item => !item.done) : items)
+        : [];
 
     return (
         // <main>
@@ -167,3 +250,5 @@ export function GrocereaseApp() {
         </div>
     );
 }
+
+

@@ -38,10 +38,22 @@ async function createUser(email, password){
     return user;
 }
 
-async function addItem(item, userId) {
+// OG CODE BEFORE WS
+// async function addItem(item, userId) {
+//     const newItem = {
+//         id: uuid.v4(),
+//         userId,
+//         text: item.text,
+//         done: item.done || false,
+//     };
+//     // insert item into collection
+//     await itemCollection.insertOne(newItem);
+//     return newItem;
+// }
+// ADDITEM WITHOUT THE USERID
+async function addItem(item) {
     const newItem = {
         id: uuid.v4(),
-        userId,
         text: item.text,
         done: item.done || false,
     };
@@ -50,31 +62,66 @@ async function addItem(item, userId) {
     return newItem;
 }
 
-async function getItems(userId){
+
+// OG CODE FOR GETITEMS
+// async function getItems(userId){
     // retrieve all items from collection
-    const items = await itemCollection.find({ userId }).toArray(); // convert cursor to array
+//     const items = await itemCollection.find({ userId }).toArray(); // convert cursor to array
+//     return items;
+// }
+// GETITEMS WITHOUT THE USERID
+async function getItems(){
+    // retrieve all items from collection
+    const items = await itemCollection.find({ }).toArray();
     return items;
 }
 
-async function updateItem(userId, itemId) {
+
+// OG CODE FOR UPDATE ITEM BEFORE WS
+// async function updateItem(userId, itemId) {
+//     // find item
+//     const item = await itemCollection.findOne({ id: itemId, userId });
+//     if (!item) {
+//         return null; //item not found
+//     }
+//     //toggle done field
+//     const updatedItem = await itemCollection.findOneAndUpdate(
+//         { id: itemId, userId }, // match item by id and ownership
+//         { $set: { done: !item.done } }, // toggle done
+//         { returnDocument: 'after' } //return updated item
+//     );
+//     return updatedItem;
+// }
+// UPDATE ITEM WIHTOUT USER ID FOR WS
+async function updateItem(itemId) {
     // find item
-    const item = await itemCollection.findOne({ id: itemId, userId });
+    const item = await itemCollection.findOne({ id: itemId });
     if (!item) {
         return null; //item not found
     }
     //toggle done field
     const updatedItem = await itemCollection.findOneAndUpdate(
-        { id: itemId, userId }, // match item by id and ownership
+        { id: itemId }, // match item by id and ownership
         { $set: { done: !item.done } }, // toggle done
         { returnDocument: 'after' } //return updated item
     );
     return updatedItem;
 }
 
-async function deleteItem(userId, itemId) {
+
+// OG DELETEITEM FUNCTION
+// async function deleteItem(userId, itemId) {
+//     const result = await itemCollection.deleteOne({
+//         id: itemId,
+//         userId,
+//     });
+//     // return true if item was deleted
+//     return result.deletedCount > 0;
+// }
+// DELETEITEM FUNCTION WITHOUT USERID
+async function deleteItem(itemId) {
     const result = await itemCollection.deleteOne({
         id: itemId,
-        userId,
     });
     // return true if item was deleted
     return result.deletedCount > 0;
