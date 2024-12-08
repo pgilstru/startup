@@ -1,23 +1,11 @@
 import React from 'react';
+import { appEvent, appNotifier } from './appUpdater';
 import './home.css';
-
-class Item {
-    constructor({ text, done = false, id }) {
-        this.text = text;
-        this.done = done;
-        this.id = id;
-    }
-
-    static toggle(item) {
-        return { ...item, done: !item.done };
-    }
-}
 
 export function GrocereaseApp() {
     const [items, setItems] = React.useState([]);
     const [newItemText, setNewItemText] = React.useState('');
     const [filterChecked, setFilterChecked] = React.useState(false);
-    // const ws = React.useRef(null);
 
     React.useEffect(() => {        
         const ws = new WebSocket(`ws://${window.location.host}`);
@@ -113,6 +101,8 @@ export function GrocereaseApp() {
                 const updatedItems = await response.json();
                 // update state with newly added items
                 setItems((prevItems) => [...prevItems, updatedItems]);
+                //referenced func reset: GameNotifier.broadcastEvent(userName, GameEvent.Start, {});
+                AppNotifier.broadcastEvent(connections, { type: 'item-deleted', id })
                 loadItems();
                 setNewItemText(''); //clear input
             } catch (error) {
@@ -120,36 +110,6 @@ export function GrocereaseApp() {
             }
         }
     };
-// CODE FOR DEBUGGING WS
-    // const addItem = async (newItemText) => {
-    //     // const response = await fetch('/api/item', {
-    //     //     method: 'POST',
-    //     //     headers: {
-    //     //         'Content-Type': 'application/json',
-    //     //     },
-    //     //     body: JSON.stringify({ text: newItemText, done: false }),
-    //     // });
-    //     // const data = await response.json();
-    //     // setItems(data);
-    //     try {
-    //         const response = await fetch('/api/item', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ text: newItemText, done: false }),
-    //         });
-    
-    //         if (!response.ok) {
-    //             throw new Error('Failed to add item');
-    //         }
-    
-    //         const data = await response.json();
-    //         setItems((prevItems) => [...prevItems, data]); // Add the new item to the list
-    //     } catch (error) {
-    //         console.error('Error adding item:', error);
-    //     }
-    // };
 
     const toggleItem = async (id) => {
         const item = items.find(item => item.id === id);
@@ -260,10 +220,3 @@ export function GrocereaseApp() {
         </div>
     );
 }
-
-
-{/* <li className=groceryItem>
-    <input type="checkbox" className="item-done checkbox-icon"/>
-    <span className="item-description"></span>
-    <button type="button" className="item-delete material-icon">delete</button>
-</li> */}

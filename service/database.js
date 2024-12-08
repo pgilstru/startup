@@ -72,7 +72,7 @@ async function addItem(item) {
 // GETITEMS WITHOUT THE USERID
 async function getItems(){
     // retrieve all items from collection
-    const items = await itemCollection.find({ }).toArray();
+    const items = await itemCollection.find({}).toArray();
     return items;
 }
 

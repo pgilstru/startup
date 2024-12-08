@@ -151,15 +151,17 @@ secureApiRouter.get('/items', async (req, res) => {
 
 // AddItem
 secureApiRouter.post('/item', async (req, res) => {
-    // try {
-    //     const newItem = await DB.addItem(req.body);
-    //     const items = await DB.getItems();
-    //     broadcast(connections, { type: 'item-added', item: newItem });
-    //     res.status(201).send(items);
-    // } catch (error) {
-    //     console.error('error adding item', error);
-    //     res.status(500).send({ msg: 'error adding item' });
-    // }
+    const newItem = await DB.addItem(req.body);
+    try {
+        // const newItem = await DB.addItem(req.body);
+        const items = await DB.getItems();
+        broadcast(connections, { type: 'item-added', item: newItem });
+        console.log('broadcasting new item: ', newItem)
+        res.status(201).send(items);
+    } catch (error) {
+        console.error('error adding item', error);
+        res.status(500).send({ msg: 'error adding item' });
+    }
 
     //see if this works??
     // const { newItemBody } = req.body;
@@ -174,11 +176,12 @@ secureApiRouter.post('/item', async (req, res) => {
     // }
     
     // see if this works? (N/A)
-    const item = { ...req.body };
-    await DB.addItem(item);
-    const items = await DB.getItems();
-    broadcast(connections, { type: 'item-added', item: newItem });
-    res.send(items);
+    // const item = { ...req.body };
+    // const newItem = await DB.addItem(item);
+    // await DB.addItem(item);
+    // const items = await DB.getItems();
+    // broadcast(connections, { type: 'item-added', item: newItem });
+    // res.send(items);
 });
 
 
