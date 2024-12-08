@@ -76,12 +76,13 @@ function peerProxy(httpServer) {
   }, 10000);
 }
 
-function broadcast(connections, message) {
-    connections.forEach((connection) => {
-        if (connection.ws.readyState === WebSocket.OPEN) {
-            connection.ws.send(JSON.stringify(message));
-        }
-    });
-}
+// function broadcast(connections, message) {
+//     connections.forEach((connection) => {
+//         if (connection.ws.readyState === WebSocket.OPEN) {
+//             connection.ws.send(JSON.stringify(message));
+//         }
+//     });
+// }
 
-module.exports = { peerProxy, broadcast, connections };
+// module.exports = { peerProxy, broadcast, connections };
+module.exports = { peerProxy }

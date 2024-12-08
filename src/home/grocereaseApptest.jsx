@@ -11,22 +11,7 @@ export function GrocereaseApp(props) {
     React.useEffect(() => {
         const handleAppEvent = (event) => {
             console.log('received event: ', event);
-            switch (event.type) {
-                case AppEvent.system:
-                    
-                case AppEvent.ItemAdded:
-                    setItems((prevItems) => [...prevItems, event.value]);
-                    break;
-                case AppEvent.ItemUpdated:
-                    setItems((prevItems) => prevItems.map((item) =>
-                        item.id === event.value.id ? event.value : item ));
-                    break;
-                case 'item-deleted':
-                    setItems((prevItems) => prevItems.filter((item) => item.id !== event.value.id));
-                    break;
-                default:
-                    console.warn('unknown message type: ', event.type);
-            }
+            loadItems();
         };
         AppNotifier.addHandler(handleAppEvent);
         return () => {
@@ -34,18 +19,18 @@ export function GrocereaseApp(props) {
         };
     }, []);
 
-    // const loadItems = async () => {
-    //     try {
-    //         const response = await fetch('/api/items');
-    //         if (!response.ok) {
-    //             throw new Error(`failed to fetch items: ${response.statusText}`);
-    //         }
-    //         const items = await response.json();
-    //         setItems(items);
-    //     } catch (error) {
-    //         console.error('error loading items: ', error);
-    //     }
-    // };
+    const loadItems = async () => {
+        try {
+            const response = await fetch('/api/items');
+            if (!response.ok) {
+                throw new Error(`failed to fetch items: ${response.statusText}`);
+            }
+            const items = await response.json();
+            setItems(items);
+        } catch (error) {
+            console.error('error loading items: ', error);
+        }
+    };
 
     React.useEffect(() => {
         const fetchItems = async () => {
@@ -77,17 +62,13 @@ export function GrocereaseApp(props) {
                 if (!response.ok){
                     throw new Error('could not add item');
                 }
-                const newitem = await response.json();
+                const updatedItems = await response.json();
+                // update state with newly added items
+                setItems((prevItems) => [...prevItems, updatedItems]);
                 // broadcast new item added
-                AppNotifier.broadcastEvent(userName, AppEvent.ItemAdded, newItem);
+                AppNotifier.broadcastEvent(userName, AppEvent.ItemAdded, updatedItems);
+                loadItems();
                 setNewItemText(''); //clear input
-
-                // const updatedItems = await response.json();
-                // // update state with newly added items
-                // setItems((prevItems) => [...prevItems, updatedItems]);
-                // AppNotifier.broadcastEvent(connections, { type: 'item-deleted', id })
-                // loadItems();
-                // setNewItemText(''); //clear input
             } catch (error) {
                 console.error('error adding item: ', error);
             }
@@ -117,8 +98,8 @@ export function GrocereaseApp(props) {
                 // Update the state with the updated items list from the backend
                 const updatedItems = await response.json();
                 // broadcast
-                AppNotifier.broadcastEvent(userName, AppEvent.ItemUpdated, updatedItem);
-                // setItems(updatedItems);
+                AppNotifier.broadcastEvent(userName, AppEvent.ItemUpdated, updatedItems);
+                setItems(updatedItems);
             } catch (error) {
                 console.error('Error updating item:', error);
             }
@@ -137,8 +118,8 @@ export function GrocereaseApp(props) {
             AppNotifier.broadcastEvent(userName, AppEvent.ItemDeleted, { id });
 
 
-            // const updateItems = await response.json();
-            // setItems(updateItems);
+            const updateItems = await response.json();
+            setItems(updateItems);
         } catch (error) {
             console.error('error deleting item: ', error);
         }
@@ -160,13 +141,13 @@ export function GrocereaseApp(props) {
             </div>
             <ul className="groceryList">
                 {filteredItems.map((item, index) => {
-                //   return (
+                  return (
                     <li key={item.id || index} className={`groceryItem ${item.done ? 'completed-item' : ''}`}>
                         <input type="checkbox" className="item-done checkbox-icon" checked={item.done} onChange={() => toggleItem(item.id)} />
                         <span className="item-description">{item.text}</span>
                         <button onClick={() => deleteItem(item.id)} type="button" className="item-delete material-icon">delete</button>
                     </li>
-                //   );
+                  );
                 })}
             </ul>
 

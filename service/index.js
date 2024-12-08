@@ -4,7 +4,9 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const app = express();
 const DB = require('./database.js');
-const { peerProxy, broadcast, connections } = require('./peerProxy.js');
+// const { peerProxy, broadcast, connections } = require('./peerProxy.js');
+const { peerProxy } = require('./peerProxy.js');
+
 
 const authCookieName = 'token';
 
@@ -155,8 +157,8 @@ secureApiRouter.post('/item', async (req, res) => {
     try {
         // const newItem = await DB.addItem(req.body);
         const items = await DB.getItems();
-        broadcast(connections, { type: 'item-added', item: newItem });
-        console.log('broadcasting new item: ', newItem)
+        // broadcast(connections, { type: 'item-added', item: newItem });
+        // console.log('broadcasting new item: ', newItem)
         res.status(201).send(items);
     } catch (error) {
         console.error('error adding item', error);
@@ -231,9 +233,9 @@ secureApiRouter.put('/item/:id', async (req, res) => {
         //     broadcast(connections, { type: 'item-updated', item: updatedItem.value });
         // }
         const items = await DB.getItems();
-        if (updatedItem) {
-            broadcast(connections, { type: 'item-updated', item: updatedItem.value });
-        }
+        // if (updatedItem) {
+        //     broadcast(connections, { type: 'item-updated', item: updatedItem.value });
+        // }
         res.send(items);
         // res.send(updatedItem ? updatedItem.value : { msg: 'item not found' });
     } catch (error) {
@@ -298,9 +300,9 @@ secureApiRouter.delete('/item/:id', async (req, res) => {
     try {
         const success = await DB.deleteItem(id);
         const items = await DB.getItems();
-        if (success) {
-            broadcast(connections, { type: 'item-deleted', id });
-        }
+        // if (success) {
+        //     broadcast(connections, { type: 'item-deleted', id });
+        // }
         res.send(items);
     } catch (error) {
         console.error('error deleting item', error);
