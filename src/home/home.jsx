@@ -1,12 +1,6 @@
 import React from 'react';
 // import '/src/app.css';
-
-//og
-// import { GrocereaseApp } from './grocereaseApp'
-
-//test
-import { GrocereaseApp } from './grocereaseApptest'
-
+import { GrocereaseApp } from './grocereaseApp'
 
 export function Home(props) {
     return (

@@ -1,9 +1,6 @@
 const { WebSocketServer } = require('ws');
 const uuid = require('uuid');
 
-// track the connections to forward messages
-let connections = [];
-
 function peerProxy(httpServer) {
   // create websocket object
   const wss = new WebSocketServer({ noServer: true });
@@ -16,7 +13,7 @@ function peerProxy(httpServer) {
   });
 
   // track the connections to forward messages
-  // let connections = [];
+  let connections = [];
 
   wss.on('connection', (ws) => {
     const connection = { id: uuid.v4(), alive: true, ws: ws };
@@ -32,18 +29,6 @@ function peerProxy(httpServer) {
           c.ws.send(data);
         }
       });
-      //TROUBLESHOOTING
-    //   try {
-    //     const parsedData = JSON.parse(data); // Expecting JSON messages
-    //     console.log('Parsed WebSocket message: ', parsedData);
-    //     connections.forEach((c) => {
-    //         if (c.id !== connection.id) {
-    //             c.ws.send(JSON.stringify(parsedData));
-    //         }
-    //     });
-    // } catch (error) {
-    //     console.error('Failed to parse WebSocket message:', error);
-    // }
     });
 
     // remove closed connection so we don't try forwarding anymore
@@ -76,13 +61,4 @@ function peerProxy(httpServer) {
   }, 10000);
 }
 
-// function broadcast(connections, message) {
-//     connections.forEach((connection) => {
-//         if (connection.ws.readyState === WebSocket.OPEN) {
-//             connection.ws.send(JSON.stringify(message));
-//         }
-//     });
-// }
-
-// module.exports = { peerProxy, broadcast, connections };
 module.exports = { peerProxy }

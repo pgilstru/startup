@@ -7,18 +7,6 @@ const AppEvent = {
     ItemDeleted: 'itemDeleted',
 };
 
-const loadItems = async () => {
-    try {
-        const response = await fetch('/api/items');
-        if (!response.ok) {
-            throw new Error(`failed to fetch items: ${response.statusText}`);
-        }
-        const items = await response.json();
-        setItems(items);
-    } catch (error) {
-        console.error('error loading items: ', error);
-    }
-};
 
 class EventMessage {
     constructor(from, type, value){

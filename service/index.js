@@ -34,14 +34,6 @@ app.use('/api', apiRouter);
 // SERVICE ENDPOINTS
 // CreateAuth token for a new user
 apiRouter.post('/auth/create', async (req, res) => {
-    // if (await DB.getUser(req.body.email)) {
-    //     res.status(409).send({ msg: 'Existing user' });
-    // } else {
-    //     const user = await DB.createUser(req.body.email, req.body.password);
-    //     // set cookie
-    //     setAuthCookie(res, user.token);
-    //     res.send({ id: user._id });
-    // }
     try {
         // Check if the user already exists
         if (await DB.getUser(req.body.email)) {
@@ -97,20 +89,6 @@ secureApiRouter.use(async (req, res, next) => {
 });
 
 
-
-// OG CODE
-// GetItems for the authenticated user
-// secureApiRouter.get('/items', async (req, res) => {
-//     const authToken = req.cookies[authCookieName];
-//     const user = await DB.getUserByToken(authToken);
-//     if (!user) {
-//         return res.status(401).send({ msg: 'unauth' });
-//     }
-//     // const items = await DB.getItems(user.email);
-//     res.send(items);
-// });
-
-// REMOVED USERID FOR DEBUGGING WS
 // GetItems for the authenticated user
 secureApiRouter.get('/items', async (req, res) => {
     try {
@@ -121,35 +99,6 @@ secureApiRouter.get('/items', async (req, res) => {
         res.status(500).send({ msg: 'error retrieving items' });
     }
 });
-
-
-
-// OG CODE for additem
-// secureApiRouter.post('/item', async (req, res) => {
-//     const authToken = req.cookies[authCookieName];
-//     const user = await DB.getUserByToken(authToken);
-//     const item = { ...req.body };
-//     await DB.addItem(item, user.email);
-//     const items = await DB.getItems(user.email);
-//     res.send(items);
-// });
-
-// SOME SIMPLE UPDATES TO OG FOR WS
-// AddItem
-// secureApiRouter.post('/item', async (req, res) => {
-//     const authToken = req.cookies[authCookieName];
-//     const user = await DB.getUserByToken(authToken);
-//     if (!user) return res.status(401).send({ msg: 'unauthorized' });
-
-//     const newItem = await DB.addItem(req.body, user.email);
-//     // const item = { ...req.body };
-//     // await DB.addItem(item, user.email);
-//     const items = await DB.getItems(user.email);
-
-//     // broadcast to all websocket clients
-//     broadcast(connections, { type: 'item-added', item: newItem });
-//     res.send(items);
-// });
 
 // AddItem
 secureApiRouter.post('/item', async (req, res) => {
@@ -164,80 +113,18 @@ secureApiRouter.post('/item', async (req, res) => {
         console.error('error adding item', error);
         res.status(500).send({ msg: 'error adding item' });
     }
-
-    //see if this works??
-    // const { newItemBody } = req.body;
-    // try {
-    //     const newItem = await DB.addItem(newItemBody);
-    //     const items = await DB.getItems();
-    //     broadcast(connections, { type: 'item-added', item: newItem });
-    //     res.send(items);
-    // } catch (error) {
-    //     console.error('error adding item', error);
-    //     res.status(500).send({ msg: 'error adding item' });
-    // }
-    
-    // see if this works? (N/A)
-    // const item = { ...req.body };
-    // const newItem = await DB.addItem(item);
-    // await DB.addItem(item);
-    // const items = await DB.getItems();
-    // broadcast(connections, { type: 'item-added', item: newItem });
-    // res.send(items);
 });
 
-
-
-
-// maybe problem with update is that we broadcast before await DB.getItems?
-
-// OG CODE
 // UpdateItem (change done to true or false)
-// secureApiRouter.put('/item/:id', async (req, res) => {
-//     const { id } = req.params;
-//     try {
-//         const authToken = req.cookies[authCookieName];
-//         const user = await DB.getUserByToken(authToken);
-//         if (!user) {
-//             return res.status(401).send({ msg: 'unauthorized' });
-//         }
-//         const updatedItem = await DB.updateItem(user.email, id);
-//         if (!updatedItem) {
-//             return res.status(404).send({ msg: 'item not found' });
-//         }
-//         const items = await DB.getItems(user.email);
-//         res.send(items);
-//     } catch (err) {
-//         res.status(500).send({ type: err.name, message: err.message });
-//     }
-// });
-
-// UPDATES TO OG CODE FOR WS, REMOVING USERID
-// UpdateItem (change done to true or false)
-// secureApiRouter.put('/item/:id', async (req, res) => {
-//     const { id } = req.params;
-//     const updatedItem = await DB.updateItem(id);
-//     const items = await DB.getItems();
-//     if (updatedItem) {
-//         broadcast(connections, { type: 'item-updated', item: updatedItem.value });
-//     }
-//     res.send(items);
-// });
-
-// MORE WS TROUBLESHOOTING TEMP CODE FOR UPDATE (works)
 secureApiRouter.put('/item/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const updatedItem = await DB.updateItem(id);
-        // if (updatedItem) {
-        //     broadcast(connections, { type: 'item-updated', item: updatedItem.value });
-        // }
+        if (!updatedItem) {
+            return res.status(404).send({ msg: 'item not found' });
+        }
         const items = await DB.getItems();
-        // if (updatedItem) {
-        //     broadcast(connections, { type: 'item-updated', item: updatedItem.value });
-        // }
         res.send(items);
-        // res.send(updatedItem ? updatedItem.value : { msg: 'item not found' });
     } catch (error) {
         console.error('error updating item', error);
         res.status(500).send({ msg: 'error updating item' });
@@ -246,57 +133,9 @@ secureApiRouter.put('/item/:id', async (req, res) => {
 
 
 
-
-
-
-// OG CODE FOR DELETEITEM
-// secureApiRouter.delete('/item/:id', async (req, res) => {
-//     const { id } = req.params;
-//     try {
-//         const authToken = req.cookies[authCookieName];
-//         const user = await DB.getUserByToken(authToken);
-//         if (!user) {
-//             return res.status(401).send({ msg: 'unauthorized' });
-//         }
-//         const success = await DB.deleteItem(user.email, id);
-//         if (!success) {
-//             return res.status(404).send({ msg: 'item not found' });
-//         }
-//         const items = await DB.getItems(user.email);
-//         res.send(items);
-//     } catch (err) {
-//         res.status(500).send({ type: err.name, message: err.message });
-//     }
-// });
-
-// CODE FOR TROUBLESHOOTING WS REMOVING USERID
 // DeleteItem
-// secureApiRouter.delete('/item/:id', async (req, res) => {
-//     const { id } = req.params;
-//     const success = await DB.deleteItem(id);
-//     if (success) {
-//         broadcast(connections, { type: 'item-deleted', id });
-//     }
-//     const items = await DB.getItems();
-//     if (success) {
-//         broadcast(connections, { type: 'item-deleted', id });
-//     }
-//     res.send(items);
-// });
-
-// MORE DELETE TROUBLESHOOTING FOR WS
 secureApiRouter.delete('/item/:id', async (req, res) => {
     const { id } = req.params;
-    // try {
-    //     const success = await DB.deleteItem(id);
-    //     if (success) {
-    //         broadcast(connections, { type: 'item-deleted', id });
-    //     }
-    //     res.send({ success });
-    // } catch (error) {
-    //     console.error('error deleting item', error);
-    //     res.status(500).send({ msg: 'error deleting item' });
-    // }
     try {
         const success = await DB.deleteItem(id);
         const items = await DB.getItems();
