@@ -11,3 +11,4 @@ export default defineConfig({
     },
   },
 });
+// target: 'ws://localhost:4000',

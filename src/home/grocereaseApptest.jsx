@@ -1,72 +1,51 @@
 import React from 'react';
-import { appEvent, appNotifier } from './appUpdater';
+import { AppEvent, AppNotifier } from './appUpdater';
 import './home.css';
 
-export function GrocereaseApp() {
+export function GrocereaseApp(props) {
+    const userName = props.userName;
     const [items, setItems] = React.useState([]);
     const [newItemText, setNewItemText] = React.useState('');
     const [filterChecked, setFilterChecked] = React.useState(false);
 
-    React.useEffect(() => {        
-        const ws = new WebSocket(`ws://${window.location.host}`);
-        ws.onopen = () => {
-            console.log('ws connection est');
-        };
-        ws.onclose = () => {
-            console.log('ws connection closed');
-        };
-        ws.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            console.log('ws message received: ', message);
-            switch (message.type) {
-                case 'item-added':
-                    setItems((prevItems) => [...prevItems, message.item]);
+    React.useEffect(() => {
+        const handleAppEvent = (event) => {
+            console.log('received event: ', event);
+            switch (event.type) {
+                case AppEvent.system:
+                    
+                case AppEvent.ItemAdded:
+                    setItems((prevItems) => [...prevItems, event.value]);
                     break;
-                case 'item-updated':
+                case AppEvent.ItemUpdated:
                     setItems((prevItems) => prevItems.map((item) =>
-                        //item.id === data.item.id ? { ...item, done: data.item.done } : item ));
-                        item.id === message.item.id ? message.item : item ));
+                        item.id === event.value.id ? event.value : item ));
                     break;
                 case 'item-deleted':
-                    setItems((prevItems) => prevItems.filter((item) => item.id !== message.id));
+                    setItems((prevItems) => prevItems.filter((item) => item.id !== event.value.id));
                     break;
                 default:
-                    console.warn('unknown message type: ', message.type);
+                    console.warn('unknown message type: ', event.type);
             }
         };
-        return () => { ws.close() };
-        // ws.current.onmessage = (event) => {
-        //     const data = JSON.parse(event.data);
-        //     switch (data.type) {
-        //         case 'item-added':
-        //             setItems((prevItems) => [...prevItems, data.item]);
-        //             break;
-        //         case 'item-deleted':
-        //             setItems((prevItems) => prevItems.filter(item => item.id !== data.id));
-        //             break;
-        //         case 'item-updated':
-        //             setItems((prevItems) => prevItems.map((item) =>
-        //                 item.id === data.item.id ? { ...item, done: data.item.done } : item ));
-        //             break;
-        //         default:
-        //             console.warn('unknown message type: ', data.type);
-        //     }
-        // };
-        // return () => ws.current.close();
+        AppNotifier.addHandler(handleAppEvent);
+        return () => {
+            AppNotifier.removeHandler(handleAppEvent);
+        };
     }, []);
 
-    const loadItems = async () => {
-        try {
-            const response = await fetch('/api/items');
-            if (!response.ok) {
-                throw new Error(`failed to fetch items: ${response.statusText}`);
-            }
-            const items = await response.json();
-            setItems(items);
-        } catch (error) {
-            console.error('error loading items: ', error);
-        }
-    };
+    // const loadItems = async () => {
+    //     try {
+    //         const response = await fetch('/api/items');
+    //         if (!response.ok) {
+    //             throw new Error(`failed to fetch items: ${response.statusText}`);
+    //         }
+    //         const items = await response.json();
+    //         setItems(items);
+    //     } catch (error) {
+    //         console.error('error loading items: ', error);
+    //     }
+    // };
 
     React.useEffect(() => {
         const fetchItems = async () => {
@@ -82,7 +61,7 @@ export function GrocereaseApp() {
             }
         };
         fetchItems();
-    }, []); //adding [items] fixed issue but also just made the website slow
+    }, []);
 
     const addItem = async (event) => {
         event.preventDefault();
@@ -98,13 +77,17 @@ export function GrocereaseApp() {
                 if (!response.ok){
                     throw new Error('could not add item');
                 }
-                const updatedItems = await response.json();
-                // update state with newly added items
-                setItems((prevItems) => [...prevItems, updatedItems]);
-                //referenced func reset: GameNotifier.broadcastEvent(userName, GameEvent.Start, {});
-                AppNotifier.broadcastEvent(connections, { type: 'item-deleted', id })
-                loadItems();
+                const newitem = await response.json();
+                // broadcast new item added
+                AppNotifier.broadcastEvent(userName, AppEvent.ItemAdded, newItem);
                 setNewItemText(''); //clear input
+
+                // const updatedItems = await response.json();
+                // // update state with newly added items
+                // setItems((prevItems) => [...prevItems, updatedItems]);
+                // AppNotifier.broadcastEvent(connections, { type: 'item-deleted', id })
+                // loadItems();
+                // setNewItemText(''); //clear input
             } catch (error) {
                 console.error('error adding item: ', error);
             }
@@ -112,7 +95,7 @@ export function GrocereaseApp() {
     };
 
     const toggleItem = async (id) => {
-        const item = items.find(item => item.id === id);
+        const item = items.find((item) => item.id === id);
         if (item) {
             try {
                 // Send a PUT request with the full item data
@@ -133,62 +116,39 @@ export function GrocereaseApp() {
     
                 // Update the state with the updated items list from the backend
                 const updatedItems = await response.json();
-                setItems(updatedItems);
+                // broadcast
+                AppNotifier.broadcastEvent(userName, AppEvent.ItemUpdated, updatedItem);
+                // setItems(updatedItems);
             } catch (error) {
                 console.error('Error updating item:', error);
             }
         }
     };
 
-// CODE FOR DEBUGGING WS
-    // const updateItem = async (itemId) => {
-    //     const response = await fetch(`/api/item/${itemId}`, {
-    //         method: 'PUT',
-    //     });
-    //     const data = await response.json();
-    //     setItems(data);
-    // };
-
     const deleteItem = async (id) => {
-        const item = items.find(item => item.id === id);
-        if (item) {
-            try {
-                console.log('got to try');
-                const response = await fetch(`/api/item/${id}`, {
-                    method: 'DELETE',
-                });
-
-                console.log('got past method');
-                if (!response.ok) {
-                    throw new Error('failed to delete item');
-                }
-                const updateItems = await response.json();
-                setItems(updateItems);
-            } catch (error) {
-                console.error('error deleting item: ', error);
+        try {
+            const response = await fetch(`/api/item/${id}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('failed to delete item');
             }
+            // broadcast
+            AppNotifier.broadcastEvent(userName, AppEvent.ItemDeleted, { id });
+
+
+            // const updateItems = await response.json();
+            // setItems(updateItems);
+        } catch (error) {
+            console.error('error deleting item: ', error);
         }
     };
 
-// FOR TROUBLESHOOTING WS
-    // const deleteItem = async (itemId) => {
-    //     const response = await fetch(`/api/item/${itemId}`, {
-    //         method: 'DELETE',
-    //     });
-    //     const data = await response.json();
-    //     setItems(data);
-    // };
-
-//OG
     const filteredItems = filterChecked
         ? items.filter(item => !item.done)
         : items;
-    // const filteredItems = Array.isArray(items)
-    //     ? (filterChecked ? items.filter(item => !item.done) : items)
-    //     : [];
 
     return (
-        // <main>
         <div>
             <div className="div-main">
                 <h1>Grocery List Items</h1>
@@ -200,20 +160,20 @@ export function GrocereaseApp() {
             </div>
             <ul className="groceryList">
                 {filteredItems.map((item, index) => {
-                  return (
+                //   return (
                     <li key={item.id || index} className={`groceryItem ${item.done ? 'completed-item' : ''}`}>
                         <input type="checkbox" className="item-done checkbox-icon" checked={item.done} onChange={() => toggleItem(item.id)} />
                         <span className="item-description">{item.text}</span>
                         <button onClick={() => deleteItem(item.id)} type="button" className="item-delete material-icon">delete</button>
                     </li>
-                  );
+                //   );
                 })}
             </ul>
 
             <form className="form-add-item" onSubmit={addItem}>
                 <div className="form-stuff">
                     <label htmlFor="item">List Item: </label>
-                    <input type="text" className="item-input" value={newItemText} onChange={e => setNewItemText(e.target.value)} id="item" name="item" placeholder="Your list item here" required/>
+                    <input type="text" className="item-input" value={newItemText} onChange={(e) => setNewItemText(e.target.value)} id="item" name="item" placeholder="Your list item here" required/>
                 </div>
                 <button type="submit" className="add-item-button btn btn-sm btn-light">Add Item</button>
             </form>
