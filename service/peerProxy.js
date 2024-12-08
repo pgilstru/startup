@@ -16,6 +16,7 @@ function peerProxy(httpServer) {
   let connections = [];
 
   wss.on('connection', (ws) => {
+    // const connection = { id: uuid.v4(), alive: true, ws: ws };
     const connection = { id: uuid.v4(), alive: true, ws: ws };
     connections.push(connection);
     console.log('New connection est');

@@ -22,10 +22,18 @@ class AppEventNotifier {
     handlers = [];
     constructor() {
         const port = window.location.port;
-        const protocol = window.location.protocol === 'https:' ? 'ws' : 'wss';
+        const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
         //og
-        // this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}`);
-        this.socket = new WebSocket(`ws://${window.location.hostname}:4000/ws`);
+        // this.socket = new WebSocket(`${protocol}://${window.location.hostname}:4000/ws`); //didn't work (prod)
+        this.socket = new WebSocket(`${protocol}://${window.location.hostname}/ws`); //works!
+        // this.socket = new WebSocket(`${protocol}://${window.location.hostname}:4000`); //didn't work fully (prod)
+        // this.socket = new WebSocket(`${protocol}://startup.grocerease.click:4000`); //didn't work fully (prod)
+        // this.socket = new WebSocket(`wss://startup.grocerease.click:4000/`); //didn't work fully (prod)
+        // this.socket = new WebSocket(`ws://${window.location.hostname}:4000/ws`); (for dev environment)
+        // this.socket = new WebSocket(`ws://localhost:4000/ws`); //didn't work (prod)
+        // this.socket = new WebSocket(`ws://localhost:4000`); // didn't work (prod)
+        // this.socket = new WebSocket(`${protocol}://${window.location.hostname}:4000`); //didn't work (prod)
+        // this.socket = new WebSocket(`wss://${window.location.hostname}:4000/wss`); //doesn't fully work (prod)
 
         this.socket.onopen = () => {
             this.receiveEvent(new EventMessage('System', AppEvent.System, { msg: 'connected' }));
@@ -60,9 +68,14 @@ class AppEventNotifier {
     
     receiveEvent(event) {
         this.events.push(event);
-        this.handlers.forEach((handler) => {
-            handler(event);
-        });
+        // this.handlers.forEach((handler) => {
+        //     handler(event);
+        // });
+        this.events.forEach((e) => {
+            this.handlers.forEach((handler) => {
+              handler(e);
+            });
+          });
     }
 }
 
