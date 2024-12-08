@@ -89,7 +89,8 @@ For this deliverable, I utilize the database `mongodb` for user authentication a
 
 ## WebSocket Usage Specifics
 
-For this deliverable, I used WebSocket to make real time updates for the grocery list items and their status.
+For this deliverable, I used WebSocket to make real time updates for the grocery list items and their status. For example, when UserA adds an item, if UserB is viewing the list, websocket will update their list immediately without requiring them to refresh the page.
 
-- **WebSocket Connection**: The backend will listen for the WebSocket connection, and the frontend will make that connection.
-- **Realtime Data Display**: User grocery list items will be updated in realtime, as they are added, deleted, and checked. The filtering checked items option will be by device, not stored or updated among other devices.
+- [x] **WebSocket Connection**: The backend will listen for the WebSocket connection, and the frontend will make that connection.
+- [x] **Data sent over WebSocket Connection**: When users add, delete, or update items in the list, that data is sent over the Websocket connection.
+- [x] **WebSocket Data Display**: User grocery list items will be updated in realtime, as they are added, deleted, and checked. The filtering checked items option will be by device, not stored or updated among other devices.
